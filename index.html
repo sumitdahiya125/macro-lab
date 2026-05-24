@@ -11,554 +11,569 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg: #f4f1ea;
-  --ink: #0d0d0d;
-  --paper: #ffffff;
+  --bg: #fafaf7;
+  --surface: #ffffff;
+  --ink: #111111;
+  --ink-2: #4a4a4a;
+  --muted: #8a8580;
+  --border: #ece8df;
+  --border-strong: #d8d2c4;
   --accent: #ff4d1a;
-  --accent-soft: #ffe8df;
-  --rule: #0d0d0d;
-  --muted: #6b6359;
-  --grid: rgba(13,13,13,0.06);
+  --accent-hover: #e63d0d;
+  --accent-soft: #fff1ec;
+  --protein: #ff4d1a;
+  --carbs: #f5b942;
+  --fat: #5b9bd5;
+  --shadow-sm: 0 1px 2px rgba(15,15,15,.04);
+  --shadow-md: 0 6px 20px rgba(15,15,15,.06);
+  --radius: 12px;
+  --radius-sm: 8px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 17px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
+  font-size: 15px;
   line-height: 1.5;
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 40px 40px;
   min-height: 100vh;
-  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.mono { font-family: 'JetBrains Mono', monospace; font-feature-settings: 'ss01'; }
+button { font-family: inherit; }
 
 /* HEADER */
 header {
-  border-bottom: 2px solid var(--ink);
-  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(8px);
-  background: rgba(244, 241, 234, 0.92);
 }
 .header-inner {
-  max-width: 1280px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 18px 32px;
+  padding: 14px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .logo {
-  font-family: 'Fraunces', serif;
-  font-weight: 900;
-  font-size: 28px;
-  letter-spacing: -0.03em;
-  font-style: italic;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 .logo span { color: var(--accent); }
-.nav-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+.header-tag {
+  font-size: 12px;
   color: var(--muted);
+  font-weight: 500;
 }
 
 /* HERO */
 .hero {
-  max-width: 1280px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 80px 32px 60px;
-  position: relative;
-}
-.hero-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-bottom: 24px;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-}
-.hero-meta::before {
-  content: '';
-  width: 40px;
-  height: 1px;
-  background: var(--ink);
+  padding: 48px 24px 28px;
+  text-align: center;
 }
 .hero h1 {
-  font-family: 'Fraunces', serif;
-  font-size: clamp(48px, 9vw, 128px);
-  font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  margin-bottom: 32px;
-  max-width: 1100px;
-}
-.hero h1 em {
-  font-style: italic;
-  font-weight: 500;
-  color: var(--accent);
-}
-.hero-sub {
-  font-size: 20px;
-  max-width: 580px;
-  color: var(--muted);
-  margin-bottom: 40px;
-  line-height: 1.45;
-}
-.hero-stats {
-  display: flex;
-  gap: 48px;
-  border-top: 1px solid var(--ink);
-  padding-top: 24px;
-  flex-wrap: wrap;
-}
-.stat-num {
-  font-family: 'Fraunces', serif;
-  font-size: 36px;
+  font-size: clamp(26px, 4vw, 36px);
   font-weight: 700;
   letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 10px;
 }
-.stat-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--muted);
+.hero h1 .accent { color: var(--accent); }
+.hero-sub {
+  font-size: 16px;
+  color: var(--ink-2);
+  max-width: 540px;
+  margin: 0 auto;
 }
 
 /* MAIN GRID */
 .app {
-  max-width: 1280px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 32px 80px;
+  padding: 0 24px 64px;
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 40px;
+  grid-template-columns: 360px 1fr;
+  gap: 28px;
   align-items: start;
 }
-@media (max-width: 980px) {
-  .app { grid-template-columns: 1fr; }
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; gap: 20px; }
 }
 
-/* CALCULATOR PANEL */
-.panel {
-  background: var(--paper);
-  border: 2px solid var(--ink);
-  padding: 32px;
-  position: relative;
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
 }
-.panel::before {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: -8px;
-  bottom: -8px;
-  background: var(--ink);
-  z-index: -1;
+@media (min-width: 901px) {
+  .card-form { position: sticky; top: 80px; }
 }
-.panel-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-bottom: 4px;
-  color: var(--muted);
-}
-.panel h2 {
-  font-family: 'Fraunces', serif;
-  font-size: 32px;
+.card h2 {
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 28px;
-  line-height: 1;
-}
-.panel h2 em { font-style: italic; color: var(--accent); font-weight: 500; }
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.form-field { display: flex; flex-direction: column; }
-.form-field label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: -0.01em;
   margin-bottom: 6px;
-  color: var(--muted);
 }
-.form-field input, .form-field select {
-  background: transparent;
-  border: none;
-  border-bottom: 1.5px solid var(--ink);
-  padding: 8px 0;
-  font-family: 'Fraunces', serif;
-  font-size: 22px;
+.card-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* FORM */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.field-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.field-group input,
+.field-group select {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 15px;
   font-weight: 500;
   color: var(--ink);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.form-field input:focus, .form-field select:focus {
-  border-bottom-color: var(--accent);
+.field-group input:focus,
+.field-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
-.form-field select { cursor: pointer; }
+.field-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M3 4.5l3 3 3-3' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.field-help {
+  font-size: 12px;
+  color: var(--muted);
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
+/* Segmented controls */
 .segmented {
   display: flex;
-  border: 1.5px solid var(--ink);
-  margin-bottom: 16px;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 3px;
+  margin-bottom: 14px;
 }
 .segmented button {
   flex: 1;
   background: transparent;
   border: none;
-  padding: 12px 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  padding: 8px 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  border-radius: 5px;
   cursor: pointer;
-  color: var(--ink);
-  transition: all 0.15s;
-}
-.segmented button + button { border-left: 1.5px solid var(--ink); }
-.segmented button.active {
-  background: var(--ink);
-  color: var(--bg);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
 }
 .segmented button:hover:not(.active) {
-  background: var(--accent-soft);
+  color: var(--ink);
+}
+.segmented button.active {
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
 }
 
+/* Section divider in form */
+.form-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 6px 0 8px;
+}
+
+/* Primary CTA */
 .btn-primary {
   width: 100%;
   background: var(--accent);
-  color: var(--paper);
-  border: 2px solid var(--ink);
-  padding: 18px;
-  font-family: 'Fraunces', serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  color: white;
+  border: none;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  margin-top: 12px;
-  transition: transform 0.15s;
-  font-style: italic;
+  margin-top: 6px;
+  transition: background 0.15s, transform 0.05s;
 }
-.btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
-.btn-primary:active { transform: translate(0, 0); box-shadow: none; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* RESULTS PANEL */
+/* RESULTS */
 .results {
-  min-height: 600px;
-}
-.results-empty {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  min-height: 600px;
+  gap: 16px;
+}
+.results-empty {
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 64px 24px;
   text-align: center;
-  padding: 40px;
-  border: 2px dashed var(--ink);
-}
-.results-empty .big-num {
-  font-family: 'Fraunces', serif;
-  font-size: 160px;
-  font-weight: 900;
-  line-height: 0.85;
-  font-style: italic;
-  color: var(--accent);
-  margin-bottom: 16px;
-  letter-spacing: -0.05em;
-}
-.results-empty p {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
   color: var(--muted);
 }
-
-.results-content { display: none; }
-.results-content.active { display: block; }
-
-.macro-summary {
-  background: var(--ink);
-  color: var(--bg);
-  padding: 32px;
-  margin-bottom: 24px;
+.results-empty .empty-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  opacity: 0.5;
 }
-.calorie-display {
+.results-empty .empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 4px;
+}
+.results-empty .empty-sub {
+  font-size: 13px;
+}
+
+.results-content { display: none; flex-direction: column; gap: 16px; }
+.results-content.active { display: flex; }
+
+/* Macro summary card */
+.summary-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.summary-left .calorie-display {
   display: flex;
   align-items: baseline;
-  gap: 16px;
-  margin-bottom: 8px;
+  gap: 8px;
 }
 .calorie-num {
-  font-family: 'Fraunces', serif;
-  font-size: 96px;
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  color: var(--accent);
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+.calorie-unit {
+  font-size: 16px;
+  color: var(--muted);
+  font-weight: 500;
 }
 .calorie-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  font-weight: 500;
+}
+.tdee-display {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
 }
 .goal-tag {
-  display: inline-block;
-  background: var(--accent);
-  color: var(--ink);
-  padding: 4px 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: 16px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 5px 10px;
+  font-size: 11px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  white-space: nowrap;
 }
+
+/* Macro bar */
+.macro-bar {
+  display: flex;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 20px 0 14px;
+  background: var(--bg);
+}
+.macro-bar-seg-protein { background: var(--protein); }
+.macro-bar-seg-carbs   { background: var(--carbs); }
+.macro-bar-seg-fat     { background: var(--fat); }
 
 .macros-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--bg);
-  margin-top: 24px;
+  gap: 10px;
 }
 .macro-cell {
-  background: var(--ink);
-  padding: 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 12px;
 }
-.macro-cell .num {
-  font-family: 'Fraunces', serif;
-  font-size: 32px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+.macro-cell-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
 }
-.macro-cell .name {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+.macro-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.macro-dot.protein { background: var(--protein); }
+.macro-dot.carbs   { background: var(--carbs); }
+.macro-dot.fat     { background: var(--fat); }
+.macro-name {
+  font-size: 11px;
+  color: var(--ink-2);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+.macro-value {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.macro-pct {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Section title */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.section-head h3 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.section-head .hint {
+  font-size: 12px;
   color: var(--muted);
 }
-
-/* MEAL PLAN */
-.meal-section { margin-top: 32px; }
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  border-bottom: 2px solid var(--ink);
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-}
-.section-header h3 {
-  font-family: 'Fraunces', serif;
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.section-header h3 em { font-style: italic; color: var(--accent); font-weight: 500; }
 .regen-btn {
-  background: transparent;
-  border: 1.5px solid var(--ink);
-  padding: 8px 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s, border-color 0.15s;
 }
-.regen-btn:hover { background: var(--ink); color: var(--bg); }
+.regen-btn:hover { background: var(--bg); border-color: var(--muted); }
+.regen-btn svg { width: 14px; height: 14px; }
 
+/* Meal plan */
+.day-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .day-card {
-  border: 1.5px solid var(--ink);
-  margin-bottom: 12px;
-  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface);
 }
 .day-header {
-  background: var(--ink);
-  color: var(--bg);
-  padding: 10px 16px;
   display: flex;
   justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
 }
-.day-meals { padding: 16px; }
+.day-name {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.day-totals {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.day-totals .strong {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.day-meals {
+  padding: 4px 14px;
+}
 .meal-row {
   display: grid;
-  grid-template-columns: 80px 1fr 80px;
+  grid-template-columns: 60px 1fr auto;
   gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px dashed var(--muted);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
   align-items: center;
 }
 .meal-row:last-child { border-bottom: none; }
-.meal-time {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-}
-.meal-name { font-family: 'Fraunces', serif; font-size: 16px; }
-.meal-cals {
-  font-family: 'JetBrains Mono', monospace;
+.meal-slot {
   font-size: 11px;
-  text-align: right;
+  font-weight: 600;
   color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.meal-name { font-size: 14px; font-weight: 500; }
+.meal-cals {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
-/* GROCERY LIST */
+/* Grocery list */
 .grocery-list {
-  columns: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   column-gap: 24px;
-  background: var(--accent-soft);
-  padding: 24px;
-  border: 1.5px solid var(--ink);
 }
-@media (max-width: 600px) { .grocery-list { columns: 1; } }
+@media (max-width: 600px) { .grocery-list { grid-template-columns: 1fr; } }
 .grocery-item {
-  font-family: 'Fraunces', serif;
-  font-size: 15px;
-  padding: 4px 0;
-  break-inside: avoid;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
 }
 .grocery-item .qty {
-  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--muted);
+  font-weight: 500;
 }
 
 /* FOOTER */
 footer {
-  border-top: 2px solid var(--ink);
-  padding: 40px 32px;
-  background: var(--ink);
-  color: var(--bg);
-  margin-top: 80px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: 28px 24px;
+  margin-top: 48px;
 }
 .footer-inner {
-  max-width: 1280px;
+  max-width: 1120px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 24px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  gap: 16px;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
 }
-footer a { color: var(--accent); text-decoration: none; }
-
+.footer-inner a { color: var(--muted); text-decoration: none; }
+.footer-inner a:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <div class="logo">Macro<span>/</span>Lab</div>
-    <div class="nav-meta">Issue 01 · Free Edition</div>
+    <div class="logo">Macro<span>Lab</span></div>
+    <div class="header-tag">Free · No signup</div>
   </div>
 </header>
 
 <section class="hero">
-  <div class="hero-meta">
-    <span>The Calculator</span>
-    <span>—</span>
-    <span>No Signup. No Email. Just Numbers.</span>
-  </div>
-  <h1>Stop guessing your <em>calories.</em> Start eating with intent.</h1>
-  <p class="hero-sub">Macro Lab gives you the exact calories and macros you need to cut, bulk, or maintain — plus a 7-day meal plan and grocery list, generated instantly. Free forever.</p>
-  <div class="hero-stats">
-    <div>
-      <div class="stat-num">7</div>
-      <div class="stat-label">Day Meal Plan</div>
-    </div>
-    <div>
-      <div class="stat-num">200+</div>
-      <div class="stat-label">Meal Database</div>
-    </div>
-    <div>
-      <div class="stat-num">30s</div>
-      <div class="stat-label">To Results</div>
-    </div>
-    <div>
-      <div class="stat-num mono">$0</div>
-      <div class="stat-label">Forever</div>
-    </div>
-  </div>
+  <h1>Your calories, macros, and a 7-day plan — <span class="accent">in seconds.</span></h1>
+  <p class="hero-sub">Tell us about you and your goal. We'll figure out exactly what to eat each day.</p>
 </section>
 
 <main class="app">
-  <!-- CALCULATOR PANEL -->
-  <div class="panel">
-    <div class="panel-label">01 / Input</div>
-    <h2>Your <em>stats.</em></h2>
+  <!-- CALCULATOR FORM -->
+  <div class="card card-form">
+    <h2>Your details</h2>
+    <p class="card-sub">Used to calculate your daily targets.</p>
 
-    <div class="segmented" id="unitSeg">
-      <button data-unit="metric" class="active">Metric</button>
-      <button data-unit="imperial">Imperial</button>
+    <div class="form-section-label">Units</div>
+    <div class="segmented" id="unitSeg" role="group" aria-label="Units">
+      <button type="button" data-unit="metric" class="active">Metric</button>
+      <button type="button" data-unit="imperial">Imperial</button>
     </div>
 
-    <div class="segmented" id="sexSeg">
-      <button data-sex="male" class="active">Male</button>
-      <button data-sex="female">Female</button>
+    <div class="form-section-label">Sex</div>
+    <div class="segmented" id="sexSeg" role="group" aria-label="Sex">
+      <button type="button" data-sex="male" class="active">Male</button>
+      <button type="button" data-sex="female">Female</button>
     </div>
 
-    <div class="form-row">
-      <div class="form-field">
-        <label>Age</label>
+    <div class="field-row">
+      <div class="field-group">
+        <label for="age">Age</label>
         <input type="number" id="age" value="28" min="14" max="90">
       </div>
-      <div class="form-field">
-        <label><span id="heightLabel">Height (cm)</span></label>
+      <div class="field-group">
+        <label for="height" id="heightLabel">Height (cm)</label>
         <input type="number" id="height" value="175">
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-field">
-        <label><span id="weightLabel">Weight (kg)</span></label>
+    <div class="field-row">
+      <div class="field-group">
+        <label for="weight" id="weightLabel">Weight (kg)</label>
         <input type="number" id="weight" value="75">
       </div>
-      <div class="form-field">
-        <label>Activity</label>
+      <div class="field-group">
+        <label for="activity">Activity</label>
         <select id="activity">
           <option value="1.2">Sedentary</option>
           <option value="1.375">Light (1-3 d/wk)</option>
@@ -569,77 +584,103 @@ footer a { color: var(--accent); text-decoration: none; }
       </div>
     </div>
 
-    <div class="panel-label" style="margin-top: 20px;">02 / Diet</div>
-    <div class="form-row" style="grid-template-columns: 1fr; margin-top: 8px;">
-      <div class="form-field">
-        <label>Restrictions</label>
-        <select id="diet">
-          <option value="omnivore" selected>None — eat anything</option>
-          <option value="pescatarian">Pescatarian (no meat)</option>
-          <option value="vegetarian">Vegetarian (no meat or fish)</option>
-          <option value="vegan">Vegan (no animal products)</option>
-        </select>
-      </div>
+    <div class="field-group">
+      <label for="diet">Diet</label>
+      <select id="diet">
+        <option value="omnivore" selected>None — eat anything</option>
+        <option value="pescatarian">Pescatarian (no meat)</option>
+        <option value="vegetarian">Vegetarian (no meat or fish)</option>
+        <option value="vegan">Vegan (no animal products)</option>
+      </select>
     </div>
 
-    <div class="panel-label" style="margin-top: 20px;">03 / Goal</div>
-    <div class="segmented" id="goalSeg" style="margin-top: 8px;">
-      <button data-goal="cut" class="active">Cut</button>
-      <button data-goal="maintain">Maintain</button>
-      <button data-goal="bulk">Bulk</button>
+    <div class="form-section-label">Goal</div>
+    <div class="segmented" id="goalSeg" role="group" aria-label="Goal">
+      <button type="button" data-goal="cut" class="active">Cut</button>
+      <button type="button" data-goal="maintain">Maintain</button>
+      <button type="button" data-goal="bulk">Bulk</button>
     </div>
 
-    <button class="btn-primary" onclick="calculate()">Calculate &amp; Generate Plan →</button>
+    <button class="btn-primary" type="button" onclick="calculate()">Calculate &amp; generate plan</button>
   </div>
 
-  <!-- RESULTS PANEL -->
+  <!-- RESULTS -->
   <div class="results">
     <div class="results-empty" id="emptyState">
-      <div class="big-num">??</div>
-      <p>Fill in stats · Hit calculate</p>
+      <div class="empty-icon">🥗</div>
+      <div class="empty-title">Ready when you are</div>
+      <div class="empty-sub">Fill in your details and hit Calculate.</div>
     </div>
 
     <div class="results-content" id="resultsContent">
-      <div class="macro-summary">
-        <div class="goal-tag" id="goalTag">CUTTING</div>
-        <div class="calorie-display">
-          <div class="calorie-num" id="calorieNum">2200</div>
-          <div>
-            <div class="calorie-label">Daily Calories</div>
-            <div class="mono" style="font-size: 11px; color: var(--muted); margin-top: 4px;" id="tdeeDisplay">TDEE: 2500</div>
+      <!-- Summary card -->
+      <div class="card">
+        <div class="summary-top">
+          <div class="summary-left">
+            <div class="calorie-display">
+              <div class="calorie-num" id="calorieNum">2200</div>
+              <div class="calorie-unit">kcal/day</div>
+            </div>
+            <div class="calorie-label">Target intake</div>
+            <div class="tdee-display" id="tdeeDisplay">Maintenance: 2500 kcal</div>
           </div>
+          <div class="goal-tag" id="goalTag">CUTTING</div>
         </div>
+
+        <div class="macro-bar" aria-label="Macro distribution">
+          <div class="macro-bar-seg-protein" id="macroBarProtein"></div>
+          <div class="macro-bar-seg-carbs"   id="macroBarCarbs"></div>
+          <div class="macro-bar-seg-fat"     id="macroBarFat"></div>
+        </div>
+
         <div class="macros-grid">
           <div class="macro-cell">
-            <div class="num" id="proteinG">165g</div>
-            <div class="name">Protein</div>
+            <div class="macro-cell-head">
+              <span class="macro-dot protein"></span>
+              <span class="macro-name">Protein</span>
+            </div>
+            <div class="macro-value" id="proteinG">165g</div>
+            <div class="macro-pct" id="proteinPct">30%</div>
           </div>
           <div class="macro-cell">
-            <div class="num" id="carbsG">220g</div>
-            <div class="name">Carbs</div>
+            <div class="macro-cell-head">
+              <span class="macro-dot carbs"></span>
+              <span class="macro-name">Carbs</span>
+            </div>
+            <div class="macro-value" id="carbsG">220g</div>
+            <div class="macro-pct" id="carbsPct">45%</div>
           </div>
           <div class="macro-cell">
-            <div class="num" id="fatG">70g</div>
-            <div class="name">Fat</div>
+            <div class="macro-cell-head">
+              <span class="macro-dot fat"></span>
+              <span class="macro-name">Fat</span>
+            </div>
+            <div class="macro-value" id="fatG">70g</div>
+            <div class="macro-pct" id="fatPct">25%</div>
           </div>
         </div>
       </div>
 
-      <div class="meal-section">
-        <div class="section-header">
-          <h3>Your 7-day <em>plan.</em></h3>
-          <button class="regen-btn" onclick="generateMealPlan()">↻ Regenerate</button>
+      <!-- Meal plan card -->
+      <div class="card">
+        <div class="section-head">
+          <h3>Your 7-day plan</h3>
+          <button class="regen-btn" type="button" onclick="generateMealPlan()" aria-label="Regenerate meal plan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+            Regenerate
+          </button>
         </div>
-        <div id="mealPlan"></div>
+        <div id="mealPlan" class="day-list"></div>
       </div>
 
-      <div class="meal-section">
-        <div class="section-header">
-          <h3>Grocery <em>list.</em></h3>
+      <!-- Grocery card -->
+      <div class="card">
+        <div class="section-head">
+          <h3>Grocery list</h3>
+          <span class="hint" id="groceryCount"></span>
         </div>
         <div class="grocery-list" id="groceryList"></div>
       </div>
-
     </div>
   </div>
 </main>
@@ -705,13 +746,11 @@ function calculate() {
   let weight = +document.getElementById('weight').value;
   const activity = +document.getElementById('activity').value;
 
-  // Convert imperial to metric
   if (state.unit === 'imperial') {
     height = height * 2.54;
     weight = weight * 0.453592;
   }
 
-  // Mifflin-St Jeor BMR
   let bmr;
   if (state.sex === 'male') {
     bmr = 10 * weight + 6.25 * height - 5 * age + 5;
@@ -725,8 +764,6 @@ function calculate() {
   else if (state.goal === 'bulk') calories = Math.round(tdee + 350);
   else calories = tdee;
 
-  // Macros: protein 1g per lb LBM (approx 0.9g/lb bodyweight for simplicity)
-  // Adjusted: protein scales with goal
   const weightLb = weight / 0.453592;
   let proteinG;
   if (state.goal === 'cut') proteinG = Math.round(weightLb * 1.0);
@@ -737,18 +774,31 @@ function calculate() {
   const fatG = Math.round((calories * 0.25) / 9);
   const fatCals = fatG * 9;
   const carbsG = Math.round((calories - proteinCals - fatCals) / 4);
+  const carbsCals = carbsG * 4;
 
-  // Display
+  const proteinPct = Math.round((proteinCals / calories) * 100);
+  const carbsPct   = Math.round((carbsCals / calories) * 100);
+  const fatPct     = Math.round((fatCals / calories) * 100);
+
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('resultsContent').classList.add('active');
-  document.getElementById('calorieNum').textContent = calories;
-  document.getElementById('tdeeDisplay').textContent = `TDEE: ${tdee} kcal`;
+  document.getElementById('calorieNum').textContent = calories.toLocaleString();
+  document.getElementById('tdeeDisplay').textContent = `Maintenance: ${tdee.toLocaleString()} kcal`;
   document.getElementById('proteinG').textContent = proteinG + 'g';
   document.getElementById('carbsG').textContent = carbsG + 'g';
   document.getElementById('fatG').textContent = fatG + 'g';
-  document.getElementById('goalTag').textContent = state.goal.toUpperCase() + 'TING';
-  if (state.goal === 'maintain') document.getElementById('goalTag').textContent = 'MAINTAINING';
-  if (state.goal === 'bulk') document.getElementById('goalTag').textContent = 'BULKING';
+  document.getElementById('proteinPct').textContent = proteinPct + '% of cals';
+  document.getElementById('carbsPct').textContent = carbsPct + '% of cals';
+  document.getElementById('fatPct').textContent = fatPct + '% of cals';
+
+  document.getElementById('macroBarProtein').style.width = proteinPct + '%';
+  document.getElementById('macroBarCarbs').style.width = carbsPct + '%';
+  document.getElementById('macroBarFat').style.width = fatPct + '%';
+
+  let goalLabel = 'CUTTING';
+  if (state.goal === 'maintain') goalLabel = 'MAINTAINING';
+  if (state.goal === 'bulk') goalLabel = 'BULKING';
+  document.getElementById('goalTag').textContent = goalLabel;
 
   state.targetCals = calories;
   state.targetProtein = proteinG;
@@ -756,8 +806,6 @@ function calculate() {
 }
 
 // ===== MEAL DATABASE =====
-// A meal qualifies for any diet listed in its `diet` array.
-// vegan ⊂ vegetarian ⊂ pescatarian ⊂ omnivore — each level is permitted by all looser levels.
 const D = {
   meat:  ['omnivore'],
   fish:  ['omnivore', 'pescatarian'],
@@ -824,7 +872,6 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 function generateMealPlan() {
   const target = state.targetCals;
   const diet = document.getElementById('diet').value;
-  // Distribution: breakfast 25%, lunch 30%, dinner 30%, snack 15%
   const dist = { breakfast: 0.25, lunch: 0.30, dinner: 0.30, snack: 0.15 };
 
   const plan = [];
@@ -839,7 +886,6 @@ function generateMealPlan() {
     ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
       const targetCals = target * dist[slot];
       const eligible = MEALS[slot].filter(m => m.diet.includes(diet));
-      // Rank by calorie distance, keep top 5 as acceptable, prefer ones not yet used this week
       const ranked = [...eligible].sort((a, b) =>
         Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals)
       );
@@ -869,18 +915,18 @@ function generateMealPlan() {
 
 function renderMealPlan(plan) {
   const container = document.getElementById('mealPlan');
-  const slotLabels = { breakfast: 'AM', lunch: 'NOON', dinner: 'PM', snack: '15:00' };
+  const slotLabels = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snack' };
 
   container.innerHTML = plan.map(day => `
     <div class="day-card">
       <div class="day-header">
-        <span>${day.name}</span>
-        <span>${day.totalCals} kcal · ${day.totalP}g protein</span>
+        <span class="day-name">${day.name}</span>
+        <span class="day-totals"><span class="strong">${day.totalCals.toLocaleString()} kcal</span> · ${day.totalP}g protein</span>
       </div>
       <div class="day-meals">
         ${day.meals.map(m => `
           <div class="meal-row">
-            <div class="meal-time">${slotLabels[m.slot]}</div>
+            <div class="meal-slot">${slotLabels[m.slot]}</div>
             <div class="meal-name">${m.name}</div>
             <div class="meal-cals">${m.cals} kcal</div>
           </div>
@@ -899,6 +945,8 @@ function renderGroceryList(groceryMap) {
       <span class="qty">×${groceryMap[item].length}</span>
     </div>
   `).join('');
+  const countEl = document.getElementById('groceryCount');
+  if (countEl) countEl.textContent = `${items.length} items`;
 }
 
 // Initial render with default values
