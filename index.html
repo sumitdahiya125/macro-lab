@@ -470,11 +470,11 @@ header {
 }
 .meal-row {
   display: grid;
-  grid-template-columns: 60px 1fr auto;
+  grid-template-columns: 72px 1fr auto;
   gap: 12px;
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border);
-  align-items: center;
+  align-items: start;
 }
 .meal-row:last-child { border-bottom: none; }
 .meal-slot {
@@ -483,13 +483,60 @@ header {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  padding-top: 2px;
 }
-.meal-name { font-size: 14px; font-weight: 500; }
+.meal-name { font-size: 14px; font-weight: 600; }
 .meal-cals {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
   white-space: nowrap;
+  padding-top: 2px;
+}
+.meal-macros-mini {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.meal-macros-mini .dot {
+  color: var(--border-strong);
+  margin: 0 4px;
+}
+.meal-ingredients {
+  margin-top: 8px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2px 16px;
+}
+.meal-ingredient {
+  display: flex;
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 1px 0;
+}
+.meal-ingredient::before {
+  content: '·';
+  color: var(--muted);
+  margin-right: 6px;
+}
+.meal-ingredient-name {
+  color: var(--ink-2);
+  margin-right: 6px;
+}
+.meal-ingredient-qty {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.macros-disclaimer {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+  font-style: italic;
 }
 
 /* Grocery list */
@@ -684,6 +731,7 @@ footer {
             <div class="macro-pct" id="fatPct">25%</div>
           </div>
         </div>
+        <div class="macros-disclaimer">Calorie target uses the Mifflin–St Jeor formula. Per-meal values are approximate (±10–15%) — they depend on portion size, cooking fat, and ingredient variation.</div>
       </div>
 
       <!-- Meal plan card -->
@@ -844,192 +892,192 @@ const D = {
 const MEALS = {
   breakfast: [
     // International (14)
-    { name: 'Oats with banana & whey', diet: D.veg, cuisine: 'international', cals: 450, p: 35, c: 65, f: 9, ingredients: [['Rolled oats', '80g'], ['Banana', '1'], ['Whey protein', '30g'], ['Almond milk', '250ml']] },
-    { name: 'Greek yogurt bowl with berries', diet: D.veg, cuisine: 'international', cals: 380, p: 32, c: 45, f: 8, ingredients: [['Greek yogurt 0%', '300g'], ['Mixed berries', '100g'], ['Honey', '15g'], ['Granola', '30g']] },
-    { name: 'Egg white omelette & toast', diet: D.veg, cuisine: 'international', cals: 420, p: 38, c: 40, f: 12, ingredients: [['Egg whites', '200g'], ['Whole eggs', '1'], ['Spinach', '50g'], ['Whole grain bread', '2 slices']] },
-    { name: 'Protein pancakes', diet: D.veg, cuisine: 'international', cals: 480, p: 36, c: 55, f: 10, ingredients: [['Oat flour', '60g'], ['Whey protein', '30g'], ['Egg whites', '100g'], ['Maple syrup', '15g']] },
-    { name: 'Avocado toast with eggs', diet: D.veg, cuisine: 'international', cals: 510, p: 28, c: 42, f: 22, ingredients: [['Sourdough bread', '2 slices'], ['Avocado', '1/2'], ['Eggs', '2'], ['Cherry tomatoes', '50g']] },
-    { name: 'Cottage cheese & fruit', diet: D.veg, cuisine: 'international', cals: 340, p: 30, c: 35, f: 8, ingredients: [['Cottage cheese', '250g'], ['Pineapple', '150g'], ['Walnuts', '15g']] },
-    { name: 'Smoothie bowl', diet: D.veg, cuisine: 'international', cals: 460, p: 35, c: 60, f: 10, ingredients: [['Frozen berries', '150g'], ['Whey protein', '30g'], ['Banana', '1'], ['Chia seeds', '15g'], ['Almond milk', '200ml']] },
-    { name: 'Overnight oats with soy milk', diet: D.vegan, cuisine: 'international', cals: 450, p: 18, c: 65, f: 12, ingredients: [['Rolled oats', '60g'], ['Soy milk', '250ml'], ['Chia seeds', '15g'], ['Banana', '1'], ['Peanut butter', '15g']] },
-    { name: 'Tofu scramble with toast', diet: D.vegan, cuisine: 'international', cals: 440, p: 28, c: 38, f: 18, ingredients: [['Firm tofu', '200g'], ['Mushrooms', '80g'], ['Spinach', '50g'], ['Whole grain bread', '2 slices'], ['Olive oil', '8g']] },
-    { name: 'Peanut butter banana oats', diet: D.vegan, cuisine: 'international', cals: 510, p: 16, c: 65, f: 20, ingredients: [['Rolled oats', '70g'], ['Banana', '1'], ['Peanut butter', '25g'], ['Almond milk', '250ml'], ['Maple syrup', '10g']] },
-    { name: 'Vegan protein smoothie', diet: D.vegan, cuisine: 'international', cals: 390, p: 30, c: 40, f: 12, ingredients: [['Vegan protein', '30g'], ['Banana', '1'], ['Oat milk', '250ml'], ['Almond butter', '15g'], ['Chia seeds', '10g']] },
-    { name: 'Chia pudding with mango', diet: D.vegan, cuisine: 'international', cals: 380, p: 12, c: 50, f: 16, ingredients: [['Chia seeds', '30g'], ['Coconut milk', '200ml'], ['Mango', '150g'], ['Maple syrup', '10g']] },
-    { name: 'Sourdough with avocado & tomato', diet: D.vegan, cuisine: 'international', cals: 420, p: 14, c: 50, f: 18, ingredients: [['Sourdough bread', '2 slices'], ['Avocado', '1/2'], ['Tomato', '100g'], ['Olive oil', '8g']] },
-    { name: 'Banana nut granola bowl', diet: D.vegan, cuisine: 'international', cals: 470, p: 14, c: 70, f: 16, ingredients: [['Granola', '60g'], ['Banana', '1'], ['Almond milk', '250ml'], ['Mixed nuts', '15g']] },
+    { name: 'Oats with banana & whey', diet: D.veg, cuisine: 'international', cals: 450, p: 35, c: 65, f: 9, ingredients: [['Rolled oats', '80g · 1 cup dry'], ['Banana', '1 medium (~120g)'], ['Whey protein', '30g · 1 scoop'], ['Almond milk', '250ml · 1 cup']] },
+    { name: 'Greek yogurt bowl with berries', diet: D.veg, cuisine: 'international', cals: 380, p: 32, c: 45, f: 8, ingredients: [['Greek yogurt 0%', '300g · 1¼ cup'], ['Mixed berries', '100g · ¾ cup'], ['Honey', '15g · 1 tbsp'], ['Granola', '30g · ¼ cup']] },
+    { name: 'Egg white omelette & toast', diet: D.veg, cuisine: 'international', cals: 420, p: 38, c: 40, f: 12, ingredients: [['Egg whites', '200g · 6 whites'], ['Whole eggs', '1'], ['Spinach', '50g · 1 cup fresh'], ['Whole grain bread', '2 slices (~80g)']] },
+    { name: 'Protein pancakes', diet: D.veg, cuisine: 'international', cals: 480, p: 36, c: 55, f: 10, ingredients: [['Oat flour', '60g · ½ cup'], ['Whey protein', '30g · 1 scoop'], ['Egg whites', '100g · 3 whites'], ['Maple syrup', '15g · 1 tbsp']] },
+    { name: 'Avocado toast with eggs', diet: D.veg, cuisine: 'international', cals: 510, p: 28, c: 42, f: 22, ingredients: [['Sourdough bread', '2 slices (~80g)'], ['Avocado', '½ medium (~100g)'], ['Eggs', '2 large'], ['Cherry tomatoes', '50g · ⅓ cup']] },
+    { name: 'Cottage cheese & fruit', diet: D.veg, cuisine: 'international', cals: 340, p: 30, c: 35, f: 8, ingredients: [['Cottage cheese', '250g · 1 cup'], ['Pineapple', '150g · 1 cup chunks'], ['Walnuts', '15g · 7 halves']] },
+    { name: 'Smoothie bowl', diet: D.veg, cuisine: 'international', cals: 460, p: 35, c: 60, f: 10, ingredients: [['Frozen berries', '150g · 1¼ cup'], ['Whey protein', '30g · 1 scoop'], ['Banana', '1 medium'], ['Chia seeds', '15g · 1 tbsp'], ['Almond milk', '200ml · ⅞ cup']] },
+    { name: 'Overnight oats with soy milk', diet: D.vegan, cuisine: 'international', cals: 450, p: 18, c: 65, f: 12, ingredients: [['Rolled oats', '60g · ¾ cup dry'], ['Soy milk', '250ml · 1 cup'], ['Chia seeds', '15g · 1 tbsp'], ['Banana', '1 medium'], ['Peanut butter', '15g · ¾ tbsp']] },
+    { name: 'Tofu scramble with toast', diet: D.vegan, cuisine: 'international', cals: 440, p: 28, c: 38, f: 18, ingredients: [['Firm tofu', '200g · ¾ cup cubed'], ['Mushrooms', '80g · 1 cup sliced'], ['Spinach', '50g · 1 cup fresh'], ['Whole grain bread', '2 slices (~80g)'], ['Olive oil', '8g · ½ tbsp']] },
+    { name: 'Peanut butter banana oats', diet: D.vegan, cuisine: 'international', cals: 510, p: 16, c: 65, f: 20, ingredients: [['Rolled oats', '70g · ⅞ cup dry'], ['Banana', '1 medium'], ['Peanut butter', '25g · 1¼ tbsp'], ['Almond milk', '250ml · 1 cup'], ['Maple syrup', '10g · ¾ tbsp']] },
+    { name: 'Vegan protein smoothie', diet: D.vegan, cuisine: 'international', cals: 390, p: 30, c: 40, f: 12, ingredients: [['Vegan protein', '30g · 1 scoop'], ['Banana', '1 medium'], ['Oat milk', '250ml · 1 cup'], ['Almond butter', '15g · 1 tbsp'], ['Chia seeds', '10g · 2 tsp']] },
+    { name: 'Chia pudding with mango', diet: D.vegan, cuisine: 'international', cals: 380, p: 12, c: 50, f: 16, ingredients: [['Chia seeds', '30g · 2 tbsp'], ['Coconut milk', '200ml · ⅞ cup'], ['Mango', '150g · 1 cup chunks'], ['Maple syrup', '10g · ¾ tbsp']] },
+    { name: 'Sourdough with avocado & tomato', diet: D.vegan, cuisine: 'international', cals: 420, p: 14, c: 50, f: 18, ingredients: [['Sourdough bread', '2 slices (~80g)'], ['Avocado', '½ medium'], ['Tomato', '100g · 1 small'], ['Olive oil', '8g · ½ tbsp']] },
+    { name: 'Banana nut granola bowl', diet: D.vegan, cuisine: 'international', cals: 470, p: 14, c: 70, f: 16, ingredients: [['Granola', '60g · ½ cup'], ['Banana', '1 medium'], ['Almond milk', '250ml · 1 cup'], ['Mixed nuts', '15g · 2 tbsp']] },
     // Indian — North (8)
-    { name: 'Poha with peanuts', diet: D.vegan, cuisine: 'indian-north', cals: 400, p: 12, c: 65, f: 12, ingredients: [['Flattened rice (poha)', '80g'], ['Onion', '1/2'], ['Peanuts', '20g'], ['Turmeric', '2g'], ['Oil', '8g']] },
-    { name: 'Masala oats with veggies', diet: D.vegan, cuisine: 'indian-north', cals: 440, p: 16, c: 65, f: 12, ingredients: [['Rolled oats', '70g'], ['Mixed vegetables', '150g'], ['Onion', '1/2'], ['Indian spices', '5g'], ['Oil', '8g']] },
-    { name: 'Moong dal cheela', diet: D.vegan, cuisine: 'indian-north', cals: 380, p: 22, c: 50, f: 10, ingredients: [['Yellow moong dal', '80g'], ['Onion', '1/2'], ['Green chilli', '1'], ['Coriander', '10g'], ['Oil', '8g']] },
-    { name: 'Chana dal cheela with mint chutney', diet: D.vegan, cuisine: 'indian-north', cals: 410, p: 22, c: 55, f: 10, ingredients: [['Chana dal', '80g raw'], ['Onion', '1/2'], ['Mint chutney', '30g'], ['Green chilli', '1'], ['Oil', '8g']] },
-    { name: 'Aloo paratha with curd', diet: D.veg, cuisine: 'indian-north', cals: 520, p: 18, c: 75, f: 18, ingredients: [['Whole wheat flour', '80g'], ['Potato', '150g'], ['Curd', '150g'], ['Ghee', '10g'], ['Spices', '5g']] },
-    { name: 'Methi thepla with curd', diet: D.veg, cuisine: 'indian-north', cals: 480, p: 16, c: 65, f: 18, ingredients: [['Whole wheat flour', '80g'], ['Fenugreek leaves', '60g'], ['Curd', '100g'], ['Oil', '12g'], ['Spices', '5g']] },
-    { name: 'Paneer bhurji with roti', diet: D.veg, cuisine: 'indian-north', cals: 500, p: 30, c: 45, f: 22, ingredients: [['Paneer', '120g'], ['Onion', '1/2'], ['Tomato', '1'], ['Whole wheat roti', '2'], ['Oil', '10g']] },
-    { name: 'Boiled eggs with chai & toast', diet: D.veg, cuisine: 'indian-north', cals: 420, p: 28, c: 38, f: 16, ingredients: [['Eggs', '3'], ['Whole grain bread', '2 slices'], ['Masala chai', '200ml'], ['Butter', '5g']] },
+    { name: 'Poha with peanuts', diet: D.vegan, cuisine: 'indian-north', cals: 400, p: 12, c: 65, f: 12, ingredients: [['Flattened rice (poha)', '80g · 1½ cup loose'], ['Onion', '½ medium (~50g)'], ['Peanuts', '20g · 2 tbsp'], ['Turmeric', '2g · ½ tsp'], ['Oil', '8g · ½ tbsp']] },
+    { name: 'Masala oats with veggies', diet: D.vegan, cuisine: 'indian-north', cals: 440, p: 16, c: 65, f: 12, ingredients: [['Rolled oats', '70g · ⅞ cup dry'], ['Mixed vegetables', '150g · 1 cup chopped'], ['Onion', '½ medium'], ['Indian spices', '5g · 1 tsp'], ['Oil', '8g · ½ tbsp']] },
+    { name: 'Moong dal cheela', diet: D.vegan, cuisine: 'indian-north', cals: 380, p: 22, c: 50, f: 10, ingredients: [['Yellow moong dal', '80g · ⅓ cup raw'], ['Onion', '½ medium'], ['Green chilli', '1'], ['Coriander', '10g · 2 tbsp chopped'], ['Oil', '8g · ½ tbsp']] },
+    { name: 'Chana dal cheela with mint chutney', diet: D.vegan, cuisine: 'indian-north', cals: 410, p: 22, c: 55, f: 10, ingredients: [['Chana dal', '80g · ⅓ cup raw'], ['Onion', '½ medium'], ['Mint chutney', '30g · 2 tbsp'], ['Green chilli', '1'], ['Oil', '8g · ½ tbsp']] },
+    { name: 'Aloo paratha with curd', diet: D.veg, cuisine: 'indian-north', cals: 520, p: 18, c: 75, f: 18, ingredients: [['Whole wheat flour (atta)', '80g · ⅔ cup / 1 small katori'], ['Potato', '150g · 1 medium'], ['Curd', '150g · ½ cup / ¾ katori'], ['Ghee', '10g · 1 tbsp'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Methi thepla with curd', diet: D.veg, cuisine: 'indian-north', cals: 480, p: 16, c: 65, f: 18, ingredients: [['Whole wheat flour (atta)', '80g · ⅔ cup / 1 katori'], ['Fenugreek leaves (methi)', '60g · 1 cup chopped'], ['Curd', '100g · ½ cup'], ['Oil', '12g · 1 tbsp'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Paneer bhurji with roti', diet: D.veg, cuisine: 'indian-north', cals: 500, p: 30, c: 45, f: 22, ingredients: [['Paneer', '120g · ½ cup crumbled'], ['Onion', '½ medium'], ['Tomato', '1 medium (~100g)'], ['Whole wheat roti', '2 (~40g each)'], ['Oil', '10g · ¾ tbsp']] },
+    { name: 'Boiled eggs with chai & toast', diet: D.veg, cuisine: 'indian-north', cals: 420, p: 28, c: 38, f: 16, ingredients: [['Eggs', '3 large'], ['Whole grain bread', '2 slices (~80g)'], ['Masala chai', '200ml · 1 small cup'], ['Butter', '5g · 1 tsp']] },
     // Indian — South (8)
-    { name: 'Vegetable upma', diet: D.vegan, cuisine: 'indian-south', cals: 420, p: 12, c: 70, f: 12, ingredients: [['Semolina (sooji)', '80g'], ['Mixed vegetables', '150g'], ['Mustard seeds', '2g'], ['Curry leaves', '5'], ['Oil', '10g']] },
-    { name: 'Vegetable dosa with chutney', diet: D.vegan, cuisine: 'indian-south', cals: 460, p: 14, c: 70, f: 14, ingredients: [['Dosa batter', '200ml'], ['Mixed vegetables', '100g'], ['Coconut chutney', '30g'], ['Oil', '10g']] },
-    { name: 'Idli with sambar & chutney', diet: D.vegan, cuisine: 'indian-south', cals: 400, p: 14, c: 70, f: 8, ingredients: [['Idli', '4'], ['Sambar', '200ml'], ['Coconut chutney', '30g']] },
-    { name: 'Masala dosa with potato filling', diet: D.vegan, cuisine: 'indian-south', cals: 520, p: 12, c: 80, f: 18, ingredients: [['Dosa batter', '200ml'], ['Potato masala', '150g'], ['Onion', '1/2'], ['Coconut chutney', '30g'], ['Oil', '12g']] },
-    { name: 'Medu vada with sambar', diet: D.vegan, cuisine: 'indian-south', cals: 440, p: 16, c: 50, f: 20, ingredients: [['Urad dal vada', '3'], ['Sambar', '200ml'], ['Coconut chutney', '25g'], ['Oil', '10g']] },
-    { name: 'Ven pongal with chutney', diet: D.vegan, cuisine: 'indian-south', cals: 470, p: 14, c: 70, f: 14, ingredients: [['Rice', '60g raw'], ['Moong dal', '30g raw'], ['Black pepper', '2g'], ['Coconut chutney', '30g'], ['Ghee', '8g']] },
-    { name: 'Uttapam with onion & chutney', diet: D.vegan, cuisine: 'indian-south', cals: 460, p: 14, c: 65, f: 16, ingredients: [['Dosa batter', '200ml'], ['Onion', '1/2'], ['Tomato', '1'], ['Coconut chutney', '30g'], ['Oil', '10g']] },
-    { name: 'Appam with vegetable stew', diet: D.vegan, cuisine: 'indian-south', cals: 480, p: 12, c: 70, f: 16, ingredients: [['Appam', '3'], ['Coconut milk light', '80ml'], ['Mixed vegetables', '150g'], ['Curry leaves', '5'], ['Oil', '8g']] },
+    { name: 'Vegetable upma', diet: D.vegan, cuisine: 'indian-south', cals: 420, p: 12, c: 70, f: 12, ingredients: [['Semolina (sooji)', '80g · ½ cup'], ['Mixed vegetables', '150g · 1 cup chopped'], ['Mustard seeds', '2g · ½ tsp'], ['Curry leaves', '5 leaves'], ['Oil', '10g · ¾ tbsp']] },
+    { name: 'Vegetable dosa with chutney', diet: D.vegan, cuisine: 'indian-south', cals: 460, p: 14, c: 70, f: 14, ingredients: [['Dosa batter', '200ml · 1 cup (2 dosas)'], ['Mixed vegetables', '100g · ¾ cup chopped'], ['Coconut chutney', '30g · 2 tbsp'], ['Oil', '10g · ¾ tbsp']] },
+    { name: 'Idli with sambar & chutney', diet: D.vegan, cuisine: 'indian-south', cals: 400, p: 14, c: 70, f: 8, ingredients: [['Idli', '4 (~40g each)'], ['Sambar', '200ml · 1 small katori'], ['Coconut chutney', '30g · 2 tbsp']] },
+    { name: 'Masala dosa with potato filling', diet: D.vegan, cuisine: 'indian-south', cals: 520, p: 12, c: 80, f: 18, ingredients: [['Dosa batter', '200ml · 1 cup (1 large dosa)'], ['Potato masala', '150g · ¾ cup'], ['Onion', '½ medium'], ['Coconut chutney', '30g · 2 tbsp'], ['Oil', '12g · 1 tbsp']] },
+    { name: 'Medu vada with sambar', diet: D.vegan, cuisine: 'indian-south', cals: 440, p: 16, c: 50, f: 20, ingredients: [['Urad dal vada', '3 (~35g each)'], ['Sambar', '200ml · 1 small katori'], ['Coconut chutney', '25g · 1½ tbsp'], ['Oil', '10g · ¾ tbsp (for frying)']] },
+    { name: 'Ven pongal with chutney', diet: D.vegan, cuisine: 'indian-south', cals: 470, p: 14, c: 70, f: 14, ingredients: [['Rice', '60g · ⅓ cup raw'], ['Moong dal', '30g · 2 tbsp raw'], ['Black pepper', '2g · ½ tsp'], ['Coconut chutney', '30g · 2 tbsp'], ['Ghee', '8g · ¾ tbsp']] },
+    { name: 'Uttapam with onion & chutney', diet: D.vegan, cuisine: 'indian-south', cals: 460, p: 14, c: 65, f: 16, ingredients: [['Dosa batter', '200ml · 1 cup (2 uttapams)'], ['Onion', '½ medium'], ['Tomato', '1 medium'], ['Coconut chutney', '30g · 2 tbsp'], ['Oil', '10g · ¾ tbsp']] },
+    { name: 'Appam with vegetable stew', diet: D.vegan, cuisine: 'indian-south', cals: 480, p: 12, c: 70, f: 16, ingredients: [['Appam', '3 (~50g each)'], ['Coconut milk (light)', '80ml · ⅓ cup'], ['Mixed vegetables', '150g · 1 cup'], ['Curry leaves', '5 leaves'], ['Oil', '8g · ½ tbsp']] },
     // Mexican (3)
-    { name: 'Huevos rancheros', diet: D.veg, cuisine: 'mexican', cals: 470, p: 24, c: 45, f: 22, ingredients: [['Eggs', '2'], ['Corn tortillas', '2'], ['Black beans', '100g'], ['Salsa', '40g'], ['Avocado', '1/4']] },
-    { name: 'Vegan breakfast burrito', diet: D.vegan, cuisine: 'mexican', cals: 480, p: 16, c: 65, f: 18, ingredients: [['Whole wheat tortilla', '1 large'], ['Black beans', '100g'], ['Potato', '120g'], ['Avocado', '1/2'], ['Salsa', '30g']] },
-    { name: 'Mexican breakfast bowl', diet: D.veg, cuisine: 'mexican', cals: 510, p: 26, c: 45, f: 24, ingredients: [['Eggs', '2'], ['Black beans', '100g'], ['Brown rice', '50g cooked'], ['Avocado', '1/2'], ['Salsa', '30g']] },
+    { name: 'Huevos rancheros', diet: D.veg, cuisine: 'mexican', cals: 470, p: 24, c: 45, f: 22, ingredients: [['Eggs', '2 large'], ['Corn tortillas', '2 (~30g each)'], ['Black beans', '100g · ½ cup cooked'], ['Salsa', '40g · 2½ tbsp'], ['Avocado', '¼ medium']] },
+    { name: 'Vegan breakfast burrito', diet: D.vegan, cuisine: 'mexican', cals: 480, p: 16, c: 65, f: 18, ingredients: [['Whole wheat tortilla', '1 large (~60g)'], ['Black beans', '100g · ½ cup cooked'], ['Potato', '120g · 1 small'], ['Avocado', '½ medium'], ['Salsa', '30g · 2 tbsp']] },
+    { name: 'Mexican breakfast bowl', diet: D.veg, cuisine: 'mexican', cals: 510, p: 26, c: 45, f: 24, ingredients: [['Eggs', '2 large'], ['Black beans', '100g · ½ cup cooked'], ['Brown rice', '50g cooked · ¼ cup'], ['Avocado', '½ medium'], ['Salsa', '30g · 2 tbsp']] },
     // East Asian (2)
-    { name: 'Congee with vegetables', diet: D.vegan, cuisine: 'asian', cals: 380, p: 12, c: 70, f: 6, ingredients: [['Jasmine rice', '60g raw'], ['Mixed vegetables', '120g'], ['Ginger', '10g'], ['Soy sauce', '10ml'], ['Sesame oil', '5g']] },
-    { name: 'Miso soup with tofu & rice', diet: D.vegan, cuisine: 'asian', cals: 420, p: 22, c: 55, f: 12, ingredients: [['Firm tofu', '150g'], ['Miso paste', '20g'], ['Seaweed', '5g'], ['Jasmine rice', '60g raw'], ['Spring onion', '20g']] },
+    { name: 'Congee with vegetables', diet: D.vegan, cuisine: 'asian', cals: 380, p: 12, c: 70, f: 6, ingredients: [['Jasmine rice', '60g · ⅓ cup raw'], ['Mixed vegetables', '120g · ¾ cup chopped'], ['Ginger', '10g · 1 tbsp grated'], ['Soy sauce', '10ml · 2 tsp'], ['Sesame oil', '5g · 1 tsp']] },
+    { name: 'Miso soup with tofu & rice', diet: D.vegan, cuisine: 'asian', cals: 420, p: 22, c: 55, f: 12, ingredients: [['Firm tofu', '150g · ½ cup cubed'], ['Miso paste', '20g · 1 tbsp'], ['Seaweed', '5g · 1 sheet'], ['Jasmine rice', '60g · ⅓ cup raw'], ['Spring onion', '20g · ¼ cup chopped']] },
     // Mediterranean / Middle Eastern (3)
-    { name: 'Greek yogurt with honey & walnuts', diet: D.veg, cuisine: 'mediterranean', cals: 380, p: 25, c: 40, f: 14, ingredients: [['Greek yogurt 0%', '250g'], ['Honey', '20g'], ['Walnuts', '20g'], ['Fresh figs', '2']] },
-    { name: 'Egg & feta scramble with toast', diet: D.veg, cuisine: 'mediterranean', cals: 460, p: 28, c: 38, f: 22, ingredients: [['Eggs', '2'], ['Feta cheese', '40g'], ['Spinach', '50g'], ['Whole grain bread', '2 slices'], ['Olive oil', '8g']] },
-    { name: 'Shakshuka with pita', diet: D.veg, cuisine: 'mediterranean', cals: 480, p: 22, c: 45, f: 22, ingredients: [['Eggs', '2'], ['Tomato', '200g'], ['Bell peppers', '100g'], ['Pita bread', '1'], ['Olive oil', '10g']] }
+    { name: 'Greek yogurt with honey & walnuts', diet: D.veg, cuisine: 'mediterranean', cals: 380, p: 25, c: 40, f: 14, ingredients: [['Greek yogurt 0%', '250g · 1 cup'], ['Honey', '20g · 1 tbsp'], ['Walnuts', '20g · 10 halves'], ['Fresh figs', '2 medium']] },
+    { name: 'Egg & feta scramble with toast', diet: D.veg, cuisine: 'mediterranean', cals: 460, p: 28, c: 38, f: 22, ingredients: [['Eggs', '2 large'], ['Feta cheese', '40g · ¼ cup crumbled'], ['Spinach', '50g · 1 cup fresh'], ['Whole grain bread', '2 slices (~80g)'], ['Olive oil', '8g · ½ tbsp']] },
+    { name: 'Shakshuka with pita', diet: D.veg, cuisine: 'mediterranean', cals: 480, p: 22, c: 45, f: 22, ingredients: [['Eggs', '2 large'], ['Tomato', '200g · 2 medium'], ['Bell peppers', '100g · 1 medium'], ['Pita bread', '1 (~60g)'], ['Olive oil', '10g · ¾ tbsp']] }
   ],
   lunch: [
     // International (12)
-    { name: 'Grilled chicken & rice bowl', diet: D.meat, cuisine: 'international', cals: 620, p: 50, c: 70, f: 12, ingredients: [['Chicken breast', '180g'], ['Basmati rice', '80g raw'], ['Broccoli', '150g'], ['Olive oil', '10g']] },
-    { name: 'Tuna pasta salad', diet: D.fish, cuisine: 'international', cals: 560, p: 42, c: 65, f: 14, ingredients: [['Tuna in water', '160g'], ['Whole wheat pasta', '70g raw'], ['Cherry tomatoes', '100g'], ['Olive oil', '10g'], ['Lemon', '1']] },
-    { name: 'Turkey & sweet potato bowl', diet: D.meat, cuisine: 'international', cals: 580, p: 45, c: 60, f: 14, ingredients: [['Ground turkey 93/7', '170g'], ['Sweet potato', '250g'], ['Bell peppers', '100g'], ['Olive oil', '10g']] },
-    { name: 'Salmon with quinoa', diet: D.fish, cuisine: 'international', cals: 640, p: 42, c: 55, f: 22, ingredients: [['Salmon fillet', '170g'], ['Quinoa', '70g raw'], ['Asparagus', '150g'], ['Lemon', '1']] },
-    { name: 'Chicken Caesar wrap', diet: D.meat, cuisine: 'international', cals: 540, p: 42, c: 50, f: 16, ingredients: [['Chicken breast', '150g'], ['Whole wheat tortilla', '1 large'], ['Romaine lettuce', '100g'], ['Parmesan', '15g'], ['Caesar dressing light', '20g']] },
-    { name: 'Lentil & chicken soup', diet: D.meat, cuisine: 'international', cals: 510, p: 45, c: 55, f: 9, ingredients: [['Chicken breast', '140g'], ['Red lentils', '60g raw'], ['Carrots', '100g'], ['Onion', '1/2'], ['Stock', '500ml']] },
-    { name: 'Buddha bowl with tofu', diet: D.vegan, cuisine: 'international', cals: 580, p: 28, c: 75, f: 18, ingredients: [['Firm tofu', '150g'], ['Quinoa', '60g raw'], ['Roasted sweet potato', '150g'], ['Kale', '80g'], ['Tahini', '15g']] },
-    { name: 'Lentil & vegetable bowl', diet: D.vegan, cuisine: 'international', cals: 540, p: 28, c: 75, f: 14, ingredients: [['Green lentils', '80g raw'], ['Quinoa', '50g raw'], ['Roasted vegetables mix', '200g'], ['Olive oil', '12g'], ['Lemon', '1']] },
-    { name: 'Quinoa salad with roasted veg', diet: D.vegan, cuisine: 'international', cals: 510, p: 16, c: 70, f: 18, ingredients: [['Quinoa', '80g raw'], ['Roasted vegetables mix', '200g'], ['Chickpeas', '100g'], ['Olive oil', '12g'], ['Lemon', '1']] },
-    { name: 'Black bean & sweet potato bowl', diet: D.vegan, cuisine: 'international', cals: 560, p: 22, c: 90, f: 12, ingredients: [['Black beans', '150g'], ['Sweet potato', '250g'], ['Brown rice', '60g raw'], ['Avocado', '1/2'], ['Salsa', '30g']] },
-    { name: 'Lentil soup with sourdough', diet: D.vegan, cuisine: 'international', cals: 480, p: 22, c: 70, f: 10, ingredients: [['Red lentils', '70g raw'], ['Carrots', '100g'], ['Celery', '50g'], ['Sourdough bread', '2 slices'], ['Olive oil', '8g']] },
-    { name: 'Veggie burger with sweet potato fries', diet: D.vegan, cuisine: 'international', cals: 620, p: 24, c: 80, f: 20, ingredients: [['Black bean patty', '150g'], ['Whole wheat bun', '1'], ['Sweet potato', '200g'], ['Lettuce', '30g'], ['Olive oil', '8g']] },
+    { name: 'Grilled chicken & rice bowl', diet: D.meat, cuisine: 'international', cals: 620, p: 50, c: 70, f: 12, ingredients: [['Chicken breast', '180g · 6oz / palm-sized'], ['Basmati rice', '80g · ⅓ cup raw / ~1¼ cup cooked'], ['Broccoli', '150g · 1½ cup florets'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Tuna pasta salad', diet: D.fish, cuisine: 'international', cals: 560, p: 42, c: 65, f: 14, ingredients: [['Tuna in water', '160g · 1 small can'], ['Whole wheat pasta', '70g · ¾ cup raw'], ['Cherry tomatoes', '100g · ¾ cup'], ['Olive oil', '10g · ¾ tbsp'], ['Lemon', '1 medium']] },
+    { name: 'Turkey & sweet potato bowl', diet: D.meat, cuisine: 'international', cals: 580, p: 45, c: 60, f: 14, ingredients: [['Ground turkey 93/7', '170g · 6oz / 1 cup'], ['Sweet potato', '250g · 1 large'], ['Bell peppers', '100g · 1 medium'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Salmon with quinoa', diet: D.fish, cuisine: 'international', cals: 640, p: 42, c: 55, f: 22, ingredients: [['Salmon fillet', '170g · 6oz / palm-sized'], ['Quinoa', '70g · ⅓ cup raw'], ['Asparagus', '150g · 1 small bunch'], ['Lemon', '1 medium']] },
+    { name: 'Chicken Caesar wrap', diet: D.meat, cuisine: 'international', cals: 540, p: 42, c: 50, f: 16, ingredients: [['Chicken breast', '150g · 5oz'], ['Whole wheat tortilla', '1 large (~60g)'], ['Romaine lettuce', '100g · 2 cups'], ['Parmesan', '15g · 2 tbsp grated'], ['Caesar dressing (light)', '20g · 1 tbsp']] },
+    { name: 'Lentil & chicken soup', diet: D.meat, cuisine: 'international', cals: 510, p: 45, c: 55, f: 9, ingredients: [['Chicken breast', '140g · 5oz'], ['Red lentils', '60g · ¼ cup raw'], ['Carrots', '100g · 1 medium'], ['Onion', '½ medium'], ['Stock', '500ml · 2 cups']] },
+    { name: 'Buddha bowl with tofu', diet: D.vegan, cuisine: 'international', cals: 580, p: 28, c: 75, f: 18, ingredients: [['Firm tofu', '150g · ½ cup cubed'], ['Quinoa', '60g · ⅓ cup raw'], ['Roasted sweet potato', '150g · 1 cup cubed'], ['Kale', '80g · 1½ cup chopped'], ['Tahini', '15g · 1 tbsp']] },
+    { name: 'Lentil & vegetable bowl', diet: D.vegan, cuisine: 'international', cals: 540, p: 28, c: 75, f: 14, ingredients: [['Green lentils', '80g · ⅓ cup raw'], ['Quinoa', '50g · ¼ cup raw'], ['Roasted vegetables mix', '200g · 1½ cup'], ['Olive oil', '12g · 1 tbsp'], ['Lemon', '1 medium']] },
+    { name: 'Quinoa salad with roasted veg', diet: D.vegan, cuisine: 'international', cals: 510, p: 16, c: 70, f: 18, ingredients: [['Quinoa', '80g · ⅓ cup raw'], ['Roasted vegetables mix', '200g · 1½ cup'], ['Chickpeas', '100g cooked · ½ cup'], ['Olive oil', '12g · 1 tbsp'], ['Lemon', '1 medium']] },
+    { name: 'Black bean & sweet potato bowl', diet: D.vegan, cuisine: 'international', cals: 560, p: 22, c: 90, f: 12, ingredients: [['Black beans', '150g cooked · ¾ cup'], ['Sweet potato', '250g · 1 large'], ['Brown rice', '60g · ⅓ cup raw'], ['Avocado', '½ medium'], ['Salsa', '30g · 2 tbsp']] },
+    { name: 'Lentil soup with sourdough', diet: D.vegan, cuisine: 'international', cals: 480, p: 22, c: 70, f: 10, ingredients: [['Red lentils', '70g · ⅓ cup raw'], ['Carrots', '100g · 1 medium'], ['Celery', '50g · 1 stalk'], ['Sourdough bread', '2 slices (~80g)'], ['Olive oil', '8g · ½ tbsp']] },
+    { name: 'Veggie burger with sweet potato fries', diet: D.vegan, cuisine: 'international', cals: 620, p: 24, c: 80, f: 20, ingredients: [['Black bean patty', '150g · 1 patty'], ['Whole wheat bun', '1 (~80g)'], ['Sweet potato', '200g · 1 medium'], ['Lettuce', '30g · ½ cup'], ['Olive oil', '8g · ½ tbsp']] },
     // Indian — North (11)
-    { name: 'Rajma with rice', diet: D.vegan, cuisine: 'indian-north', cals: 580, p: 24, c: 95, f: 10, ingredients: [['Red kidney beans', '150g cooked'], ['Basmati rice', '70g raw'], ['Onion', '1/2'], ['Tomato', '1'], ['Spices', '5g']] },
-    { name: 'Chana masala with jeera rice', diet: D.vegan, cuisine: 'indian-north', cals: 570, p: 22, c: 90, f: 12, ingredients: [['Chickpeas', '200g cooked'], ['Basmati rice', '70g raw'], ['Cumin', '3g'], ['Onion', '1/2'], ['Spices', '5g']] },
-    { name: 'Dal tadka with rice & sabzi', diet: D.vegan, cuisine: 'indian-north', cals: 590, p: 24, c: 90, f: 14, ingredients: [['Toor dal', '80g raw'], ['Basmati rice', '70g raw'], ['Mixed vegetable sabzi', '150g'], ['Ghee', '5g'], ['Spices', '5g']] },
-    { name: 'Aloo gobi with roti', diet: D.vegan, cuisine: 'indian-north', cals: 520, p: 14, c: 75, f: 16, ingredients: [['Potato', '200g'], ['Cauliflower', '200g'], ['Whole wheat roti', '2'], ['Oil', '12g'], ['Spices', '5g']] },
-    { name: 'Aloo matar with roti', diet: D.vegan, cuisine: 'indian-north', cals: 540, p: 16, c: 80, f: 14, ingredients: [['Potato', '200g'], ['Green peas', '100g'], ['Whole wheat roti', '2'], ['Onion', '1/2'], ['Oil', '12g']] },
-    { name: 'Paneer tikka with garlic naan', diet: D.veg, cuisine: 'indian-north', cals: 620, p: 35, c: 60, f: 24, ingredients: [['Paneer', '150g'], ['Naan', '1'], ['Curd marinade', '50g'], ['Bell peppers', '100g'], ['Tandoori spices', '5g']] },
-    { name: 'Palak paneer with roti', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 30, c: 55, f: 26, ingredients: [['Paneer', '150g'], ['Spinach', '250g'], ['Whole wheat roti', '2'], ['Cream', '15g'], ['Spices', '5g']] },
-    { name: 'Dal makhani with naan', diet: D.veg, cuisine: 'indian-north', cals: 660, p: 22, c: 80, f: 26, ingredients: [['Black urad dal', '70g raw'], ['Rajma', '30g raw'], ['Naan', '1'], ['Cream', '25g'], ['Butter', '10g']] },
-    { name: 'Chicken curry with basmati rice', diet: D.meat, cuisine: 'indian-north', cals: 640, p: 48, c: 70, f: 16, ingredients: [['Chicken thigh boneless', '180g'], ['Basmati rice', '70g raw'], ['Onion', '1/2'], ['Tomato', '1'], ['Curry spices', '8g']] },
-    { name: 'Chicken biryani (Awadhi-style)', diet: D.meat, cuisine: 'indian-north', cals: 660, p: 42, c: 75, f: 20, ingredients: [['Chicken', '170g'], ['Basmati rice', '80g raw'], ['Curd', '100g'], ['Biryani masala', '10g'], ['Ghee', '10g']] },
-    { name: 'Fish tikka with cumin rice', diet: D.fish, cuisine: 'indian-north', cals: 560, p: 42, c: 60, f: 16, ingredients: [['White fish fillet', '180g'], ['Basmati rice', '70g raw'], ['Cumin', '3g'], ['Tandoori marinade', '40g'], ['Onion', '1/2']] },
+    { name: 'Rajma with rice', diet: D.vegan, cuisine: 'indian-north', cals: 580, p: 24, c: 95, f: 10, ingredients: [['Red kidney beans (rajma)', '150g cooked · ¾ cup / 1 katori'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Onion', '½ medium'], ['Tomato', '1 medium'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Chana masala with jeera rice', diet: D.vegan, cuisine: 'indian-north', cals: 570, p: 22, c: 90, f: 12, ingredients: [['Chickpeas (chana)', '200g cooked · 1 cup'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Cumin (jeera)', '3g · ½ tsp'], ['Onion', '½ medium'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Dal tadka with rice & sabzi', diet: D.vegan, cuisine: 'indian-north', cals: 590, p: 24, c: 90, f: 14, ingredients: [['Toor dal', '80g · ⅓ cup raw / 1 katori cooked'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Mixed vegetable sabzi', '150g · 1 small katori'], ['Ghee', '5g · 1 tsp'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Aloo gobi with roti', diet: D.vegan, cuisine: 'indian-north', cals: 520, p: 14, c: 75, f: 16, ingredients: [['Potato (aloo)', '200g · 1 large'], ['Cauliflower (gobi)', '200g · 1½ cup florets'], ['Whole wheat roti', '2 (~40g each)'], ['Oil', '12g · 1 tbsp'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Aloo matar with roti', diet: D.vegan, cuisine: 'indian-north', cals: 540, p: 16, c: 80, f: 14, ingredients: [['Potato (aloo)', '200g · 1 large'], ['Green peas (matar)', '100g · ¾ cup'], ['Whole wheat roti', '2 (~40g each)'], ['Onion', '½ medium'], ['Oil', '12g · 1 tbsp']] },
+    { name: 'Paneer tikka with garlic naan', diet: D.veg, cuisine: 'indian-north', cals: 620, p: 35, c: 60, f: 24, ingredients: [['Paneer', '150g · ¾ cup cubed'], ['Naan', '1 (~100g)'], ['Curd marinade', '50g · 3 tbsp'], ['Bell peppers', '100g · 1 medium'], ['Tandoori spices', '5g · 1 tsp']] },
+    { name: 'Palak paneer with roti', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 30, c: 55, f: 26, ingredients: [['Paneer', '150g · ¾ cup cubed'], ['Spinach (palak)', '250g · 5 cups fresh / 1 cup puree'], ['Whole wheat roti', '2 (~40g each)'], ['Cream', '15g · 1 tbsp'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Dal makhani with naan', diet: D.veg, cuisine: 'indian-north', cals: 660, p: 22, c: 80, f: 26, ingredients: [['Black urad dal', '70g · ⅓ cup raw'], ['Rajma', '30g · 2 tbsp raw'], ['Naan', '1 (~100g)'], ['Cream', '25g · 1½ tbsp'], ['Butter', '10g · 2 tsp']] },
+    { name: 'Chicken curry with basmati rice', diet: D.meat, cuisine: 'indian-north', cals: 640, p: 48, c: 70, f: 16, ingredients: [['Chicken thigh boneless', '180g · 6oz / palm-sized'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Onion', '½ medium'], ['Tomato', '1 medium'], ['Curry spices', '8g · 1½ tsp']] },
+    { name: 'Chicken biryani (Awadhi-style)', diet: D.meat, cuisine: 'indian-north', cals: 660, p: 42, c: 75, f: 20, ingredients: [['Chicken', '170g · 6oz'], ['Basmati rice', '80g · ⅓ cup raw / 1¼ cup cooked'], ['Curd', '100g · ½ cup'], ['Biryani masala', '10g · 2 tsp'], ['Ghee', '10g · 1 tbsp']] },
+    { name: 'Fish tikka with cumin rice', diet: D.fish, cuisine: 'indian-north', cals: 560, p: 42, c: 60, f: 16, ingredients: [['White fish fillet', '180g · 6oz / palm-sized'], ['Basmati rice', '70g · ⅓ cup raw'], ['Cumin', '3g · ½ tsp'], ['Tandoori marinade', '40g · 2½ tbsp'], ['Onion', '½ medium']] },
     // Indian — South (9)
-    { name: 'Vegetable biryani with raita (Hyderabadi)', diet: D.veg, cuisine: 'indian-south', cals: 600, p: 18, c: 85, f: 20, ingredients: [['Basmati rice', '80g raw'], ['Mixed vegetables', '200g'], ['Curd', '100g'], ['Hyderabadi biryani masala', '10g'], ['Ghee', '10g']] },
-    { name: 'Sambar rice with papad', diet: D.vegan, cuisine: 'indian-south', cals: 540, p: 18, c: 90, f: 10, ingredients: [['Toor dal sambar', '250ml'], ['Basmati rice', '70g raw'], ['Papad', '1'], ['Mixed vegetables', '100g'], ['Oil', '5g']] },
-    { name: 'Rasam rice with potato fry', diet: D.vegan, cuisine: 'indian-south', cals: 520, p: 12, c: 90, f: 12, ingredients: [['Rasam', '200ml'], ['Basmati rice', '70g raw'], ['Potato', '150g'], ['Mustard seeds', '3g'], ['Oil', '10g']] },
-    { name: 'Curd rice with mango pickle', diet: D.veg, cuisine: 'indian-south', cals: 480, p: 18, c: 70, f: 12, ingredients: [['Cooked rice', '200g'], ['Curd', '200g'], ['Mango pickle', '15g'], ['Mustard tempering', '5g'], ['Curry leaves', '5']] },
-    { name: 'Vegetable kuruma with appam', diet: D.vegan, cuisine: 'indian-south', cals: 580, p: 14, c: 75, f: 22, ingredients: [['Appam', '3'], ['Mixed vegetables', '200g'], ['Coconut milk light', '80ml'], ['Cashews', '15g'], ['Spices', '5g']] },
-    { name: 'Avial with rice', diet: D.veg, cuisine: 'indian-south', cals: 520, p: 12, c: 70, f: 18, ingredients: [['Mixed vegetables', '200g'], ['Coconut', '30g'], ['Curd', '80g'], ['Coconut oil', '10g'], ['Basmati rice', '60g raw']] },
-    { name: 'Hyderabadi chicken biryani', diet: D.meat, cuisine: 'indian-south', cals: 670, p: 44, c: 75, f: 22, ingredients: [['Chicken', '170g'], ['Basmati rice', '80g raw'], ['Curd', '50g'], ['Hyderabadi biryani masala', '10g'], ['Mint & coriander', '10g']] },
-    { name: 'Chettinad chicken curry with rice', diet: D.meat, cuisine: 'indian-south', cals: 640, p: 42, c: 65, f: 22, ingredients: [['Chicken thigh', '180g'], ['Basmati rice', '70g raw'], ['Chettinad spice paste', '30g'], ['Coconut', '20g'], ['Curry leaves', '5']] },
-    { name: 'Kerala fish curry with rice', diet: D.fish, cuisine: 'indian-south', cals: 620, p: 38, c: 70, f: 20, ingredients: [['White fish', '180g'], ['Basmati rice', '70g raw'], ['Coconut milk', '80ml'], ['Tamarind', '5g'], ['Curry leaves', '5'], ['Mustard seeds', '3g']] },
+    { name: 'Vegetable biryani with raita (Hyderabadi)', diet: D.veg, cuisine: 'indian-south', cals: 600, p: 18, c: 85, f: 20, ingredients: [['Basmati rice', '80g · ⅓ cup raw / 1¼ cup cooked'], ['Mixed vegetables', '200g · 1½ cup'], ['Curd (raita)', '100g · ½ cup'], ['Hyderabadi biryani masala', '10g · 2 tsp'], ['Ghee', '10g · 1 tbsp']] },
+    { name: 'Sambar rice with papad', diet: D.vegan, cuisine: 'indian-south', cals: 540, p: 18, c: 90, f: 10, ingredients: [['Toor dal sambar', '250ml · 1 katori'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Papad', '1 (~15g)'], ['Mixed vegetables', '100g · ¾ cup'], ['Oil', '5g · 1 tsp']] },
+    { name: 'Rasam rice with potato fry', diet: D.vegan, cuisine: 'indian-south', cals: 520, p: 12, c: 90, f: 12, ingredients: [['Rasam', '200ml · 1 small katori'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Potato', '150g · 1 medium'], ['Mustard seeds', '3g · ½ tsp'], ['Oil', '10g · ¾ tbsp']] },
+    { name: 'Curd rice with mango pickle', diet: D.veg, cuisine: 'indian-south', cals: 480, p: 18, c: 70, f: 12, ingredients: [['Cooked rice', '200g · 1 cup / 1¼ katori'], ['Curd', '200g · ¾ cup / 1 katori'], ['Mango pickle', '15g · 1 tbsp'], ['Mustard tempering', '5g · 1 tsp'], ['Curry leaves', '5 leaves']] },
+    { name: 'Vegetable kuruma with appam', diet: D.vegan, cuisine: 'indian-south', cals: 580, p: 14, c: 75, f: 22, ingredients: [['Appam', '3 (~50g each)'], ['Mixed vegetables', '200g · 1½ cup'], ['Coconut milk (light)', '80ml · ⅓ cup'], ['Cashews', '15g · 10 pieces'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Avial with rice', diet: D.veg, cuisine: 'indian-south', cals: 520, p: 12, c: 70, f: 18, ingredients: [['Mixed vegetables', '200g · 1½ cup'], ['Coconut (grated)', '30g · ¼ cup'], ['Curd', '80g · ⅓ cup'], ['Coconut oil', '10g · ¾ tbsp'], ['Basmati rice', '60g · ⅓ cup raw']] },
+    { name: 'Hyderabadi chicken biryani', diet: D.meat, cuisine: 'indian-south', cals: 670, p: 44, c: 75, f: 22, ingredients: [['Chicken', '170g · 6oz'], ['Basmati rice', '80g · ⅓ cup raw / 1¼ cup cooked'], ['Curd', '50g · ¼ cup'], ['Hyderabadi biryani masala', '10g · 2 tsp'], ['Mint & coriander', '10g · 2 tbsp chopped']] },
+    { name: 'Chettinad chicken curry with rice', diet: D.meat, cuisine: 'indian-south', cals: 640, p: 42, c: 65, f: 22, ingredients: [['Chicken thigh', '180g · 6oz'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Chettinad spice paste', '30g · 2 tbsp'], ['Coconut (grated)', '20g · 3 tbsp'], ['Curry leaves', '5 leaves']] },
+    { name: 'Kerala fish curry with rice', diet: D.fish, cuisine: 'indian-south', cals: 620, p: 38, c: 70, f: 20, ingredients: [['White fish', '180g · 6oz / palm-sized'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Coconut milk', '80ml · ⅓ cup'], ['Tamarind', '5g · 1 tsp paste'], ['Curry leaves', '5 leaves'], ['Mustard seeds', '3g · ½ tsp']] },
     // Mexican (5)
-    { name: 'Chicken fajita bowl with rice', diet: D.meat, cuisine: 'mexican', cals: 620, p: 45, c: 70, f: 16, ingredients: [['Chicken breast', '170g'], ['Brown rice', '70g raw'], ['Bell peppers', '150g'], ['Onion', '1/2'], ['Salsa', '30g']] },
-    { name: 'Carnitas tacos', diet: D.meat, cuisine: 'mexican', cals: 580, p: 40, c: 50, f: 22, ingredients: [['Pulled pork (or chicken)', '150g'], ['Corn tortillas', '3'], ['Onion', '1/4'], ['Cilantro', '10g'], ['Lime', '1']] },
-    { name: 'Veggie burrito bowl', diet: D.vegan, cuisine: 'mexican', cals: 560, p: 22, c: 90, f: 12, ingredients: [['Brown rice', '70g raw'], ['Black beans', '120g'], ['Bell peppers', '100g'], ['Salsa', '40g'], ['Avocado', '1/2']] },
-    { name: 'Black bean tostadas with guacamole', diet: D.vegan, cuisine: 'mexican', cals: 520, p: 18, c: 70, f: 18, ingredients: [['Crisp corn tortillas', '3'], ['Black beans', '150g'], ['Guacamole', '60g'], ['Lettuce', '50g'], ['Salsa', '30g']] },
-    { name: 'Shrimp ceviche with tortilla chips', diet: D.fish, cuisine: 'mexican', cals: 480, p: 32, c: 55, f: 14, ingredients: [['Shrimp', '160g'], ['Lime juice', '40ml'], ['Tomato', '100g'], ['Avocado', '1/2'], ['Tortilla chips', '30g']] },
+    { name: 'Chicken fajita bowl with rice', diet: D.meat, cuisine: 'mexican', cals: 620, p: 45, c: 70, f: 16, ingredients: [['Chicken breast', '170g · 6oz / palm-sized'], ['Brown rice', '70g · ⅓ cup raw'], ['Bell peppers', '150g · 1½ medium'], ['Onion', '½ medium'], ['Salsa', '30g · 2 tbsp']] },
+    { name: 'Carnitas tacos', diet: D.meat, cuisine: 'mexican', cals: 580, p: 40, c: 50, f: 22, ingredients: [['Pulled pork (or chicken)', '150g · 5oz'], ['Corn tortillas', '3 (~30g each)'], ['Onion', '¼ medium'], ['Cilantro', '10g · 2 tbsp chopped'], ['Lime', '1 medium']] },
+    { name: 'Veggie burrito bowl', diet: D.vegan, cuisine: 'mexican', cals: 560, p: 22, c: 90, f: 12, ingredients: [['Brown rice', '70g · ⅓ cup raw'], ['Black beans', '120g cooked · ⅔ cup'], ['Bell peppers', '100g · 1 medium'], ['Salsa', '40g · 2½ tbsp'], ['Avocado', '½ medium']] },
+    { name: 'Black bean tostadas with guacamole', diet: D.vegan, cuisine: 'mexican', cals: 520, p: 18, c: 70, f: 18, ingredients: [['Crisp corn tortillas', '3 (~30g each)'], ['Black beans', '150g cooked · ¾ cup'], ['Guacamole', '60g · ¼ cup'], ['Lettuce', '50g · 1 cup'], ['Salsa', '30g · 2 tbsp']] },
+    { name: 'Shrimp ceviche with tortilla chips', diet: D.fish, cuisine: 'mexican', cals: 480, p: 32, c: 55, f: 14, ingredients: [['Shrimp', '160g · ~13 medium'], ['Lime juice', '40ml · 2½ tbsp'], ['Tomato', '100g · 1 small'], ['Avocado', '½ medium'], ['Tortilla chips', '30g · ~12 chips']] },
     // East Asian (5)
-    { name: 'Beef stir-fry with rice', diet: D.meat, cuisine: 'asian', cals: 600, p: 45, c: 65, f: 15, ingredients: [['Lean beef strips', '160g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '200g'], ['Soy sauce', '15ml'], ['Sesame oil', '5g']] },
-    { name: 'Chicken teriyaki bowl', diet: D.meat, cuisine: 'asian', cals: 600, p: 42, c: 75, f: 12, ingredients: [['Chicken breast', '170g'], ['Jasmine rice', '70g raw'], ['Broccoli', '150g'], ['Teriyaki sauce', '20ml'], ['Sesame seeds', '5g']] },
-    { name: 'Salmon sushi bowl', diet: D.fish, cuisine: 'asian', cals: 580, p: 38, c: 65, f: 18, ingredients: [['Salmon fillet', '150g'], ['Sushi rice', '70g raw'], ['Avocado', '1/2'], ['Cucumber', '80g'], ['Soy sauce', '15ml']] },
-    { name: 'Vegan ramen with tofu', diet: D.vegan, cuisine: 'asian', cals: 540, p: 26, c: 75, f: 14, ingredients: [['Ramen noodles', '80g'], ['Firm tofu', '120g'], ['Mushrooms', '80g'], ['Bok choy', '80g'], ['Miso paste', '15g']] },
-    { name: 'Bibimbap with tofu', diet: D.vegan, cuisine: 'asian', cals: 580, p: 26, c: 80, f: 16, ingredients: [['Jasmine rice', '70g raw'], ['Firm tofu', '120g'], ['Spinach', '80g'], ['Carrots', '60g'], ['Gochujang', '15g']] },
+    { name: 'Beef stir-fry with rice', diet: D.meat, cuisine: 'asian', cals: 600, p: 45, c: 65, f: 15, ingredients: [['Lean beef strips', '160g · 5½oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Mixed vegetables', '200g · 1½ cup'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '5g · 1 tsp']] },
+    { name: 'Chicken teriyaki bowl', diet: D.meat, cuisine: 'asian', cals: 600, p: 42, c: 75, f: 12, ingredients: [['Chicken breast', '170g · 6oz / palm-sized'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Broccoli', '150g · 1½ cup florets'], ['Teriyaki sauce', '20ml · 1¼ tbsp'], ['Sesame seeds', '5g · 1 tsp']] },
+    { name: 'Salmon sushi bowl', diet: D.fish, cuisine: 'asian', cals: 580, p: 38, c: 65, f: 18, ingredients: [['Salmon fillet', '150g · 5oz / palm-sized'], ['Sushi rice', '70g · ⅓ cup raw'], ['Avocado', '½ medium'], ['Cucumber', '80g · ½ cup sliced'], ['Soy sauce', '15ml · 1 tbsp']] },
+    { name: 'Vegan ramen with tofu', diet: D.vegan, cuisine: 'asian', cals: 540, p: 26, c: 75, f: 14, ingredients: [['Ramen noodles', '80g · 1 small block'], ['Firm tofu', '120g · ½ cup cubed'], ['Mushrooms', '80g · 1 cup sliced'], ['Bok choy', '80g · 1 cup chopped'], ['Miso paste', '15g · 1 tbsp']] },
+    { name: 'Bibimbap with tofu', diet: D.vegan, cuisine: 'asian', cals: 580, p: 26, c: 80, f: 16, ingredients: [['Jasmine rice', '70g · ⅓ cup raw'], ['Firm tofu', '120g · ½ cup cubed'], ['Spinach', '80g · 1½ cup fresh'], ['Carrots', '60g · ½ cup julienned'], ['Gochujang', '15g · 1 tbsp']] },
     // Mediterranean / Middle Eastern (5)
-    { name: 'Greek chicken salad with feta', diet: D.meat, cuisine: 'mediterranean', cals: 560, p: 42, c: 30, f: 30, ingredients: [['Chicken breast', '170g'], ['Feta cheese', '40g'], ['Cucumber', '100g'], ['Tomato', '100g'], ['Olives', '30g'], ['Olive oil', '15g']] },
-    { name: 'Mediterranean chickpea bowl', diet: D.vegan, cuisine: 'mediterranean', cals: 550, p: 22, c: 70, f: 20, ingredients: [['Chickpeas', '200g cooked'], ['Quinoa', '60g raw'], ['Cucumber', '80g'], ['Tomato', '80g'], ['Tahini', '15g']] },
-    { name: 'Falafel & hummus wrap', diet: D.vegan, cuisine: 'mediterranean', cals: 600, p: 22, c: 70, f: 22, ingredients: [['Falafel', '120g'], ['Whole wheat tortilla', '1 large'], ['Hummus', '40g'], ['Cucumber', '50g'], ['Tomato', '50g'], ['Lettuce', '50g']] },
-    { name: 'Halloumi salad with quinoa', diet: D.veg, cuisine: 'mediterranean', cals: 590, p: 32, c: 50, f: 28, ingredients: [['Halloumi', '120g'], ['Quinoa', '60g raw'], ['Mixed greens', '100g'], ['Cherry tomatoes', '80g'], ['Olive oil', '12g']] },
-    { name: 'Mediterranean grilled sea bass', diet: D.fish, cuisine: 'mediterranean', cals: 540, p: 42, c: 45, f: 18, ingredients: [['Sea bass fillet', '180g'], ['New potatoes', '200g'], ['Cherry tomatoes', '100g'], ['Olive oil', '12g'], ['Lemon', '1']] }
+    { name: 'Greek chicken salad with feta', diet: D.meat, cuisine: 'mediterranean', cals: 560, p: 42, c: 30, f: 30, ingredients: [['Chicken breast', '170g · 6oz / palm-sized'], ['Feta cheese', '40g · ¼ cup crumbled'], ['Cucumber', '100g · ½ medium'], ['Tomato', '100g · 1 small'], ['Olives', '30g · ~10 pcs'], ['Olive oil', '15g · 1 tbsp']] },
+    { name: 'Mediterranean chickpea bowl', diet: D.vegan, cuisine: 'mediterranean', cals: 550, p: 22, c: 70, f: 20, ingredients: [['Chickpeas', '200g cooked · 1 cup'], ['Quinoa', '60g · ⅓ cup raw'], ['Cucumber', '80g · ½ cup sliced'], ['Tomato', '80g · 1 small'], ['Tahini', '15g · 1 tbsp']] },
+    { name: 'Falafel & hummus wrap', diet: D.vegan, cuisine: 'mediterranean', cals: 600, p: 22, c: 70, f: 22, ingredients: [['Falafel', '120g · ~4 balls'], ['Whole wheat tortilla', '1 large (~60g)'], ['Hummus', '40g · 2½ tbsp'], ['Cucumber', '50g · ¼ cup sliced'], ['Tomato', '50g · ½ small'], ['Lettuce', '50g · 1 cup']] },
+    { name: 'Halloumi salad with quinoa', diet: D.veg, cuisine: 'mediterranean', cals: 590, p: 32, c: 50, f: 28, ingredients: [['Halloumi', '120g · 4 slices'], ['Quinoa', '60g · ⅓ cup raw'], ['Mixed greens', '100g · 2 cups'], ['Cherry tomatoes', '80g · ⅔ cup'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Mediterranean grilled sea bass', diet: D.fish, cuisine: 'mediterranean', cals: 540, p: 42, c: 45, f: 18, ingredients: [['Sea bass fillet', '180g · 6oz / palm-sized'], ['New potatoes', '200g · 5–6 small'], ['Cherry tomatoes', '100g · ¾ cup'], ['Olive oil', '12g · 1 tbsp'], ['Lemon', '1 medium']] }
   ],
   dinner: [
     // International (7)
-    { name: 'Grilled steak & roast potatoes', diet: D.meat, cuisine: 'international', cals: 680, p: 48, c: 60, f: 24, ingredients: [['Sirloin steak', '180g'], ['Baby potatoes', '300g'], ['Green beans', '150g'], ['Olive oil', '12g']] },
-    { name: 'Baked cod with veggies', diet: D.fish, cuisine: 'international', cals: 520, p: 45, c: 50, f: 12, ingredients: [['Cod fillet', '200g'], ['Roasted vegetables mix', '300g'], ['Quinoa', '60g raw'], ['Olive oil', '10g']] },
-    { name: 'Turkey meatballs & pasta', diet: D.meat, cuisine: 'international', cals: 620, p: 48, c: 65, f: 16, ingredients: [['Ground turkey', '170g'], ['Whole wheat pasta', '70g raw'], ['Marinara sauce', '150g'], ['Parmesan', '15g']] },
-    { name: 'Roast chicken & sweet potato', diet: D.meat, cuisine: 'international', cals: 600, p: 50, c: 55, f: 16, ingredients: [['Chicken breast', '200g'], ['Sweet potato', '250g'], ['Brussels sprouts', '150g'], ['Olive oil', '10g']] },
-    { name: 'Stuffed bell peppers with quinoa', diet: D.vegan, cuisine: 'international', cals: 540, p: 22, c: 80, f: 14, ingredients: [['Bell peppers', '2'], ['Quinoa', '70g raw'], ['Black beans', '100g'], ['Tomato sauce', '100g'], ['Olive oil', '10g']] },
-    { name: 'Mushroom & spinach risotto', diet: D.veg, cuisine: 'international', cals: 600, p: 18, c: 80, f: 22, ingredients: [['Arborio rice', '80g raw'], ['Mushrooms', '150g'], ['Spinach', '80g'], ['Parmesan', '30g'], ['Olive oil', '12g']] },
-    { name: 'Vegan shepherd\'s pie', diet: D.vegan, cuisine: 'international', cals: 560, p: 24, c: 80, f: 14, ingredients: [['Lentils', '100g cooked'], ['Mashed potato', '250g'], ['Carrots', '100g'], ['Onion', '1/2'], ['Olive oil', '10g']] },
+    { name: 'Grilled steak & roast potatoes', diet: D.meat, cuisine: 'international', cals: 680, p: 48, c: 60, f: 24, ingredients: [['Sirloin steak', '180g · 6oz / palm-sized'], ['Baby potatoes', '300g · ~10 small'], ['Green beans', '150g · 1½ cup'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Baked cod with veggies', diet: D.fish, cuisine: 'international', cals: 520, p: 45, c: 50, f: 12, ingredients: [['Cod fillet', '200g · 7oz / palm-sized'], ['Roasted vegetables mix', '300g · 2 cups'], ['Quinoa', '60g · ⅓ cup raw'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Turkey meatballs & pasta', diet: D.meat, cuisine: 'international', cals: 620, p: 48, c: 65, f: 16, ingredients: [['Ground turkey', '170g · 6oz'], ['Whole wheat pasta', '70g · ¾ cup raw'], ['Marinara sauce', '150g · ⅔ cup'], ['Parmesan', '15g · 2 tbsp grated']] },
+    { name: 'Roast chicken & sweet potato', diet: D.meat, cuisine: 'international', cals: 600, p: 50, c: 55, f: 16, ingredients: [['Chicken breast', '200g · 7oz / palm-sized'], ['Sweet potato', '250g · 1 large'], ['Brussels sprouts', '150g · 1½ cup'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Stuffed bell peppers with quinoa', diet: D.vegan, cuisine: 'international', cals: 540, p: 22, c: 80, f: 14, ingredients: [['Bell peppers', '2 medium'], ['Quinoa', '70g · ⅓ cup raw'], ['Black beans', '100g cooked · ½ cup'], ['Tomato sauce', '100g · ½ cup'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Mushroom & spinach risotto', diet: D.veg, cuisine: 'international', cals: 600, p: 18, c: 80, f: 22, ingredients: [['Arborio rice', '80g · ⅓ cup raw'], ['Mushrooms', '150g · 2 cups sliced'], ['Spinach', '80g · 1½ cup fresh'], ['Parmesan', '30g · ¼ cup grated'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Vegan shepherd\'s pie', diet: D.vegan, cuisine: 'international', cals: 560, p: 24, c: 80, f: 14, ingredients: [['Lentils', '100g cooked · ½ cup'], ['Mashed potato', '250g · 1 cup'], ['Carrots', '100g · 1 medium'], ['Onion', '½ medium'], ['Olive oil', '10g · ¾ tbsp']] },
     // Indian — North (12)
-    { name: 'Mixed dal with brown rice', diet: D.vegan, cuisine: 'indian-north', cals: 540, p: 26, c: 85, f: 10, ingredients: [['Mixed dal', '80g raw'], ['Brown rice', '70g raw'], ['Onion', '1/2'], ['Tomato', '1'], ['Spices', '5g']] },
-    { name: 'Chole bhature', diet: D.vegan, cuisine: 'indian-north', cals: 620, p: 22, c: 80, f: 24, ingredients: [['Chickpeas', '200g cooked'], ['Bhature', '2'], ['Onion', '1/2'], ['Tomato', '1'], ['Oil', '15g']] },
-    { name: 'Bhindi masala with roti', diet: D.vegan, cuisine: 'indian-north', cals: 480, p: 14, c: 65, f: 18, ingredients: [['Okra (bhindi)', '250g'], ['Whole wheat roti', '2'], ['Onion', '1/2'], ['Tomato', '1'], ['Oil', '12g']] },
-    { name: 'Chana saag with rice', diet: D.vegan, cuisine: 'indian-north', cals: 540, p: 22, c: 80, f: 14, ingredients: [['Chickpeas', '150g cooked'], ['Spinach', '200g'], ['Basmati rice', '60g raw'], ['Onion', '1/2'], ['Spices', '5g']] },
-    { name: 'Paneer butter masala with naan', diet: D.veg, cuisine: 'indian-north', cals: 660, p: 30, c: 65, f: 30, ingredients: [['Paneer', '150g'], ['Naan', '1'], ['Tomato gravy', '150g'], ['Cream', '20g'], ['Butter', '10g']] },
-    { name: 'Saag paneer with roti', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 30, c: 55, f: 26, ingredients: [['Paneer', '150g'], ['Spinach', '250g'], ['Whole wheat roti', '2'], ['Cream', '15g'], ['Spices', '5g']] },
-    { name: 'Egg curry with paratha', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 26, c: 65, f: 22, ingredients: [['Eggs', '3'], ['Whole wheat paratha', '2'], ['Tomato gravy', '120g'], ['Onion', '1/2'], ['Spices', '5g']] },
-    { name: 'Punjabi kadhi pakora with rice', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 18, c: 75, f: 22, ingredients: [['Curd', '200g'], ['Besan (gram flour)', '40g'], ['Onion pakora', '80g'], ['Basmati rice', '60g raw'], ['Oil', '10g']] },
-    { name: 'Tandoori chicken with naan', diet: D.meat, cuisine: 'indian-north', cals: 600, p: 50, c: 55, f: 18, ingredients: [['Chicken breast', '200g'], ['Naan', '1'], ['Curd marinade', '40g'], ['Tandoori spices', '8g'], ['Mint chutney', '20g']] },
-    { name: 'Butter chicken with rice', diet: D.meat, cuisine: 'indian-north', cals: 680, p: 42, c: 70, f: 24, ingredients: [['Chicken thigh boneless', '170g'], ['Basmati rice', '70g raw'], ['Tomato gravy', '150g'], ['Cream', '25g'], ['Butter', '10g']] },
-    { name: 'Mutton rogan josh with rice', diet: D.meat, cuisine: 'indian-north', cals: 680, p: 42, c: 60, f: 30, ingredients: [['Lamb', '170g'], ['Basmati rice', '70g raw'], ['Curd', '30g'], ['Kashmiri spices', '8g'], ['Onion', '1']] },
-    { name: 'Amritsari fish tikka with cumin rice', diet: D.fish, cuisine: 'indian-north', cals: 560, p: 42, c: 60, f: 16, ingredients: [['White fish fillet', '180g'], ['Basmati rice', '70g raw'], ['Cumin', '3g'], ['Tandoori marinade', '40g'], ['Onion', '1/2']] },
+    { name: 'Mixed dal with brown rice', diet: D.vegan, cuisine: 'indian-north', cals: 540, p: 26, c: 85, f: 10, ingredients: [['Mixed dal', '80g · ⅓ cup raw / 1 katori cooked'], ['Brown rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Onion', '½ medium'], ['Tomato', '1 medium'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Chole bhature', diet: D.vegan, cuisine: 'indian-north', cals: 620, p: 22, c: 80, f: 24, ingredients: [['Chickpeas (chole)', '200g cooked · 1 cup'], ['Bhature', '2 (~80g each)'], ['Onion', '½ medium'], ['Tomato', '1 medium'], ['Oil', '15g · 1 tbsp']] },
+    { name: 'Bhindi masala with roti', diet: D.vegan, cuisine: 'indian-north', cals: 480, p: 14, c: 65, f: 18, ingredients: [['Okra (bhindi)', '250g · 2 cups chopped'], ['Whole wheat roti', '2 (~40g each)'], ['Onion', '½ medium'], ['Tomato', '1 medium'], ['Oil', '12g · 1 tbsp']] },
+    { name: 'Chana saag with rice', diet: D.vegan, cuisine: 'indian-north', cals: 540, p: 22, c: 80, f: 14, ingredients: [['Chickpeas (chana)', '150g cooked · ¾ cup'], ['Spinach (saag)', '200g · 4 cups fresh'], ['Basmati rice', '60g · ⅓ cup raw'], ['Onion', '½ medium'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Paneer butter masala with naan', diet: D.veg, cuisine: 'indian-north', cals: 660, p: 30, c: 65, f: 30, ingredients: [['Paneer', '150g · ¾ cup cubed'], ['Naan', '1 (~100g)'], ['Tomato gravy', '150g · ⅔ cup'], ['Cream', '20g · 1 tbsp'], ['Butter', '10g · 2 tsp']] },
+    { name: 'Saag paneer with roti', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 30, c: 55, f: 26, ingredients: [['Paneer', '150g · ¾ cup cubed'], ['Spinach (saag)', '250g · 5 cups fresh'], ['Whole wheat roti', '2 (~40g each)'], ['Cream', '15g · 1 tbsp'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Egg curry with paratha', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 26, c: 65, f: 22, ingredients: [['Eggs', '3 large'], ['Whole wheat paratha', '2 (~70g each)'], ['Tomato gravy', '120g · ½ cup'], ['Onion', '½ medium'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Punjabi kadhi pakora with rice', diet: D.veg, cuisine: 'indian-north', cals: 580, p: 18, c: 75, f: 22, ingredients: [['Curd', '200g · ¾ cup / 1 katori'], ['Besan (gram flour)', '40g · ⅓ cup'], ['Onion pakora', '80g · 6–8 pakoras'], ['Basmati rice', '60g · ⅓ cup raw'], ['Oil', '10g · ¾ tbsp']] },
+    { name: 'Tandoori chicken with naan', diet: D.meat, cuisine: 'indian-north', cals: 600, p: 50, c: 55, f: 18, ingredients: [['Chicken breast', '200g · 7oz / palm-sized'], ['Naan', '1 (~100g)'], ['Curd marinade', '40g · 2½ tbsp'], ['Tandoori spices', '8g · 1½ tsp'], ['Mint chutney', '20g · 1 tbsp']] },
+    { name: 'Butter chicken with rice', diet: D.meat, cuisine: 'indian-north', cals: 680, p: 42, c: 70, f: 24, ingredients: [['Chicken thigh boneless', '170g · 6oz'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Tomato gravy', '150g · ⅔ cup'], ['Cream', '25g · 1½ tbsp'], ['Butter', '10g · 2 tsp']] },
+    { name: 'Mutton rogan josh with rice', diet: D.meat, cuisine: 'indian-north', cals: 680, p: 42, c: 60, f: 30, ingredients: [['Lamb (mutton)', '170g · 6oz'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Curd', '30g · 2 tbsp'], ['Kashmiri spices', '8g · 1½ tsp'], ['Onion', '1 medium']] },
+    { name: 'Amritsari fish tikka with cumin rice', diet: D.fish, cuisine: 'indian-north', cals: 560, p: 42, c: 60, f: 16, ingredients: [['White fish fillet', '180g · 6oz / palm-sized'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Cumin', '3g · ½ tsp'], ['Tandoori marinade', '40g · 2½ tbsp'], ['Onion', '½ medium']] },
     // Indian — South (8)
-    { name: 'Lentil dahl with rice', diet: D.vegan, cuisine: 'indian-south', cals: 580, p: 26, c: 90, f: 12, ingredients: [['Red lentils', '80g raw'], ['Basmati rice', '70g raw'], ['Coconut milk light', '60ml'], ['Spinach', '80g'], ['Spices', '5g']] },
-    { name: 'Kadala curry with appam', diet: D.vegan, cuisine: 'indian-south', cals: 580, p: 20, c: 80, f: 18, ingredients: [['Brown chickpeas (kadala)', '150g cooked'], ['Appam', '3'], ['Coconut', '20g'], ['Curry leaves', '5'], ['Coconut oil', '10g']] },
-    { name: 'Pumpkin sambar with rice', diet: D.vegan, cuisine: 'indian-south', cals: 520, p: 18, c: 85, f: 10, ingredients: [['Pumpkin', '200g'], ['Toor dal', '60g raw'], ['Basmati rice', '70g raw'], ['Tamarind', '5g'], ['Spices', '5g']] },
-    { name: 'Coconut chickpea curry with rice', diet: D.vegan, cuisine: 'indian-south', cals: 600, p: 22, c: 80, f: 22, ingredients: [['Chickpeas', '150g cooked'], ['Basmati rice', '70g raw'], ['Coconut milk light', '100ml'], ['Curry paste', '15g'], ['Spinach', '80g']] },
-    { name: 'South Indian veg thali', diet: D.veg, cuisine: 'indian-south', cals: 620, p: 22, c: 90, f: 18, ingredients: [['Cooked rice', '150g'], ['Sambar', '150ml'], ['Rasam', '100ml'], ['Curd', '80g'], ['Mixed sabzi', '100g'], ['Papad', '1']] },
-    { name: 'Andhra chicken curry with rice', diet: D.meat, cuisine: 'indian-south', cals: 660, p: 44, c: 65, f: 24, ingredients: [['Chicken', '180g'], ['Basmati rice', '70g raw'], ['Andhra spice paste', '30g'], ['Tomato', '80g'], ['Curry leaves', '5']] },
-    { name: 'Chettinad chicken with parotta', diet: D.meat, cuisine: 'indian-south', cals: 680, p: 42, c: 70, f: 24, ingredients: [['Chicken', '170g'], ['Parotta', '2'], ['Chettinad masala', '30g'], ['Coconut', '20g'], ['Onion', '1']] },
-    { name: 'Malabar fish curry with appam', diet: D.fish, cuisine: 'indian-south', cals: 600, p: 38, c: 70, f: 18, ingredients: [['White fish', '180g'], ['Appam', '3'], ['Coconut milk', '80ml'], ['Tamarind', '5g'], ['Curry leaves', '5']] },
+    { name: 'Lentil dahl with rice', diet: D.vegan, cuisine: 'indian-south', cals: 580, p: 26, c: 90, f: 12, ingredients: [['Red lentils (masoor)', '80g · ⅓ cup raw / 1 katori cooked'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Coconut milk (light)', '60ml · ¼ cup'], ['Spinach', '80g · 1½ cup fresh'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Kadala curry with appam', diet: D.vegan, cuisine: 'indian-south', cals: 580, p: 20, c: 80, f: 18, ingredients: [['Brown chickpeas (kadala)', '150g cooked · ¾ cup'], ['Appam', '3 (~50g each)'], ['Coconut (grated)', '20g · 3 tbsp'], ['Curry leaves', '5 leaves'], ['Coconut oil', '10g · ¾ tbsp']] },
+    { name: 'Pumpkin sambar with rice', diet: D.vegan, cuisine: 'indian-south', cals: 520, p: 18, c: 85, f: 10, ingredients: [['Pumpkin', '200g · 1½ cup cubed'], ['Toor dal', '60g · ¼ cup raw'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Tamarind', '5g · 1 tsp paste'], ['Spices', '5g · 1 tsp']] },
+    { name: 'Coconut chickpea curry with rice', diet: D.vegan, cuisine: 'indian-south', cals: 600, p: 22, c: 80, f: 22, ingredients: [['Chickpeas', '150g cooked · ¾ cup'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Coconut milk (light)', '100ml · ½ cup'], ['Curry paste', '15g · 1 tbsp'], ['Spinach', '80g · 1½ cup fresh']] },
+    { name: 'South Indian veg thali', diet: D.veg, cuisine: 'indian-south', cals: 620, p: 22, c: 90, f: 18, ingredients: [['Cooked rice', '150g · ¾ cup'], ['Sambar', '150ml · ¾ cup'], ['Rasam', '100ml · ½ cup'], ['Curd', '80g · ⅓ cup'], ['Mixed sabzi', '100g · ½ cup'], ['Papad', '1 (~15g)']] },
+    { name: 'Andhra chicken curry with rice', diet: D.meat, cuisine: 'indian-south', cals: 660, p: 44, c: 65, f: 24, ingredients: [['Chicken', '180g · 6oz / palm-sized'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Andhra spice paste', '30g · 2 tbsp'], ['Tomato', '80g · 1 small'], ['Curry leaves', '5 leaves']] },
+    { name: 'Chettinad chicken with parotta', diet: D.meat, cuisine: 'indian-south', cals: 680, p: 42, c: 70, f: 24, ingredients: [['Chicken', '170g · 6oz'], ['Parotta', '2 (~80g each)'], ['Chettinad masala', '30g · 2 tbsp'], ['Coconut (grated)', '20g · 3 tbsp'], ['Onion', '1 medium']] },
+    { name: 'Malabar fish curry with appam', diet: D.fish, cuisine: 'indian-south', cals: 600, p: 38, c: 70, f: 18, ingredients: [['White fish', '180g · 6oz / palm-sized'], ['Appam', '3 (~50g each)'], ['Coconut milk', '80ml · ⅓ cup'], ['Tamarind', '5g · 1 tsp paste'], ['Curry leaves', '5 leaves']] },
     // Mexican (7)
-    { name: 'Beef enchiladas with rice', diet: D.meat, cuisine: 'mexican', cals: 660, p: 42, c: 60, f: 26, ingredients: [['Lean ground beef', '150g'], ['Corn tortillas', '3'], ['Enchilada sauce', '100g'], ['Cheese', '40g'], ['Brown rice', '50g raw']] },
-    { name: 'Chicken mole with rice', diet: D.meat, cuisine: 'mexican', cals: 620, p: 42, c: 65, f: 20, ingredients: [['Chicken breast', '170g'], ['Mole sauce', '60g'], ['Brown rice', '70g raw'], ['Onion', '1/2'], ['Sesame seeds', '5g']] },
-    { name: 'Fish tacos with cabbage slaw', diet: D.fish, cuisine: 'mexican', cals: 560, p: 38, c: 60, f: 18, ingredients: [['White fish fillet', '180g'], ['Corn tortillas', '3'], ['Cabbage slaw', '100g'], ['Avocado', '1/2'], ['Lime', '1']] },
-    { name: 'Shrimp tacos', diet: D.fish, cuisine: 'mexican', cals: 560, p: 42, c: 55, f: 16, ingredients: [['Shrimp', '180g'], ['Corn tortillas', '3'], ['Avocado', '1/2'], ['Cabbage slaw', '100g'], ['Lime', '1']] },
-    { name: 'Vegan tacos with refried beans', diet: D.vegan, cuisine: 'mexican', cals: 540, p: 20, c: 80, f: 16, ingredients: [['Corn tortillas', '3'], ['Refried beans', '150g'], ['Guacamole', '60g'], ['Salsa', '30g'], ['Cabbage slaw', '100g']] },
-    { name: 'Tempeh tacos', diet: D.vegan, cuisine: 'mexican', cals: 560, p: 32, c: 60, f: 18, ingredients: [['Tempeh', '150g'], ['Corn tortillas', '3'], ['Avocado', '1/2'], ['Cabbage slaw', '100g'], ['Lime', '1'], ['Salsa', '30g']] },
-    { name: 'Chile relleno with rice & beans', diet: D.veg, cuisine: 'mexican', cals: 580, p: 22, c: 55, f: 28, ingredients: [['Poblano pepper', '1 large'], ['Cheese filling', '100g'], ['Brown rice', '50g raw'], ['Black beans', '100g'], ['Tomato sauce', '50g']] },
+    { name: 'Beef enchiladas with rice', diet: D.meat, cuisine: 'mexican', cals: 660, p: 42, c: 60, f: 26, ingredients: [['Lean ground beef', '150g · 5oz'], ['Corn tortillas', '3 (~30g each)'], ['Enchilada sauce', '100g · ½ cup'], ['Cheese', '40g · ¼ cup shredded'], ['Brown rice', '50g · ¼ cup raw']] },
+    { name: 'Chicken mole with rice', diet: D.meat, cuisine: 'mexican', cals: 620, p: 42, c: 65, f: 20, ingredients: [['Chicken breast', '170g · 6oz / palm-sized'], ['Mole sauce', '60g · ¼ cup'], ['Brown rice', '70g · ⅓ cup raw'], ['Onion', '½ medium'], ['Sesame seeds', '5g · 1 tsp']] },
+    { name: 'Fish tacos with cabbage slaw', diet: D.fish, cuisine: 'mexican', cals: 560, p: 38, c: 60, f: 18, ingredients: [['White fish fillet', '180g · 6oz / palm-sized'], ['Corn tortillas', '3 (~30g each)'], ['Cabbage slaw', '100g · 1 cup'], ['Avocado', '½ medium'], ['Lime', '1 medium']] },
+    { name: 'Shrimp tacos', diet: D.fish, cuisine: 'mexican', cals: 560, p: 42, c: 55, f: 16, ingredients: [['Shrimp', '180g · ~15 medium'], ['Corn tortillas', '3 (~30g each)'], ['Avocado', '½ medium'], ['Cabbage slaw', '100g · 1 cup'], ['Lime', '1 medium']] },
+    { name: 'Vegan tacos with refried beans', diet: D.vegan, cuisine: 'mexican', cals: 540, p: 20, c: 80, f: 16, ingredients: [['Corn tortillas', '3 (~30g each)'], ['Refried beans', '150g · ⅔ cup'], ['Guacamole', '60g · ¼ cup'], ['Salsa', '30g · 2 tbsp'], ['Cabbage slaw', '100g · 1 cup']] },
+    { name: 'Tempeh tacos', diet: D.vegan, cuisine: 'mexican', cals: 560, p: 32, c: 60, f: 18, ingredients: [['Tempeh', '150g · ½ cup cubed'], ['Corn tortillas', '3 (~30g each)'], ['Avocado', '½ medium'], ['Cabbage slaw', '100g · 1 cup'], ['Lime', '1 medium'], ['Salsa', '30g · 2 tbsp']] },
+    { name: 'Chile relleno with rice & beans', diet: D.veg, cuisine: 'mexican', cals: 580, p: 22, c: 55, f: 28, ingredients: [['Poblano pepper', '1 large (~140g)'], ['Cheese filling', '100g · ½ cup shredded'], ['Brown rice', '50g · ¼ cup raw'], ['Black beans', '100g cooked · ½ cup'], ['Tomato sauce', '50g · 3 tbsp']] },
     // East Asian (7)
-    { name: 'Tofu & vegetable stir-fry', diet: D.vegan, cuisine: 'asian', cals: 540, p: 38, c: 55, f: 18, ingredients: [['Firm tofu', '200g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '250g'], ['Soy sauce', '15ml'], ['Sesame oil', '8g']] },
-    { name: 'Pad thai with shrimp', diet: D.fish, cuisine: 'asian', cals: 600, p: 32, c: 75, f: 20, ingredients: [['Rice noodles', '80g raw'], ['Shrimp', '150g'], ['Bean sprouts', '80g'], ['Peanuts', '15g'], ['Pad thai sauce', '30ml']] },
-    { name: 'Vegetable curry with jasmine rice', diet: D.vegan, cuisine: 'asian', cals: 540, p: 14, c: 75, f: 18, ingredients: [['Mixed vegetables', '250g'], ['Jasmine rice', '70g raw'], ['Coconut milk light', '80ml'], ['Thai curry paste', '20g'], ['Cilantro', '10g']] },
-    { name: 'Korean BBQ beef with rice', diet: D.meat, cuisine: 'asian', cals: 640, p: 42, c: 70, f: 20, ingredients: [['Beef sirloin', '170g'], ['Jasmine rice', '70g raw'], ['Kimchi', '60g'], ['Soy-garlic marinade', '20ml'], ['Sesame seeds', '5g']] },
-    { name: 'Thai green curry with chicken', diet: D.meat, cuisine: 'asian', cals: 620, p: 42, c: 65, f: 20, ingredients: [['Chicken thigh', '170g'], ['Jasmine rice', '70g raw'], ['Coconut milk light', '80ml'], ['Green curry paste', '20g'], ['Bamboo shoots', '60g']] },
-    { name: 'Vegan dumplings with veggies', diet: D.vegan, cuisine: 'asian', cals: 560, p: 22, c: 85, f: 14, ingredients: [['Vegetable dumplings', '180g'], ['Bok choy', '100g'], ['Mushrooms', '80g'], ['Soy sauce', '15ml'], ['Sesame oil', '5g']] },
-    { name: 'Chickpea coconut curry', diet: D.vegan, cuisine: 'asian', cals: 620, p: 22, c: 90, f: 18, ingredients: [['Chickpeas', '200g cooked'], ['Basmati rice', '70g raw'], ['Coconut milk light', '100ml'], ['Curry paste', '20g'], ['Tomato', '80g']] },
+    { name: 'Tofu & vegetable stir-fry', diet: D.vegan, cuisine: 'asian', cals: 540, p: 38, c: 55, f: 18, ingredients: [['Firm tofu', '200g · ¾ cup cubed'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Mixed vegetables', '250g · 1¾ cup'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '8g · ½ tbsp']] },
+    { name: 'Pad thai with shrimp', diet: D.fish, cuisine: 'asian', cals: 600, p: 32, c: 75, f: 20, ingredients: [['Rice noodles', '80g · ⅓ cup dry / 1 cup cooked'], ['Shrimp', '150g · ~12 medium'], ['Bean sprouts', '80g · 1 cup'], ['Peanuts', '15g · 2 tbsp'], ['Pad thai sauce', '30ml · 2 tbsp']] },
+    { name: 'Vegetable curry with jasmine rice', diet: D.vegan, cuisine: 'asian', cals: 540, p: 14, c: 75, f: 18, ingredients: [['Mixed vegetables', '250g · 1¾ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Coconut milk (light)', '80ml · ⅓ cup'], ['Thai curry paste', '20g · 1 tbsp'], ['Cilantro', '10g · 2 tbsp chopped']] },
+    { name: 'Korean BBQ beef with rice', diet: D.meat, cuisine: 'asian', cals: 640, p: 42, c: 70, f: 20, ingredients: [['Beef sirloin', '170g · 6oz / palm-sized'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Kimchi', '60g · ¼ cup'], ['Soy-garlic marinade', '20ml · 1¼ tbsp'], ['Sesame seeds', '5g · 1 tsp']] },
+    { name: 'Thai green curry with chicken', diet: D.meat, cuisine: 'asian', cals: 620, p: 42, c: 65, f: 20, ingredients: [['Chicken thigh', '170g · 6oz / palm-sized'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Coconut milk (light)', '80ml · ⅓ cup'], ['Green curry paste', '20g · 1 tbsp'], ['Bamboo shoots', '60g · ½ cup']] },
+    { name: 'Vegan dumplings with veggies', diet: D.vegan, cuisine: 'asian', cals: 560, p: 22, c: 85, f: 14, ingredients: [['Vegetable dumplings', '180g · ~8 dumplings'], ['Bok choy', '100g · 1¼ cup chopped'], ['Mushrooms', '80g · 1 cup sliced'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '5g · 1 tsp']] },
+    { name: 'Chickpea coconut curry', diet: D.vegan, cuisine: 'asian', cals: 620, p: 22, c: 90, f: 18, ingredients: [['Chickpeas', '200g cooked · 1 cup'], ['Basmati rice', '70g · ⅓ cup raw / 1 katori cooked'], ['Coconut milk (light)', '100ml · ½ cup'], ['Curry paste', '20g · 1 tbsp'], ['Tomato', '80g · 1 small']] },
     // Mediterranean / Middle Eastern (6)
-    { name: 'Greek chicken souvlaki with tzatziki', diet: D.meat, cuisine: 'mediterranean', cals: 580, p: 48, c: 50, f: 20, ingredients: [['Chicken breast', '180g'], ['Pita bread', '1'], ['Tzatziki', '60g'], ['Cucumber', '80g'], ['Olive oil', '10g']] },
-    { name: 'Mediterranean baked salmon', diet: D.fish, cuisine: 'mediterranean', cals: 540, p: 42, c: 40, f: 24, ingredients: [['Salmon fillet', '180g'], ['Cherry tomatoes', '150g'], ['Olives', '30g'], ['New potatoes', '150g'], ['Olive oil', '12g']] },
-    { name: 'Lamb moussaka', diet: D.meat, cuisine: 'mediterranean', cals: 660, p: 36, c: 50, f: 36, ingredients: [['Lean lamb mince', '170g'], ['Eggplant', '200g'], ['Tomato sauce', '100g'], ['Béchamel', '60g'], ['Parmesan', '15g']] },
-    { name: 'Stuffed grape leaves with rice & lentils', diet: D.vegan, cuisine: 'mediterranean', cals: 480, p: 16, c: 75, f: 14, ingredients: [['Grape leaves', '10'], ['Rice', '70g raw'], ['Lentils', '40g raw'], ['Pine nuts', '15g'], ['Olive oil', '12g']] },
-    { name: 'Eggplant moussaka', diet: D.veg, cuisine: 'mediterranean', cals: 580, p: 22, c: 55, f: 28, ingredients: [['Eggplant', '300g'], ['Lentils', '80g cooked'], ['Tomato sauce', '120g'], ['Béchamel', '60g'], ['Olive oil', '12g']] },
-    { name: 'Shawarma bowl', diet: D.meat, cuisine: 'mediterranean', cals: 620, p: 40, c: 65, f: 22, ingredients: [['Chicken thigh marinated', '180g'], ['Rice', '70g raw'], ['Hummus', '40g'], ['Cucumber-tomato salad', '120g'], ['Tahini', '15g']] }
+    { name: 'Greek chicken souvlaki with tzatziki', diet: D.meat, cuisine: 'mediterranean', cals: 580, p: 48, c: 50, f: 20, ingredients: [['Chicken breast', '180g · 6oz / palm-sized'], ['Pita bread', '1 (~60g)'], ['Tzatziki', '60g · ¼ cup'], ['Cucumber', '80g · ½ medium'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Mediterranean baked salmon', diet: D.fish, cuisine: 'mediterranean', cals: 540, p: 42, c: 40, f: 24, ingredients: [['Salmon fillet', '180g · 6oz / palm-sized'], ['Cherry tomatoes', '150g · 1¼ cup'], ['Olives', '30g · ~10 pcs'], ['New potatoes', '150g · 4–5 small'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Lamb moussaka', diet: D.meat, cuisine: 'mediterranean', cals: 660, p: 36, c: 50, f: 36, ingredients: [['Lean lamb mince', '170g · 6oz'], ['Eggplant', '200g · 1 medium'], ['Tomato sauce', '100g · ½ cup'], ['Béchamel', '60g · ¼ cup'], ['Parmesan', '15g · 2 tbsp grated']] },
+    { name: 'Stuffed grape leaves with rice & lentils', diet: D.vegan, cuisine: 'mediterranean', cals: 480, p: 16, c: 75, f: 14, ingredients: [['Grape leaves', '10 leaves'], ['Rice', '70g · ⅓ cup raw'], ['Lentils', '40g · 3 tbsp raw'], ['Pine nuts', '15g · 1½ tbsp'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Eggplant moussaka', diet: D.veg, cuisine: 'mediterranean', cals: 580, p: 22, c: 55, f: 28, ingredients: [['Eggplant', '300g · 1 large'], ['Lentils', '80g cooked · ⅓ cup'], ['Tomato sauce', '120g · ½ cup'], ['Béchamel', '60g · ¼ cup'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Shawarma bowl', diet: D.meat, cuisine: 'mediterranean', cals: 620, p: 40, c: 65, f: 22, ingredients: [['Chicken thigh marinated', '180g · 6oz / palm-sized'], ['Rice', '70g · ⅓ cup raw'], ['Hummus', '40g · 2½ tbsp'], ['Cucumber-tomato salad', '120g · ¾ cup'], ['Tahini', '15g · 1 tbsp']] }
   ],
   snack: [
     // International (8)
-    { name: 'Protein shake & apple', diet: D.veg, cuisine: 'international', cals: 250, p: 25, c: 30, f: 4, ingredients: [['Whey protein', '30g'], ['Apple', '1'], ['Almond milk', '250ml']] },
-    { name: 'Greek yogurt & almonds', diet: D.veg, cuisine: 'international', cals: 280, p: 22, c: 20, f: 12, ingredients: [['Greek yogurt 0%', '200g'], ['Almonds', '20g'], ['Honey', '10g']] },
-    { name: 'Rice cakes & peanut butter', diet: D.vegan, cuisine: 'international', cals: 240, p: 10, c: 30, f: 10, ingredients: [['Rice cakes', '3'], ['Peanut butter', '20g'], ['Banana', '1/2']] },
-    { name: 'Cottage cheese & berries', diet: D.veg, cuisine: 'international', cals: 220, p: 25, c: 18, f: 5, ingredients: [['Cottage cheese', '200g'], ['Mixed berries', '80g']] },
-    { name: 'Hard boiled eggs & fruit', diet: D.veg, cuisine: 'international', cals: 260, p: 18, c: 22, f: 12, ingredients: [['Eggs', '2'], ['Orange', '1'], ['Walnuts', '10g']] },
-    { name: 'Trail mix', diet: D.vegan, cuisine: 'international', cals: 260, p: 8, c: 22, f: 18, ingredients: [['Mixed nuts', '30g'], ['Dried fruit', '15g'], ['Dark chocolate', '10g']] },
-    { name: 'Apple with almond butter', diet: D.vegan, cuisine: 'international', cals: 240, p: 6, c: 28, f: 14, ingredients: [['Apple', '1'], ['Almond butter', '20g']] },
-    { name: 'Roasted chickpeas', diet: D.vegan, cuisine: 'international', cals: 220, p: 10, c: 28, f: 8, ingredients: [['Chickpeas', '120g cooked'], ['Olive oil', '5g'], ['Spices', '3g']] },
+    { name: 'Protein shake & apple', diet: D.veg, cuisine: 'international', cals: 250, p: 25, c: 30, f: 4, ingredients: [['Whey protein', '30g · 1 scoop'], ['Apple', '1 medium (~180g)'], ['Almond milk', '250ml · 1 cup']] },
+    { name: 'Greek yogurt & almonds', diet: D.veg, cuisine: 'international', cals: 280, p: 22, c: 20, f: 12, ingredients: [['Greek yogurt 0%', '200g · ¾ cup'], ['Almonds', '20g · 15 pieces'], ['Honey', '10g · ¾ tbsp']] },
+    { name: 'Rice cakes & peanut butter', diet: D.vegan, cuisine: 'international', cals: 240, p: 10, c: 30, f: 10, ingredients: [['Rice cakes', '3 (~10g each)'], ['Peanut butter', '20g · 1 tbsp'], ['Banana', '½ medium']] },
+    { name: 'Cottage cheese & berries', diet: D.veg, cuisine: 'international', cals: 220, p: 25, c: 18, f: 5, ingredients: [['Cottage cheese', '200g · ¾ cup'], ['Mixed berries', '80g · ⅔ cup']] },
+    { name: 'Hard boiled eggs & fruit', diet: D.veg, cuisine: 'international', cals: 260, p: 18, c: 22, f: 12, ingredients: [['Eggs', '2 large'], ['Orange', '1 medium'], ['Walnuts', '10g · 4 halves']] },
+    { name: 'Trail mix', diet: D.vegan, cuisine: 'international', cals: 260, p: 8, c: 22, f: 18, ingredients: [['Mixed nuts', '30g · ¼ cup'], ['Dried fruit', '15g · 1 tbsp'], ['Dark chocolate', '10g · 2 squares']] },
+    { name: 'Apple with almond butter', diet: D.vegan, cuisine: 'international', cals: 240, p: 6, c: 28, f: 14, ingredients: [['Apple', '1 medium'], ['Almond butter', '20g · 1 tbsp']] },
+    { name: 'Roasted chickpeas', diet: D.vegan, cuisine: 'international', cals: 220, p: 10, c: 28, f: 8, ingredients: [['Chickpeas', '120g cooked · ⅔ cup'], ['Olive oil', '5g · 1 tsp'], ['Spices', '3g · ½ tsp']] },
     // Indian — North (6)
-    { name: 'Roasted chana with chaat masala', diet: D.vegan, cuisine: 'indian-north', cals: 230, p: 12, c: 28, f: 8, ingredients: [['Roasted chana', '50g'], ['Chaat masala', '3g'], ['Lemon', '1/2'], ['Onion', '1/4']] },
-    { name: 'Roasted makhana', diet: D.vegan, cuisine: 'indian-north', cals: 210, p: 6, c: 30, f: 8, ingredients: [['Fox nuts (makhana)', '40g'], ['Ghee', '5g'], ['Salt & pepper', '2g']] },
-    { name: 'Curd with fruit & honey', diet: D.veg, cuisine: 'indian-north', cals: 250, p: 12, c: 35, f: 8, ingredients: [['Curd', '200g'], ['Banana', '1'], ['Honey', '10g'], ['Almonds', '8g']] },
-    { name: 'Sprouts chaat', diet: D.vegan, cuisine: 'indian-north', cals: 240, p: 18, c: 32, f: 6, ingredients: [['Mixed sprouts', '120g'], ['Onion', '1/4'], ['Tomato', '1/2'], ['Lemon', '1/2'], ['Chaat masala', '3g']] },
-    { name: 'Lassi with nuts', diet: D.veg, cuisine: 'indian-north', cals: 280, p: 14, c: 35, f: 10, ingredients: [['Curd', '250g'], ['Honey', '10g'], ['Almonds', '10g'], ['Cardamom', '1g']] },
-    { name: 'Vegetable pakora with mint chutney', diet: D.vegan, cuisine: 'indian-north', cals: 290, p: 8, c: 35, f: 14, ingredients: [['Mixed vegetable pakora', '80g'], ['Mint chutney', '30g'], ['Besan (gram flour)', '20g'], ['Oil', '15g']] },
+    { name: 'Roasted chana with chaat masala', diet: D.vegan, cuisine: 'indian-north', cals: 230, p: 12, c: 28, f: 8, ingredients: [['Roasted chana', '50g · ⅓ cup / 1 small katori'], ['Chaat masala', '3g · ½ tsp'], ['Lemon', '½ small'], ['Onion', '¼ medium']] },
+    { name: 'Roasted makhana', diet: D.vegan, cuisine: 'indian-north', cals: 210, p: 6, c: 30, f: 8, ingredients: [['Fox nuts (makhana)', '40g · 2 cups puffed'], ['Ghee', '5g · 1 tsp'], ['Salt & pepper', '2g · ½ tsp']] },
+    { name: 'Curd with fruit & honey', diet: D.veg, cuisine: 'indian-north', cals: 250, p: 12, c: 35, f: 8, ingredients: [['Curd', '200g · ¾ cup / 1 katori'], ['Banana', '1 medium'], ['Honey', '10g · ¾ tbsp'], ['Almonds', '8g · 6 pieces']] },
+    { name: 'Sprouts chaat', diet: D.vegan, cuisine: 'indian-north', cals: 240, p: 18, c: 32, f: 6, ingredients: [['Mixed sprouts', '120g · ¾ cup / 1 katori'], ['Onion', '¼ medium'], ['Tomato', '½ small'], ['Lemon', '½ small'], ['Chaat masala', '3g · ½ tsp']] },
+    { name: 'Lassi with nuts', diet: D.veg, cuisine: 'indian-north', cals: 280, p: 14, c: 35, f: 10, ingredients: [['Curd', '250g · 1 cup / 1¼ katori'], ['Honey', '10g · ¾ tbsp'], ['Almonds', '10g · 7 pieces'], ['Cardamom', '1g · ¼ tsp']] },
+    { name: 'Vegetable pakora with mint chutney', diet: D.vegan, cuisine: 'indian-north', cals: 290, p: 8, c: 35, f: 14, ingredients: [['Mixed vegetable pakora', '80g · 6–8 pakoras'], ['Mint chutney', '30g · 2 tbsp'], ['Besan (gram flour)', '20g · 2 tbsp'], ['Oil (for frying)', '15g · 1 tbsp']] },
     // Indian — South (4)
-    { name: 'Murukku', diet: D.vegan, cuisine: 'indian-south', cals: 240, p: 6, c: 30, f: 12, ingredients: [['Murukku', '40g'], ['Sesame seeds', '3g'], ['Spices', '2g']] },
-    { name: 'Banana chips with chai', diet: D.vegan, cuisine: 'indian-south', cals: 230, p: 4, c: 28, f: 14, ingredients: [['Banana chips', '30g'], ['Masala chai', '200ml'], ['Cardamom', '1g']] },
-    { name: 'Sundal (boiled chickpea with coconut)', diet: D.vegan, cuisine: 'indian-south', cals: 220, p: 12, c: 30, f: 8, ingredients: [['Boiled chickpeas', '100g'], ['Grated coconut', '15g'], ['Mustard seeds', '3g'], ['Curry leaves', '5']] },
-    { name: 'Idli upma', diet: D.vegan, cuisine: 'indian-south', cals: 280, p: 10, c: 45, f: 10, ingredients: [['Leftover idli', '3'], ['Onion', '1/2'], ['Mustard seeds', '2g'], ['Curry leaves', '5'], ['Oil', '8g']] },
+    { name: 'Murukku', diet: D.vegan, cuisine: 'indian-south', cals: 240, p: 6, c: 30, f: 12, ingredients: [['Murukku', '40g · 3–4 pieces'], ['Sesame seeds', '3g · ½ tsp'], ['Spices', '2g · ½ tsp']] },
+    { name: 'Banana chips with chai', diet: D.vegan, cuisine: 'indian-south', cals: 230, p: 4, c: 28, f: 14, ingredients: [['Banana chips', '30g · ½ cup'], ['Masala chai', '200ml · 1 small cup'], ['Cardamom', '1g · ¼ tsp']] },
+    { name: 'Sundal (boiled chickpea with coconut)', diet: D.vegan, cuisine: 'indian-south', cals: 220, p: 12, c: 30, f: 8, ingredients: [['Boiled chickpeas', '100g · ½ cup'], ['Grated coconut', '15g · 2 tbsp'], ['Mustard seeds', '3g · ½ tsp'], ['Curry leaves', '5 leaves']] },
+    { name: 'Idli upma', diet: D.vegan, cuisine: 'indian-south', cals: 280, p: 10, c: 45, f: 10, ingredients: [['Leftover idli', '3 (mashed)'], ['Onion', '½ medium'], ['Mustard seeds', '2g · ½ tsp'], ['Curry leaves', '5 leaves'], ['Oil', '8g · ½ tbsp']] },
     // Mexican (2)
-    { name: 'Guacamole with veggie sticks', diet: D.vegan, cuisine: 'mexican', cals: 250, p: 4, c: 20, f: 18, ingredients: [['Avocado', '1'], ['Lime', '1/2'], ['Carrot sticks', '80g'], ['Bell pepper sticks', '80g']] },
-    { name: 'Salsa & corn chips', diet: D.vegan, cuisine: 'mexican', cals: 230, p: 4, c: 32, f: 10, ingredients: [['Corn chips', '30g'], ['Salsa', '80g'], ['Cilantro', '5g']] },
+    { name: 'Guacamole with veggie sticks', diet: D.vegan, cuisine: 'mexican', cals: 250, p: 4, c: 20, f: 18, ingredients: [['Avocado', '1 medium'], ['Lime', '½ small'], ['Carrot sticks', '80g · 1 medium carrot'], ['Bell pepper sticks', '80g · ¾ medium pepper']] },
+    { name: 'Salsa & corn chips', diet: D.vegan, cuisine: 'mexican', cals: 230, p: 4, c: 32, f: 10, ingredients: [['Corn chips', '30g · ~12 chips'], ['Salsa', '80g · ⅓ cup'], ['Cilantro', '5g · 1 tbsp chopped']] },
     // East Asian (2)
-    { name: 'Edamame with sea salt', diet: D.vegan, cuisine: 'asian', cals: 220, p: 18, c: 18, f: 8, ingredients: [['Edamame in pods', '150g'], ['Sea salt', '2g']] },
-    { name: 'Seaweed & rice crackers', diet: D.vegan, cuisine: 'asian', cals: 200, p: 6, c: 30, f: 6, ingredients: [['Roasted seaweed', '10g'], ['Rice crackers', '25g'], ['Sesame seeds', '5g']] },
+    { name: 'Edamame with sea salt', diet: D.vegan, cuisine: 'asian', cals: 220, p: 18, c: 18, f: 8, ingredients: [['Edamame in pods', '150g · 1 cup'], ['Sea salt', '2g · ½ tsp']] },
+    { name: 'Seaweed & rice crackers', diet: D.vegan, cuisine: 'asian', cals: 200, p: 6, c: 30, f: 6, ingredients: [['Roasted seaweed', '10g · 1 sheet'], ['Rice crackers', '25g · ~8 crackers'], ['Sesame seeds', '5g · 1 tsp']] },
     // Mediterranean / Middle Eastern (3)
-    { name: 'Olives, hummus & pita', diet: D.vegan, cuisine: 'mediterranean', cals: 260, p: 8, c: 30, f: 12, ingredients: [['Olives', '30g'], ['Hummus', '50g'], ['Pita bread', '1 small']] },
-    { name: 'Greek yogurt with figs & almonds', diet: D.veg, cuisine: 'mediterranean', cals: 270, p: 18, c: 28, f: 10, ingredients: [['Greek yogurt 0%', '200g'], ['Fresh figs', '2'], ['Almonds', '12g']] },
-    { name: 'Hummus & cucumber', diet: D.vegan, cuisine: 'mediterranean', cals: 230, p: 8, c: 25, f: 12, ingredients: [['Hummus', '60g'], ['Cucumber', '150g'], ['Pita chips', '20g']] }
+    { name: 'Olives, hummus & pita', diet: D.vegan, cuisine: 'mediterranean', cals: 260, p: 8, c: 30, f: 12, ingredients: [['Olives', '30g · ~10 pcs'], ['Hummus', '50g · 3 tbsp'], ['Pita bread', '1 small (~50g)']] },
+    { name: 'Greek yogurt with figs & almonds', diet: D.veg, cuisine: 'mediterranean', cals: 270, p: 18, c: 28, f: 10, ingredients: [['Greek yogurt 0%', '200g · ¾ cup'], ['Fresh figs', '2 medium'], ['Almonds', '12g · 9 pieces']] },
+    { name: 'Hummus & cucumber', diet: D.vegan, cuisine: 'mediterranean', cals: 230, p: 8, c: 25, f: 12, ingredients: [['Hummus', '60g · ¼ cup'], ['Cucumber', '150g · ¾ medium'], ['Pita chips', '20g · ~10 chips']] }
   ]
 };
 
@@ -1122,7 +1170,20 @@ function renderMealPlan(plan) {
         ${day.meals.map(m => `
           <div class="meal-row">
             <div class="meal-slot">${slotLabels[m.slot]}</div>
-            <div class="meal-name">${m.name}</div>
+            <div>
+              <div class="meal-name">${m.name}</div>
+              <div class="meal-macros-mini">
+                P ${m.p}g <span class="dot">·</span> C ${m.c}g <span class="dot">·</span> F ${m.f}g
+              </div>
+              <ul class="meal-ingredients">
+                ${m.ingredients.map(([name, qty]) => `
+                  <li class="meal-ingredient">
+                    <span class="meal-ingredient-name">${name}</span>
+                    <span class="meal-ingredient-qty">${qty}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
             <div class="meal-cals">${m.cals} kcal</div>
           </div>
         `).join('')}
