@@ -791,6 +791,7 @@ function generateMealPlan() {
 
   const plan = [];
   const groceryMap = {};
+  const usedBySlot = { breakfast: new Set(), lunch: new Set(), dinner: new Set(), snack: new Set() };
 
   for (let d = 0; d < 7; d++) {
     const day = { name: DAYS[d], meals: [] };
@@ -799,17 +800,20 @@ function generateMealPlan() {
 
     ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
       const targetCals = target * dist[slot];
-      const options = MEALS[slot];
-      // Pick meal closest to target (with some randomness for variety)
-      const shuffled = [...options].sort(() => Math.random() - 0.5);
-      const best = shuffled.reduce((a, b) =>
-        Math.abs(b.cals - targetCals) < Math.abs(a.cals - targetCals) ? b : a
+      // Rank by calorie distance, keep top 5 as acceptable, prefer ones not yet used this week
+      const ranked = [...MEALS[slot]].sort((a, b) =>
+        Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals)
       );
-      day.meals.push({ slot, ...best });
-      dayCals += best.cals;
-      dayP += best.p;
-      // Aggregate grocery
-      best.ingredients.forEach(([item, qty]) => {
+      const pool = ranked.slice(0, Math.min(5, ranked.length));
+      const fresh = pool.filter(m => !usedBySlot[slot].has(m.name));
+      const candidates = fresh.length ? fresh : pool;
+      const pick = candidates[Math.floor(Math.random() * candidates.length)];
+      usedBySlot[slot].add(pick.name);
+
+      day.meals.push({ slot, ...pick });
+      dayCals += pick.cals;
+      dayP += pick.p;
+      pick.ingredients.forEach(([item, qty]) => {
         if (!groceryMap[item]) groceryMap[item] = [];
         groceryMap[item].push(qty);
       });
