@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macro Lab — Free Cut & Bulk Calculator + 7-Day Meal Plan Generator</title>
+<meta name="description" content="Free calorie and macro calculator. Generate a custom 7-day meal plan with grocery list, matched to your cut or bulk goals. No signup required.">
+<meta name="keywords" content="cutting calculator, bulking calculator, macro calculator, meal plan generator, TDEE calculator, calorie calculator, free fitness calculator">
+<meta property="og:title" content="Macro Lab — Free Cut & Bulk Calculator">
+<meta property="og:description" content="Get your exact calories, macros, and a 7-day meal plan in 30 seconds.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- Replace ca-pub-XXXXXXXXXX with your AdSense Publisher ID once approved -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+<style>
+:root {
+  --bg: #f4f1ea;
+  --ink: #0d0d0d;
+  --paper: #ffffff;
+  --accent: #ff4d1a;
+  --accent-soft: #ffe8df;
+  --rule: #0d0d0d;
+  --muted: #6b6359;
+  --grid: rgba(13,13,13,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; font-feature-settings: 'ss01'; }
+
+/* HEADER */
+header {
+  border-bottom: 2px solid var(--ink);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  background: rgba(244, 241, 234, 0.92);
+}
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+  font-style: italic;
+}
+.logo span { color: var(--accent); }
+.nav-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+/* HERO */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px 60px;
+  position: relative;
+}
+.hero-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.hero-meta::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--ink);
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(48px, 9vw, 128px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  margin-bottom: 32px;
+  max-width: 1100px;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+}
+.hero-sub {
+  font-size: 20px;
+  max-width: 580px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  line-height: 1.45;
+}
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  border-top: 1px solid var(--ink);
+  padding-top: 24px;
+  flex-wrap: wrap;
+}
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+/* MAIN GRID */
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .app { grid-template-columns: 1fr; }
+}
+
+/* CALCULATOR PANEL */
+.panel {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 32px;
+  position: relative;
+}
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: -8px;
+  bottom: -8px;
+  background: var(--ink);
+  z-index: -1;
+}
+.panel-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 4px;
+  color: var(--muted);
+}
+.panel h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+  line-height: 1;
+}
+.panel h2 em { font-style: italic; color: var(--accent); font-weight: 500; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.form-field { display: flex; flex-direction: column; }
+.form-field label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+.form-field input, .form-field select {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--ink);
+  padding: 8px 0;
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-field input:focus, .form-field select:focus {
+  border-bottom-color: var(--accent);
+}
+.form-field select { cursor: pointer; }
+
+.segmented {
+  display: flex;
+  border: 1.5px solid var(--ink);
+  margin-bottom: 16px;
+}
+.segmented button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  color: var(--ink);
+  transition: all 0.15s;
+}
+.segmented button + button { border-left: 1.5px solid var(--ink); }
+.segmented button.active {
+  background: var(--ink);
+  color: var(--bg);
+}
+.segmented button:hover:not(.active) {
+  background: var(--accent-soft);
+}
+
+.btn-primary {
+  width: 100%;
+  background: var(--accent);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 18px;
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: transform 0.15s;
+  font-style: italic;
+}
+.btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+.btn-primary:active { transform: translate(0, 0); box-shadow: none; }
+
+/* RESULTS PANEL */
+.results {
+  min-height: 600px;
+}
+.results-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 600px;
+  text-align: center;
+  padding: 40px;
+  border: 2px dashed var(--ink);
+}
+.results-empty .big-num {
+  font-family: 'Fraunces', serif;
+  font-size: 160px;
+  font-weight: 900;
+  line-height: 0.85;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: 16px;
+  letter-spacing: -0.05em;
+}
+.results-empty p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.results-content { display: none; }
+.results-content.active { display: block; }
+
+.macro-summary {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.calorie-display {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.calorie-num {
+  font-family: 'Fraunces', serif;
+  font-size: 96px;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+}
+.calorie-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.goal-tag {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--ink);
+  padding: 4px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.macros-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--bg);
+  margin-top: 24px;
+}
+.macro-cell {
+  background: var(--ink);
+  padding: 16px;
+}
+.macro-cell .num {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.macro-cell .name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+/* MEAL PLAN */
+.meal-section { margin-top: 32px; }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+.section-header h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.section-header h3 em { font-style: italic; color: var(--accent); font-weight: 500; }
+.regen-btn {
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  padding: 8px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.regen-btn:hover { background: var(--ink); color: var(--bg); }
+
+.day-card {
+  border: 1.5px solid var(--ink);
+  margin-bottom: 12px;
+  background: var(--paper);
+}
+.day-header {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+.day-meals { padding: 16px; }
+.meal-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--muted);
+  align-items: center;
+}
+.meal-row:last-child { border-bottom: none; }
+.meal-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.meal-name { font-family: 'Fraunces', serif; font-size: 16px; }
+.meal-cals {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-align: right;
+  color: var(--muted);
+}
+
+/* GROCERY LIST */
+.grocery-list {
+  columns: 2;
+  column-gap: 24px;
+  background: var(--accent-soft);
+  padding: 24px;
+  border: 1.5px solid var(--ink);
+}
+@media (max-width: 600px) { .grocery-list { columns: 1; } }
+.grocery-item {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  padding: 4px 0;
+  break-inside: avoid;
+  display: flex;
+  justify-content: space-between;
+}
+.grocery-item .qty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* AD SLOT */
+.ad-slot {
+  border: 1.5px dashed var(--muted);
+  padding: 20px;
+  margin: 24px 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  background: var(--paper);
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FOOTER */
+footer {
+  border-top: 2px solid var(--ink);
+  padding: 40px 32px;
+  background: var(--ink);
+  color: var(--bg);
+  margin-top: 80px;
+}
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+footer a { color: var(--accent); text-decoration: none; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">Macro<span>/</span>Lab</div>
+    <div class="nav-meta">Issue 01 · Free Edition</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-meta">
+    <span>The Calculator</span>
+    <span>—</span>
+    <span>No Signup. No Email. Just Numbers.</span>
+  </div>
+  <h1>Stop guessing your <em>calories.</em> Start eating with intent.</h1>
+  <p class="hero-sub">Macro Lab gives you the exact calories and macros you need to cut, bulk, or maintain — plus a 7-day meal plan and grocery list, generated instantly. Free forever.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">7</div>
+      <div class="stat-label">Day Meal Plan</div>
+    </div>
+    <div>
+      <div class="stat-num">200+</div>
+      <div class="stat-label">Meal Database</div>
+    </div>
+    <div>
+      <div class="stat-num">30s</div>
+      <div class="stat-label">To Results</div>
+    </div>
+    <div>
+      <div class="stat-num mono">$0</div>
+      <div class="stat-label">Forever</div>
+    </div>
+  </div>
+</section>
+
+<main class="app">
+  <!-- CALCULATOR PANEL -->
+  <div class="panel">
+    <div class="panel-label">01 / Input</div>
+    <h2>Your <em>stats.</em></h2>
+
+    <div class="segmented" id="unitSeg">
+      <button data-unit="metric" class="active">Metric</button>
+      <button data-unit="imperial">Imperial</button>
+    </div>
+
+    <div class="segmented" id="sexSeg">
+      <button data-sex="male" class="active">Male</button>
+      <button data-sex="female">Female</button>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label>Age</label>
+        <input type="number" id="age" value="28" min="14" max="90">
+      </div>
+      <div class="form-field">
+        <label><span id="heightLabel">Height (cm)</span></label>
+        <input type="number" id="height" value="175">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label><span id="weightLabel">Weight (kg)</span></label>
+        <input type="number" id="weight" value="75">
+      </div>
+      <div class="form-field">
+        <label>Activity</label>
+        <select id="activity">
+          <option value="1.2">Sedentary</option>
+          <option value="1.375">Light (1-3 d/wk)</option>
+          <option value="1.55" selected>Moderate (3-5 d/wk)</option>
+          <option value="1.725">Heavy (6-7 d/wk)</option>
+          <option value="1.9">Athlete</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel-label" style="margin-top: 20px;">02 / Goal</div>
+    <div class="segmented" id="goalSeg" style="margin-top: 8px;">
+      <button data-goal="cut" class="active">Cut</button>
+      <button data-goal="maintain">Maintain</button>
+      <button data-goal="bulk">Bulk</button>
+    </div>
+
+    <button class="btn-primary" onclick="calculate()">Calculate &amp; Generate Plan →</button>
+  </div>
+
+  <!-- RESULTS PANEL -->
+  <div class="results">
+    <div class="results-empty" id="emptyState">
+      <div class="big-num">??</div>
+      <p>Fill in stats · Hit calculate</p>
+    </div>
+
+    <div class="results-content" id="resultsContent">
+      <div class="macro-summary">
+        <div class="goal-tag" id="goalTag">CUTTING</div>
+        <div class="calorie-display">
+          <div class="calorie-num" id="calorieNum">2200</div>
+          <div>
+            <div class="calorie-label">Daily Calories</div>
+            <div class="mono" style="font-size: 11px; color: var(--muted); margin-top: 4px;" id="tdeeDisplay">TDEE: 2500</div>
+          </div>
+        </div>
+        <div class="macros-grid">
+          <div class="macro-cell">
+            <div class="num" id="proteinG">165g</div>
+            <div class="name">Protein</div>
+          </div>
+          <div class="macro-cell">
+            <div class="num" id="carbsG">220g</div>
+            <div class="name">Carbs</div>
+          </div>
+          <div class="macro-cell">
+            <div class="num" id="fatG">70g</div>
+            <div class="name">Fat</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ad slot between results and meal plan -->
+      <div class="ad-slot">
+        Ad Slot · 728×90 · Replace with AdSense unit
+        <!-- AdSense: insert <ins> tag here once approved -->
+      </div>
+
+      <div class="meal-section">
+        <div class="section-header">
+          <h3>Your 7-day <em>plan.</em></h3>
+          <button class="regen-btn" onclick="generateMealPlan()">↻ Regenerate</button>
+        </div>
+        <div id="mealPlan"></div>
+      </div>
+
+      <div class="meal-section">
+        <div class="section-header">
+          <h3>Grocery <em>list.</em></h3>
+        </div>
+        <div class="grocery-list" id="groceryList"></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>© Macro Lab · 2026</div>
+    <div>Built for serious lifters</div>
+    <div><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Contact</a></div>
+  </div>
+</footer>
+
+<script>
+// ===== STATE =====
+let state = {
+  unit: 'metric',
+  sex: 'male',
+  goal: 'cut'
+};
+
+// ===== SEGMENTED CONTROL HANDLERS =====
+document.querySelectorAll('#unitSeg button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#unitSeg button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state.unit = b.dataset.unit;
+    updateUnitLabels();
+  });
+});
+document.querySelectorAll('#sexSeg button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#sexSeg button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state.sex = b.dataset.sex;
+  });
+});
+document.querySelectorAll('#goalSeg button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#goalSeg button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state.goal = b.dataset.goal;
+  });
+});
+
+function updateUnitLabels() {
+  if (state.unit === 'imperial') {
+    document.getElementById('heightLabel').textContent = 'Height (in)';
+    document.getElementById('weightLabel').textContent = 'Weight (lb)';
+    document.getElementById('height').value = 69;
+    document.getElementById('weight').value = 165;
+  } else {
+    document.getElementById('heightLabel').textContent = 'Height (cm)';
+    document.getElementById('weightLabel').textContent = 'Weight (kg)';
+    document.getElementById('height').value = 175;
+    document.getElementById('weight').value = 75;
+  }
+}
+
+// ===== CORE CALCULATION =====
+function calculate() {
+  const age = +document.getElementById('age').value;
+  let height = +document.getElementById('height').value;
+  let weight = +document.getElementById('weight').value;
+  const activity = +document.getElementById('activity').value;
+
+  // Convert imperial to metric
+  if (state.unit === 'imperial') {
+    height = height * 2.54;
+    weight = weight * 0.453592;
+  }
+
+  // Mifflin-St Jeor BMR
+  let bmr;
+  if (state.sex === 'male') {
+    bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+  } else {
+    bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+  }
+  const tdee = Math.round(bmr * activity);
+
+  let calories;
+  if (state.goal === 'cut') calories = Math.round(tdee - 500);
+  else if (state.goal === 'bulk') calories = Math.round(tdee + 350);
+  else calories = tdee;
+
+  // Macros: protein 1g per lb LBM (approx 0.9g/lb bodyweight for simplicity)
+  // Adjusted: protein scales with goal
+  const weightLb = weight / 0.453592;
+  let proteinG;
+  if (state.goal === 'cut') proteinG = Math.round(weightLb * 1.0);
+  else if (state.goal === 'bulk') proteinG = Math.round(weightLb * 0.9);
+  else proteinG = Math.round(weightLb * 0.85);
+
+  const proteinCals = proteinG * 4;
+  const fatG = Math.round((calories * 0.25) / 9);
+  const fatCals = fatG * 9;
+  const carbsG = Math.round((calories - proteinCals - fatCals) / 4);
+
+  // Display
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('resultsContent').classList.add('active');
+  document.getElementById('calorieNum').textContent = calories;
+  document.getElementById('tdeeDisplay').textContent = `TDEE: ${tdee} kcal`;
+  document.getElementById('proteinG').textContent = proteinG + 'g';
+  document.getElementById('carbsG').textContent = carbsG + 'g';
+  document.getElementById('fatG').textContent = fatG + 'g';
+  document.getElementById('goalTag').textContent = state.goal.toUpperCase() + 'TING';
+  if (state.goal === 'maintain') document.getElementById('goalTag').textContent = 'MAINTAINING';
+  if (state.goal === 'bulk') document.getElementById('goalTag').textContent = 'BULKING';
+
+  state.targetCals = calories;
+  state.targetProtein = proteinG;
+  generateMealPlan();
+}
+
+// ===== MEAL DATABASE =====
+// Each meal: { name, cals, p, c, f, ingredients: [{item, qty}] }
+const MEALS = {
+  breakfast: [
+    { name: 'Oats with banana & whey', cals: 450, p: 35, c: 65, f: 9, ingredients: [['Rolled oats', '80g'], ['Banana', '1'], ['Whey protein', '30g'], ['Almond milk', '250ml']] },
+    { name: 'Greek yogurt bowl with berries', cals: 380, p: 32, c: 45, f: 8, ingredients: [['Greek yogurt 0%', '300g'], ['Mixed berries', '100g'], ['Honey', '15g'], ['Granola', '30g']] },
+    { name: 'Egg white omelette & toast', cals: 420, p: 38, c: 40, f: 12, ingredients: [['Egg whites', '200g'], ['Whole eggs', '1'], ['Spinach', '50g'], ['Whole grain bread', '2 slices']] },
+    { name: 'Protein pancakes', cals: 480, p: 36, c: 55, f: 10, ingredients: [['Oat flour', '60g'], ['Whey protein', '30g'], ['Egg whites', '100g'], ['Maple syrup', '15g']] },
+    { name: 'Avocado toast with eggs', cals: 510, p: 28, c: 42, f: 22, ingredients: [['Sourdough bread', '2 slices'], ['Avocado', '1/2'], ['Eggs', '2'], ['Cherry tomatoes', '50g']] },
+    { name: 'Cottage cheese & fruit', cals: 340, p: 30, c: 35, f: 8, ingredients: [['Cottage cheese', '250g'], ['Pineapple', '150g'], ['Walnuts', '15g']] },
+    { name: 'Smoothie bowl', cals: 460, p: 35, c: 60, f: 10, ingredients: [['Frozen berries', '150g'], ['Whey protein', '30g'], ['Banana', '1'], ['Chia seeds', '15g'], ['Almond milk', '200ml']] }
+  ],
+  lunch: [
+    { name: 'Grilled chicken & rice bowl', cals: 620, p: 50, c: 70, f: 12, ingredients: [['Chicken breast', '180g'], ['Basmati rice', '80g raw'], ['Broccoli', '150g'], ['Olive oil', '10g']] },
+    { name: 'Tuna pasta salad', cals: 560, p: 42, c: 65, f: 14, ingredients: [['Tuna in water', '160g'], ['Whole wheat pasta', '70g raw'], ['Cherry tomatoes', '100g'], ['Olive oil', '10g'], ['Lemon', '1']] },
+    { name: 'Turkey & sweet potato bowl', cals: 580, p: 45, c: 60, f: 14, ingredients: [['Ground turkey 93/7', '170g'], ['Sweet potato', '250g'], ['Bell peppers', '100g'], ['Olive oil', '10g']] },
+    { name: 'Salmon with quinoa', cals: 640, p: 42, c: 55, f: 22, ingredients: [['Salmon fillet', '170g'], ['Quinoa', '70g raw'], ['Asparagus', '150g'], ['Lemon', '1']] },
+    { name: 'Beef stir-fry with rice', cals: 600, p: 45, c: 65, f: 15, ingredients: [['Lean beef strips', '160g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '200g'], ['Soy sauce', '15ml'], ['Sesame oil', '5g']] },
+    { name: 'Chicken Caesar wrap', cals: 540, p: 42, c: 50, f: 16, ingredients: [['Chicken breast', '150g'], ['Whole wheat tortilla', '1 large'], ['Romaine lettuce', '100g'], ['Parmesan', '15g'], ['Caesar dressing light', '20g']] },
+    { name: 'Lentil & chicken soup', cals: 510, p: 45, c: 55, f: 9, ingredients: [['Chicken breast', '140g'], ['Red lentils', '60g raw'], ['Carrots', '100g'], ['Onion', '1/2'], ['Stock', '500ml']] }
+  ],
+  dinner: [
+    { name: 'Grilled steak & roast potatoes', cals: 680, p: 48, c: 60, f: 24, ingredients: [['Sirloin steak', '180g'], ['Baby potatoes', '300g'], ['Green beans', '150g'], ['Olive oil', '12g']] },
+    { name: 'Baked cod with veggies', cals: 520, p: 45, c: 50, f: 12, ingredients: [['Cod fillet', '200g'], ['Roasted vegetables mix', '300g'], ['Quinoa', '60g raw'], ['Olive oil', '10g']] },
+    { name: 'Chicken curry with rice', cals: 640, p: 45, c: 70, f: 16, ingredients: [['Chicken thigh boneless', '170g'], ['Basmati rice', '70g raw'], ['Coconut milk light', '80ml'], ['Curry paste', '20g'], ['Spinach', '100g']] },
+    { name: 'Turkey meatballs & pasta', cals: 620, p: 48, c: 65, f: 16, ingredients: [['Ground turkey', '170g'], ['Whole wheat pasta', '70g raw'], ['Marinara sauce', '150g'], ['Parmesan', '15g']] },
+    { name: 'Shrimp tacos', cals: 560, p: 42, c: 55, f: 16, ingredients: [['Shrimp', '180g'], ['Corn tortillas', '3'], ['Avocado', '1/2'], ['Cabbage slaw', '100g'], ['Lime', '1']] },
+    { name: 'Tofu & vegetable stir-fry', cals: 540, p: 38, c: 55, f: 18, ingredients: [['Firm tofu', '200g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '250g'], ['Soy sauce', '15ml'], ['Sesame oil', '8g']] },
+    { name: 'Roast chicken & sweet potato', cals: 600, p: 50, c: 55, f: 16, ingredients: [['Chicken breast', '200g'], ['Sweet potato', '250g'], ['Brussels sprouts', '150g'], ['Olive oil', '10g']] }
+  ],
+  snack: [
+    { name: 'Protein shake & apple', cals: 250, p: 25, c: 30, f: 4, ingredients: [['Whey protein', '30g'], ['Apple', '1'], ['Almond milk', '250ml']] },
+    { name: 'Greek yogurt & almonds', cals: 280, p: 22, c: 20, f: 12, ingredients: [['Greek yogurt 0%', '200g'], ['Almonds', '20g'], ['Honey', '10g']] },
+    { name: 'Rice cakes & peanut butter', cals: 240, p: 10, c: 30, f: 10, ingredients: [['Rice cakes', '3'], ['Peanut butter', '20g'], ['Banana', '1/2']] },
+    { name: 'Cottage cheese & berries', cals: 220, p: 25, c: 18, f: 5, ingredients: [['Cottage cheese', '200g'], ['Mixed berries', '80g']] },
+    { name: 'Hard boiled eggs & fruit', cals: 260, p: 18, c: 22, f: 12, ingredients: [['Eggs', '2'], ['Orange', '1'], ['Walnuts', '10g']] }
+  ]
+};
+
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+// ===== MEAL PLAN GENERATOR =====
+function generateMealPlan() {
+  const target = state.targetCals;
+  // Distribution: breakfast 25%, lunch 30%, dinner 30%, snack 15%
+  const dist = { breakfast: 0.25, lunch: 0.30, dinner: 0.30, snack: 0.15 };
+
+  const plan = [];
+  const groceryMap = {};
+
+  for (let d = 0; d < 7; d++) {
+    const day = { name: DAYS[d], meals: [] };
+    let dayCals = 0;
+    let dayP = 0;
+
+    ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
+      const targetCals = target * dist[slot];
+      const options = MEALS[slot];
+      // Pick meal closest to target (with some randomness for variety)
+      const shuffled = [...options].sort(() => Math.random() - 0.5);
+      const best = shuffled.reduce((a, b) =>
+        Math.abs(b.cals - targetCals) < Math.abs(a.cals - targetCals) ? b : a
+      );
+      day.meals.push({ slot, ...best });
+      dayCals += best.cals;
+      dayP += best.p;
+      // Aggregate grocery
+      best.ingredients.forEach(([item, qty]) => {
+        if (!groceryMap[item]) groceryMap[item] = [];
+        groceryMap[item].push(qty);
+      });
+    });
+
+    day.totalCals = dayCals;
+    day.totalP = dayP;
+    plan.push(day);
+  }
+
+  renderMealPlan(plan);
+  renderGroceryList(groceryMap);
+}
+
+function renderMealPlan(plan) {
+  const container = document.getElementById('mealPlan');
+  const slotLabels = { breakfast: 'AM', lunch: 'NOON', dinner: 'PM', snack: '15:00' };
+
+  container.innerHTML = plan.map(day => `
+    <div class="day-card">
+      <div class="day-header">
+        <span>${day.name}</span>
+        <span>${day.totalCals} kcal · ${day.totalP}g protein</span>
+      </div>
+      <div class="day-meals">
+        ${day.meals.map(m => `
+          <div class="meal-row">
+            <div class="meal-time">${slotLabels[m.slot]}</div>
+            <div class="meal-name">${m.name}</div>
+            <div class="meal-cals">${m.cals} kcal</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderGroceryList(groceryMap) {
+  const container = document.getElementById('groceryList');
+  const items = Object.keys(groceryMap).sort();
+  container.innerHTML = items.map(item => `
+    <div class="grocery-item">
+      <span>${item}</span>
+      <span class="qty">×${groceryMap[item].length}</span>
+    </div>
+  `).join('');
+}
+
+// Initial render with default values
+calculate();
+</script>
+
+</body>
+</html>
