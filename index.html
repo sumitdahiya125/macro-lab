@@ -569,7 +569,20 @@ footer a { color: var(--accent); text-decoration: none; }
       </div>
     </div>
 
-    <div class="panel-label" style="margin-top: 20px;">02 / Goal</div>
+    <div class="panel-label" style="margin-top: 20px;">02 / Diet</div>
+    <div class="form-row" style="grid-template-columns: 1fr; margin-top: 8px;">
+      <div class="form-field">
+        <label>Restrictions</label>
+        <select id="diet">
+          <option value="omnivore" selected>None — eat anything</option>
+          <option value="pescatarian">Pescatarian (no meat)</option>
+          <option value="vegetarian">Vegetarian (no meat or fish)</option>
+          <option value="vegan">Vegan (no animal products)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel-label" style="margin-top: 20px;">03 / Goal</div>
     <div class="segmented" id="goalSeg" style="margin-top: 8px;">
       <button data-goal="cut" class="active">Cut</button>
       <button data-goal="maintain">Maintain</button>
@@ -743,41 +756,65 @@ function calculate() {
 }
 
 // ===== MEAL DATABASE =====
-// Each meal: { name, cals, p, c, f, ingredients: [{item, qty}] }
+// A meal qualifies for any diet listed in its `diet` array.
+// vegan ⊂ vegetarian ⊂ pescatarian ⊂ omnivore — each level is permitted by all looser levels.
+const D = {
+  meat:  ['omnivore'],
+  fish:  ['omnivore', 'pescatarian'],
+  veg:   ['omnivore', 'pescatarian', 'vegetarian'],
+  vegan: ['omnivore', 'pescatarian', 'vegetarian', 'vegan']
+};
+
 const MEALS = {
   breakfast: [
-    { name: 'Oats with banana & whey', cals: 450, p: 35, c: 65, f: 9, ingredients: [['Rolled oats', '80g'], ['Banana', '1'], ['Whey protein', '30g'], ['Almond milk', '250ml']] },
-    { name: 'Greek yogurt bowl with berries', cals: 380, p: 32, c: 45, f: 8, ingredients: [['Greek yogurt 0%', '300g'], ['Mixed berries', '100g'], ['Honey', '15g'], ['Granola', '30g']] },
-    { name: 'Egg white omelette & toast', cals: 420, p: 38, c: 40, f: 12, ingredients: [['Egg whites', '200g'], ['Whole eggs', '1'], ['Spinach', '50g'], ['Whole grain bread', '2 slices']] },
-    { name: 'Protein pancakes', cals: 480, p: 36, c: 55, f: 10, ingredients: [['Oat flour', '60g'], ['Whey protein', '30g'], ['Egg whites', '100g'], ['Maple syrup', '15g']] },
-    { name: 'Avocado toast with eggs', cals: 510, p: 28, c: 42, f: 22, ingredients: [['Sourdough bread', '2 slices'], ['Avocado', '1/2'], ['Eggs', '2'], ['Cherry tomatoes', '50g']] },
-    { name: 'Cottage cheese & fruit', cals: 340, p: 30, c: 35, f: 8, ingredients: [['Cottage cheese', '250g'], ['Pineapple', '150g'], ['Walnuts', '15g']] },
-    { name: 'Smoothie bowl', cals: 460, p: 35, c: 60, f: 10, ingredients: [['Frozen berries', '150g'], ['Whey protein', '30g'], ['Banana', '1'], ['Chia seeds', '15g'], ['Almond milk', '200ml']] }
+    { name: 'Oats with banana & whey', diet: D.veg, cals: 450, p: 35, c: 65, f: 9, ingredients: [['Rolled oats', '80g'], ['Banana', '1'], ['Whey protein', '30g'], ['Almond milk', '250ml']] },
+    { name: 'Greek yogurt bowl with berries', diet: D.veg, cals: 380, p: 32, c: 45, f: 8, ingredients: [['Greek yogurt 0%', '300g'], ['Mixed berries', '100g'], ['Honey', '15g'], ['Granola', '30g']] },
+    { name: 'Egg white omelette & toast', diet: D.veg, cals: 420, p: 38, c: 40, f: 12, ingredients: [['Egg whites', '200g'], ['Whole eggs', '1'], ['Spinach', '50g'], ['Whole grain bread', '2 slices']] },
+    { name: 'Protein pancakes', diet: D.veg, cals: 480, p: 36, c: 55, f: 10, ingredients: [['Oat flour', '60g'], ['Whey protein', '30g'], ['Egg whites', '100g'], ['Maple syrup', '15g']] },
+    { name: 'Avocado toast with eggs', diet: D.veg, cals: 510, p: 28, c: 42, f: 22, ingredients: [['Sourdough bread', '2 slices'], ['Avocado', '1/2'], ['Eggs', '2'], ['Cherry tomatoes', '50g']] },
+    { name: 'Cottage cheese & fruit', diet: D.veg, cals: 340, p: 30, c: 35, f: 8, ingredients: [['Cottage cheese', '250g'], ['Pineapple', '150g'], ['Walnuts', '15g']] },
+    { name: 'Smoothie bowl', diet: D.veg, cals: 460, p: 35, c: 60, f: 10, ingredients: [['Frozen berries', '150g'], ['Whey protein', '30g'], ['Banana', '1'], ['Chia seeds', '15g'], ['Almond milk', '200ml']] },
+    { name: 'Overnight oats with soy milk', diet: D.vegan, cals: 450, p: 18, c: 65, f: 12, ingredients: [['Rolled oats', '60g'], ['Soy milk', '250ml'], ['Chia seeds', '15g'], ['Banana', '1'], ['Peanut butter', '15g']] },
+    { name: 'Tofu scramble with toast', diet: D.vegan, cals: 440, p: 28, c: 38, f: 18, ingredients: [['Firm tofu', '200g'], ['Mushrooms', '80g'], ['Spinach', '50g'], ['Whole grain bread', '2 slices'], ['Olive oil', '8g']] },
+    { name: 'Peanut butter banana oats', diet: D.vegan, cals: 510, p: 16, c: 65, f: 20, ingredients: [['Rolled oats', '70g'], ['Banana', '1'], ['Peanut butter', '25g'], ['Almond milk', '250ml'], ['Maple syrup', '10g']] },
+    { name: 'Vegan protein smoothie', diet: D.vegan, cals: 390, p: 30, c: 40, f: 12, ingredients: [['Vegan protein', '30g'], ['Banana', '1'], ['Oat milk', '250ml'], ['Almond butter', '15g'], ['Chia seeds', '10g']] }
   ],
   lunch: [
-    { name: 'Grilled chicken & rice bowl', cals: 620, p: 50, c: 70, f: 12, ingredients: [['Chicken breast', '180g'], ['Basmati rice', '80g raw'], ['Broccoli', '150g'], ['Olive oil', '10g']] },
-    { name: 'Tuna pasta salad', cals: 560, p: 42, c: 65, f: 14, ingredients: [['Tuna in water', '160g'], ['Whole wheat pasta', '70g raw'], ['Cherry tomatoes', '100g'], ['Olive oil', '10g'], ['Lemon', '1']] },
-    { name: 'Turkey & sweet potato bowl', cals: 580, p: 45, c: 60, f: 14, ingredients: [['Ground turkey 93/7', '170g'], ['Sweet potato', '250g'], ['Bell peppers', '100g'], ['Olive oil', '10g']] },
-    { name: 'Salmon with quinoa', cals: 640, p: 42, c: 55, f: 22, ingredients: [['Salmon fillet', '170g'], ['Quinoa', '70g raw'], ['Asparagus', '150g'], ['Lemon', '1']] },
-    { name: 'Beef stir-fry with rice', cals: 600, p: 45, c: 65, f: 15, ingredients: [['Lean beef strips', '160g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '200g'], ['Soy sauce', '15ml'], ['Sesame oil', '5g']] },
-    { name: 'Chicken Caesar wrap', cals: 540, p: 42, c: 50, f: 16, ingredients: [['Chicken breast', '150g'], ['Whole wheat tortilla', '1 large'], ['Romaine lettuce', '100g'], ['Parmesan', '15g'], ['Caesar dressing light', '20g']] },
-    { name: 'Lentil & chicken soup', cals: 510, p: 45, c: 55, f: 9, ingredients: [['Chicken breast', '140g'], ['Red lentils', '60g raw'], ['Carrots', '100g'], ['Onion', '1/2'], ['Stock', '500ml']] }
+    { name: 'Grilled chicken & rice bowl', diet: D.meat, cals: 620, p: 50, c: 70, f: 12, ingredients: [['Chicken breast', '180g'], ['Basmati rice', '80g raw'], ['Broccoli', '150g'], ['Olive oil', '10g']] },
+    { name: 'Tuna pasta salad', diet: D.fish, cals: 560, p: 42, c: 65, f: 14, ingredients: [['Tuna in water', '160g'], ['Whole wheat pasta', '70g raw'], ['Cherry tomatoes', '100g'], ['Olive oil', '10g'], ['Lemon', '1']] },
+    { name: 'Turkey & sweet potato bowl', diet: D.meat, cals: 580, p: 45, c: 60, f: 14, ingredients: [['Ground turkey 93/7', '170g'], ['Sweet potato', '250g'], ['Bell peppers', '100g'], ['Olive oil', '10g']] },
+    { name: 'Salmon with quinoa', diet: D.fish, cals: 640, p: 42, c: 55, f: 22, ingredients: [['Salmon fillet', '170g'], ['Quinoa', '70g raw'], ['Asparagus', '150g'], ['Lemon', '1']] },
+    { name: 'Beef stir-fry with rice', diet: D.meat, cals: 600, p: 45, c: 65, f: 15, ingredients: [['Lean beef strips', '160g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '200g'], ['Soy sauce', '15ml'], ['Sesame oil', '5g']] },
+    { name: 'Chicken Caesar wrap', diet: D.meat, cals: 540, p: 42, c: 50, f: 16, ingredients: [['Chicken breast', '150g'], ['Whole wheat tortilla', '1 large'], ['Romaine lettuce', '100g'], ['Parmesan', '15g'], ['Caesar dressing light', '20g']] },
+    { name: 'Lentil & chicken soup', diet: D.meat, cals: 510, p: 45, c: 55, f: 9, ingredients: [['Chicken breast', '140g'], ['Red lentils', '60g raw'], ['Carrots', '100g'], ['Onion', '1/2'], ['Stock', '500ml']] },
+    { name: 'Chickpea curry with rice', diet: D.vegan, cals: 570, p: 22, c: 90, f: 12, ingredients: [['Chickpeas', '200g cooked'], ['Basmati rice', '70g raw'], ['Coconut milk light', '80ml'], ['Curry paste', '20g'], ['Spinach', '100g']] },
+    { name: 'Lentil & vegetable bowl', diet: D.vegan, cals: 540, p: 28, c: 75, f: 14, ingredients: [['Green lentils', '80g raw'], ['Quinoa', '50g raw'], ['Roasted vegetables mix', '200g'], ['Olive oil', '12g'], ['Lemon', '1']] },
+    { name: 'Falafel & hummus wrap', diet: D.vegan, cals: 600, p: 22, c: 70, f: 22, ingredients: [['Falafel', '120g'], ['Whole wheat tortilla', '1 large'], ['Hummus', '40g'], ['Cucumber', '50g'], ['Tomato', '50g'], ['Lettuce', '50g']] },
+    { name: 'Black bean & sweet potato bowl', diet: D.vegan, cals: 560, p: 22, c: 90, f: 12, ingredients: [['Black beans', '150g'], ['Sweet potato', '250g'], ['Brown rice', '60g raw'], ['Avocado', '1/2'], ['Salsa', '30g']] },
+    { name: 'Halloumi salad with quinoa', diet: D.veg, cals: 590, p: 32, c: 50, f: 28, ingredients: [['Halloumi', '120g'], ['Quinoa', '60g raw'], ['Mixed greens', '100g'], ['Cherry tomatoes', '80g'], ['Olive oil', '12g']] }
   ],
   dinner: [
-    { name: 'Grilled steak & roast potatoes', cals: 680, p: 48, c: 60, f: 24, ingredients: [['Sirloin steak', '180g'], ['Baby potatoes', '300g'], ['Green beans', '150g'], ['Olive oil', '12g']] },
-    { name: 'Baked cod with veggies', cals: 520, p: 45, c: 50, f: 12, ingredients: [['Cod fillet', '200g'], ['Roasted vegetables mix', '300g'], ['Quinoa', '60g raw'], ['Olive oil', '10g']] },
-    { name: 'Chicken curry with rice', cals: 640, p: 45, c: 70, f: 16, ingredients: [['Chicken thigh boneless', '170g'], ['Basmati rice', '70g raw'], ['Coconut milk light', '80ml'], ['Curry paste', '20g'], ['Spinach', '100g']] },
-    { name: 'Turkey meatballs & pasta', cals: 620, p: 48, c: 65, f: 16, ingredients: [['Ground turkey', '170g'], ['Whole wheat pasta', '70g raw'], ['Marinara sauce', '150g'], ['Parmesan', '15g']] },
-    { name: 'Shrimp tacos', cals: 560, p: 42, c: 55, f: 16, ingredients: [['Shrimp', '180g'], ['Corn tortillas', '3'], ['Avocado', '1/2'], ['Cabbage slaw', '100g'], ['Lime', '1']] },
-    { name: 'Tofu & vegetable stir-fry', cals: 540, p: 38, c: 55, f: 18, ingredients: [['Firm tofu', '200g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '250g'], ['Soy sauce', '15ml'], ['Sesame oil', '8g']] },
-    { name: 'Roast chicken & sweet potato', cals: 600, p: 50, c: 55, f: 16, ingredients: [['Chicken breast', '200g'], ['Sweet potato', '250g'], ['Brussels sprouts', '150g'], ['Olive oil', '10g']] }
+    { name: 'Grilled steak & roast potatoes', diet: D.meat, cals: 680, p: 48, c: 60, f: 24, ingredients: [['Sirloin steak', '180g'], ['Baby potatoes', '300g'], ['Green beans', '150g'], ['Olive oil', '12g']] },
+    { name: 'Baked cod with veggies', diet: D.fish, cals: 520, p: 45, c: 50, f: 12, ingredients: [['Cod fillet', '200g'], ['Roasted vegetables mix', '300g'], ['Quinoa', '60g raw'], ['Olive oil', '10g']] },
+    { name: 'Chicken curry with rice', diet: D.meat, cals: 640, p: 45, c: 70, f: 16, ingredients: [['Chicken thigh boneless', '170g'], ['Basmati rice', '70g raw'], ['Coconut milk light', '80ml'], ['Curry paste', '20g'], ['Spinach', '100g']] },
+    { name: 'Turkey meatballs & pasta', diet: D.meat, cals: 620, p: 48, c: 65, f: 16, ingredients: [['Ground turkey', '170g'], ['Whole wheat pasta', '70g raw'], ['Marinara sauce', '150g'], ['Parmesan', '15g']] },
+    { name: 'Shrimp tacos', diet: D.fish, cals: 560, p: 42, c: 55, f: 16, ingredients: [['Shrimp', '180g'], ['Corn tortillas', '3'], ['Avocado', '1/2'], ['Cabbage slaw', '100g'], ['Lime', '1']] },
+    { name: 'Tofu & vegetable stir-fry', diet: D.vegan, cals: 540, p: 38, c: 55, f: 18, ingredients: [['Firm tofu', '200g'], ['Jasmine rice', '70g raw'], ['Mixed vegetables', '250g'], ['Soy sauce', '15ml'], ['Sesame oil', '8g']] },
+    { name: 'Roast chicken & sweet potato', diet: D.meat, cals: 600, p: 50, c: 55, f: 16, ingredients: [['Chicken breast', '200g'], ['Sweet potato', '250g'], ['Brussels sprouts', '150g'], ['Olive oil', '10g']] },
+    { name: 'Lentil dahl with rice', diet: D.vegan, cals: 580, p: 26, c: 90, f: 12, ingredients: [['Red lentils', '80g raw'], ['Basmati rice', '70g raw'], ['Coconut milk light', '60ml'], ['Spinach', '80g'], ['Olive oil', '8g']] },
+    { name: 'Tempeh tacos', diet: D.vegan, cals: 560, p: 32, c: 60, f: 18, ingredients: [['Tempeh', '150g'], ['Corn tortillas', '3'], ['Avocado', '1/2'], ['Cabbage slaw', '100g'], ['Lime', '1'], ['Salsa', '30g']] },
+    { name: 'Chickpea coconut curry', diet: D.vegan, cals: 620, p: 22, c: 90, f: 18, ingredients: [['Chickpeas', '200g cooked'], ['Basmati rice', '70g raw'], ['Coconut milk light', '100ml'], ['Curry paste', '20g'], ['Tomato', '80g']] },
+    { name: 'Eggplant parmesan with pasta', diet: D.veg, cals: 640, p: 32, c: 70, f: 22, ingredients: [['Eggplant', '250g'], ['Marinara sauce', '150g'], ['Parmesan', '30g'], ['Mozzarella', '40g'], ['Whole wheat pasta', '60g raw']] }
   ],
   snack: [
-    { name: 'Protein shake & apple', cals: 250, p: 25, c: 30, f: 4, ingredients: [['Whey protein', '30g'], ['Apple', '1'], ['Almond milk', '250ml']] },
-    { name: 'Greek yogurt & almonds', cals: 280, p: 22, c: 20, f: 12, ingredients: [['Greek yogurt 0%', '200g'], ['Almonds', '20g'], ['Honey', '10g']] },
-    { name: 'Rice cakes & peanut butter', cals: 240, p: 10, c: 30, f: 10, ingredients: [['Rice cakes', '3'], ['Peanut butter', '20g'], ['Banana', '1/2']] },
-    { name: 'Cottage cheese & berries', cals: 220, p: 25, c: 18, f: 5, ingredients: [['Cottage cheese', '200g'], ['Mixed berries', '80g']] },
-    { name: 'Hard boiled eggs & fruit', cals: 260, p: 18, c: 22, f: 12, ingredients: [['Eggs', '2'], ['Orange', '1'], ['Walnuts', '10g']] }
+    { name: 'Protein shake & apple', diet: D.veg, cals: 250, p: 25, c: 30, f: 4, ingredients: [['Whey protein', '30g'], ['Apple', '1'], ['Almond milk', '250ml']] },
+    { name: 'Greek yogurt & almonds', diet: D.veg, cals: 280, p: 22, c: 20, f: 12, ingredients: [['Greek yogurt 0%', '200g'], ['Almonds', '20g'], ['Honey', '10g']] },
+    { name: 'Rice cakes & peanut butter', diet: D.vegan, cals: 240, p: 10, c: 30, f: 10, ingredients: [['Rice cakes', '3'], ['Peanut butter', '20g'], ['Banana', '1/2']] },
+    { name: 'Cottage cheese & berries', diet: D.veg, cals: 220, p: 25, c: 18, f: 5, ingredients: [['Cottage cheese', '200g'], ['Mixed berries', '80g']] },
+    { name: 'Hard boiled eggs & fruit', diet: D.veg, cals: 260, p: 18, c: 22, f: 12, ingredients: [['Eggs', '2'], ['Orange', '1'], ['Walnuts', '10g']] },
+    { name: 'Hummus & veggies', diet: D.vegan, cals: 240, p: 8, c: 30, f: 10, ingredients: [['Hummus', '60g'], ['Carrots', '100g'], ['Cucumber', '100g'], ['Pita bread', '1']] },
+    { name: 'Trail mix', diet: D.vegan, cals: 260, p: 8, c: 22, f: 18, ingredients: [['Mixed nuts', '30g'], ['Dried fruit', '15g'], ['Dark chocolate', '10g']] },
+    { name: 'Edamame & rice crackers', diet: D.vegan, cals: 230, p: 14, c: 25, f: 8, ingredients: [['Edamame shelled', '100g'], ['Rice crackers', '25g']] }
   ]
 };
 
@@ -786,6 +823,7 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 // ===== MEAL PLAN GENERATOR =====
 function generateMealPlan() {
   const target = state.targetCals;
+  const diet = document.getElementById('diet').value;
   // Distribution: breakfast 25%, lunch 30%, dinner 30%, snack 15%
   const dist = { breakfast: 0.25, lunch: 0.30, dinner: 0.30, snack: 0.15 };
 
@@ -800,8 +838,9 @@ function generateMealPlan() {
 
     ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
       const targetCals = target * dist[slot];
+      const eligible = MEALS[slot].filter(m => m.diet.includes(diet));
       // Rank by calorie distance, keep top 5 as acceptable, prefer ones not yet used this week
-      const ranked = [...MEALS[slot]].sort((a, b) =>
+      const ranked = [...eligible].sort((a, b) =>
         Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals)
       );
       const pool = ranked.slice(0, Math.min(5, ranked.length));
