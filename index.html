@@ -33,6 +33,18 @@
   --radius: 12px;
   --radius-sm: 8px;
 }
+:root.dark {
+  --bg: #15171a;
+  --surface: #1f2125;
+  --ink: #f0f0f0;
+  --ink-2: #c8c8c8;
+  --muted: #888;
+  --border: #2e3137;
+  --border-strong: #3f434a;
+  --accent-soft: #3d1f12;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-md: 0 6px 20px rgba(0,0,0,.5);
+}
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -73,10 +85,34 @@ header {
   color: var(--ink);
 }
 .logo span { color: var(--accent); }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .header-tag {
   font-size: 12px;
   color: var(--muted);
   font-weight: 500;
+}
+.icon-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--ink-2);
+  transition: background 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.icon-btn:hover {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--muted);
 }
 
 /* HERO */
@@ -718,6 +754,179 @@ header {
   font-weight: 500;
 }
 
+/* Macro donut chart */
+.macro-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 16px 0 10px;
+}
+.macro-donut-wrap svg { flex-shrink: 0; }
+.macro-donut-center {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  fill: var(--ink);
+}
+.macro-donut-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.donut-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.donut-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Favorite, hide, drag handles */
+.meal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 4px;
+}
+.mini-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mini-btn:hover {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--muted);
+}
+.mini-btn.is-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.meal-row[draggable="true"] {
+  cursor: grab;
+}
+.meal-row.drag-over {
+  background: var(--accent-soft);
+  outline: 2px dashed var(--accent);
+  outline-offset: -2px;
+}
+.meal-row.dragging {
+  opacity: 0.4;
+}
+.drag-handle {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: -1px;
+  margin-right: 4px;
+  cursor: grab;
+  user-select: none;
+}
+
+/* Grocery sections */
+.grocery-section {
+  margin-bottom: 14px;
+}
+.grocery-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.grocery-section-head h4 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  margin: 0;
+}
+.grocery-section-head .count {
+  font-size: 11px;
+  color: var(--muted);
+}
+.grocery-section .grocery-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+}
+.computed-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(91, 155, 213, 0.15);
+  color: #4682c4;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: 2px;
+}
+
+/* Reset button */
+.btn-secondary {
+  width: 100%;
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--border-strong);
+  padding: 9px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-secondary:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Mobile tightening */
+@media (max-width: 600px) {
+  .hero { padding: 28px 16px 18px; }
+  .hero h1 { font-size: clamp(22px, 6vw, 28px); }
+  .hero-sub { font-size: 14px; }
+  .app { padding: 0 12px 32px; gap: 14px; }
+  .card { padding: 16px; }
+  .card-form { padding: 18px; }
+  .field-row { grid-template-columns: 1fr; gap: 10px; }
+  .calorie-num { font-size: 36px; }
+  .macros-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .macro-cell { padding: 8px; }
+  .macro-value { font-size: 18px; }
+  .header-inner { padding: 12px 16px; }
+  .day-meals { padding: 4px 10px; }
+  .meal-row { grid-template-columns: 56px 1fr auto; gap: 8px; }
+  .meal-ingredients { grid-template-columns: 1fr; }
+  .section-nav { top: 50px; }
+  .grocery-section .grocery-list { grid-template-columns: 1fr; }
+}
+@media (max-width: 380px) {
+  .section-nav a { font-size: 12px; padding: 6px 8px; }
+  .macros-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+
 /* PRINT */
 @media print {
   header, footer, .card-form, .section-nav, .regen-btn,
@@ -766,7 +975,10 @@ footer {
 <header>
   <div class="header-inner">
     <div class="logo">Macro<span>Lab</span></div>
-    <div class="header-tag">Free · No signup</div>
+    <div class="header-actions">
+      <button class="icon-btn" type="button" id="shareBtn" onclick="shareUrl()" title="Share this plan as a URL" aria-label="Share plan">↗ Share</button>
+      <button class="icon-btn" type="button" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+    </div>
   </div>
 </header>
 
@@ -852,16 +1064,38 @@ footer {
       </div>
     </div>
 
+    <div class="field-row">
+      <div class="field-group">
+        <label for="health">Health filter</label>
+        <select id="health">
+          <option value="healthy" selected>Healthy only (recommended)</option>
+          <option value="all">Show all (incl. fried &amp; indulgent)</option>
+          <option value="diabetes">Diabetes-friendly (no added sugar)</option>
+          <option value="heart">Heart-friendly (no fried, no rich)</option>
+          <option value="high-protein">High protein only (≥30g per meal)</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="duration">Plan length</label>
+        <select id="duration">
+          <option value="5">5 days (work week)</option>
+          <option value="7" selected>7 days (full week)</option>
+          <option value="14">14 days (2 weeks)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-group" style="margin-top:-6px;">
+      <div class="field-help">Health filter is informational only — not medical advice.</div>
+    </div>
+
     <div class="field-group">
-      <label for="health">Health filter</label>
-      <select id="health">
-        <option value="healthy" selected>Healthy only (recommended)</option>
-        <option value="all">Show all (incl. fried &amp; indulgent)</option>
-        <option value="diabetes">Diabetes-friendly (no added sugar)</option>
-        <option value="heart">Heart-friendly (no fried, no rich)</option>
-        <option value="high-protein">High protein only (≥30g per meal)</option>
-      </select>
-      <div class="field-help">Informational only — not medical advice. Consult a registered dietitian for specific conditions.</div>
+      <label>Exclude allergens <span class="optional">(check to hide meals containing)</span></label>
+      <div id="allergenChecks" style="display:flex;flex-wrap:wrap;gap:10px 14px;font-size:13px;color:var(--ink-2);">
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="gluten"> Gluten</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="nuts"> Tree nuts &amp; peanuts</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="soy"> Soy</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="dairy"> Dairy</label>
+      </div>
     </div>
 
     <div class="form-section-label">Goal</div>
@@ -872,6 +1106,7 @@ footer {
     </div>
 
     <button class="btn-primary" type="button" onclick="calculate()">Calculate &amp; generate plan</button>
+    <button class="btn-secondary" type="button" onclick="resetAll()">Reset to defaults</button>
   </div>
 
   <!-- RESULTS -->
@@ -903,11 +1138,7 @@ footer {
           <div class="goal-tag" id="goalTag">CUTTING</div>
         </div>
 
-        <div class="macro-bar" aria-label="Macro distribution">
-          <div class="macro-bar-seg-protein" id="macroBarProtein"></div>
-          <div class="macro-bar-seg-carbs"   id="macroBarCarbs"></div>
-          <div class="macro-bar-seg-fat"     id="macroBarFat"></div>
-        </div>
+        <div class="macro-donut-wrap" id="macroDonutWrap" aria-label="Macro distribution"></div>
 
         <div class="macros-grid">
           <div class="macro-cell">
@@ -1099,9 +1330,7 @@ function calculate() {
   document.getElementById('carbsPct').textContent = carbsPct + '% of cals';
   document.getElementById('fatPct').textContent = fatPct + '% of cals';
 
-  document.getElementById('macroBarProtein').style.width = proteinPct + '%';
-  document.getElementById('macroBarCarbs').style.width = carbsPct + '%';
-  document.getElementById('macroBarFat').style.width = fatPct + '%';
+  renderMacroDonut(proteinG, carbsG, fatG);
 
   let goalLabel = 'CUTTING';
   if (state.goal === 'maintain') goalLabel = 'MAINTAINING';
@@ -1318,7 +1547,37 @@ const MEALS = {
   ]
 };
 
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+function getDays(n) {
+  if (n === 7) return ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  if (n === 5) return ['Mon','Tue','Wed','Thu','Fri'];
+  return Array.from({length: n}, (_, i) => `Day ${i+1}`);
+}
+
+// ===== ALLERGEN DETECTION =====
+// Word-boundary regexes against meal name + ingredient names. Conservative —
+// "Whole wheat tortilla" matches gluten via "wheat" or "tortilla".
+const ALLERGEN_PATTERNS = {
+  gluten: /\b(wheat|atta|pasta|bread|tortilla|naan|paratha|bhature|parotta|appam|dosa|idli|biryani|noodle|ramen|granola|cracker|chips|sourdough|whole grain|semolina|sooji|barley|rye|seitan|wrap|bun|chapati|roti|pita|murukku|pakora|thepla|cheela|thali|upma|pongal|uttapam|vada|chips)\b/i,
+  nuts:   /\b(almond|walnut|peanut|cashew|pistachio|pecan|hazelnut|nut|tahini|sesame|nut butter|granola|trail mix|pesto)\b/i,
+  soy:    /\b(soy|tofu|tempeh|edamame|miso|teriyaki|soy sauce)\b/i,
+  dairy:  /\b(yogurt|curd|cheese|paneer|cream|butter|ghee|milk|cottage|halloumi|parmesan|mozzarella|feta|whey|lassi|raita|béchamel|tzatziki|coconut milk|almond milk|soy milk|oat milk)\b/i
+};
+// Plant-milk exclusions — they shouldn't count as dairy
+const NOT_DAIRY = /\b(almond milk|soy milk|oat milk|coconut milk)\b/i;
+
+function detectAllergens(m) {
+  const text = (m.name + ' ' + m.ingredients.map(([n]) => n).join(' ')).toLowerCase();
+  const out = [];
+  if (ALLERGEN_PATTERNS.gluten.test(text)) out.push('gluten');
+  if (ALLERGEN_PATTERNS.nuts.test(text)) out.push('nuts');
+  if (ALLERGEN_PATTERNS.soy.test(text)) out.push('soy');
+  // For dairy, ensure the only milk match isn't plant milk
+  if (ALLERGEN_PATTERNS.dairy.test(text)) {
+    const withoutPlant = text.replace(NOT_DAIRY, '');
+    if (ALLERGEN_PATTERNS.dairy.test(withoutPlant)) out.push('dairy');
+  }
+  return out;
+}
 
 // ===== HEALTH TAGGING =====
 // Single source of truth for "indulgent", "fried", "sugary" meals.
@@ -1353,23 +1612,361 @@ const COOKED_RATIO = {
   'Moong dal': 2.5, 'Yellow moong dal': 2.5, 'Rajma': 2.5, 'Lentils': 2.5
 };
 
+// ===== INGREDIENT NUTRITION TABLE =====
+// {cals, p, c, f} per 100g (or per 100ml for liquids). Sourced from USDA-style averages.
+// Where coverage is ≥80% of a meal's ingredients, computed totals override hand-typed
+// values and the meal gets a small "computed" badge in the UI.
+const NUT = {
+  // Grains / starches (per 100g RAW unless noted)
+  'Rolled oats':            { cals: 389, p: 17,  c: 66, f: 7 },
+  'Oat flour':              { cals: 404, p: 15,  c: 65, f: 9 },
+  'Basmati rice':           { cals: 360, p: 7,   c: 78, f: 1 },
+  'Brown rice':             { cals: 367, p: 8,   c: 76, f: 3 },
+  'Jasmine rice':           { cals: 360, p: 7,   c: 79, f: 1 },
+  'Sushi rice':             { cals: 360, p: 7,   c: 79, f: 1 },
+  'Arborio rice':           { cals: 357, p: 7,   c: 78, f: 1 },
+  'Rice':                   { cals: 360, p: 7,   c: 78, f: 1 },
+  'Cooked rice':            { cals: 130, p: 2.7, c: 28, f: 0.3 },
+  'Whole wheat pasta':      { cals: 348, p: 14,  c: 71, f: 2.5 },
+  'Whole wheat flour':      { cals: 340, p: 13,  c: 72, f: 2.5 },
+  'Whole wheat flour (atta)': { cals: 340, p: 13,  c: 72, f: 2.5 },
+  'Quinoa':                 { cals: 368, p: 14,  c: 64, f: 6 },
+  'Semolina (sooji)':       { cals: 360, p: 12,  c: 73, f: 1 },
+  'Flattened rice (poha)':  { cals: 362, p: 7,   c: 80, f: 1 },
+  'Dosa batter':            { cals: 110, p: 4,   c: 22, f: 0.5 }, // per 100ml
+  'Sourdough bread':        { cals: 250, p: 9,   c: 49, f: 1.5 },
+  'Whole grain bread':      { cals: 252, p: 13,  c: 41, f: 4 },
+  'Whole wheat tortilla':   { cals: 314, p: 9,   c: 51, f: 8 },
+  'Corn tortillas':         { cals: 218, p: 5.7, c: 45, f: 2.9 },
+  'Naan':                   { cals: 320, p: 9,   c: 50, f: 9 },
+  'Pita bread':             { cals: 275, p: 9,   c: 56, f: 1 },
+  'Bhature':                { cals: 320, p: 8,   c: 48, f: 11 },
+  'Parotta':                { cals: 295, p: 6,   c: 40, f: 12 },
+  'Appam':                  { cals: 150, p: 3,   c: 30, f: 1 },
+  'Idli':                   { cals: 130, p: 4,   c: 26, f: 0.5 },
+  'Rice cakes':             { cals: 387, p: 8,   c: 82, f: 3 },
+  'Whole wheat roti':       { cals: 297, p: 11,  c: 58, f: 4 },
+  'Whole wheat paratha':    { cals: 320, p: 8,   c: 45, f: 12 },
+  'Granola':                { cals: 471, p: 10,  c: 64, f: 20 },
+  'Crisp corn tortillas':   { cals: 460, p: 7,   c: 60, f: 22 },
+  'Tortilla chips':         { cals: 489, p: 7,   c: 63, f: 23 },
+  'Corn chips':             { cals: 489, p: 7,   c: 63, f: 23 },
+  'Pita chips':             { cals: 460, p: 10,  c: 60, f: 20 },
+  'Rice crackers':          { cals: 400, p: 8,   c: 84, f: 4 },
+  'Murukku':                { cals: 488, p: 8,   c: 60, f: 24 },
+  'Banana chips':           { cals: 519, p: 2,   c: 58, f: 33 },
+  'Ramen noodles':          { cals: 436, p: 9,   c: 65, f: 17 },
+  'Rice noodles':           { cals: 364, p: 6,   c: 80, f: 1 },
+  'Vegetable dumplings':    { cals: 200, p: 6,   c: 30, f: 6 },
+  // Dairy / alternatives
+  'Greek yogurt 0%':        { cals: 59,  p: 10,  c: 4,  f: 0.4 },
+  'Cottage cheese':         { cals: 98,  p: 11,  c: 3,  f: 4 },
+  'Curd':                   { cals: 62,  p: 3.5, c: 4.7, f: 3.3 },
+  'Paneer':                 { cals: 296, p: 19,  c: 4,  f: 23 },
+  'Feta cheese':            { cals: 264, p: 14,  c: 4,  f: 21 },
+  'Halloumi':               { cals: 313, p: 21,  c: 2,  f: 25 },
+  'Parmesan':               { cals: 392, p: 36,  c: 4,  f: 26 },
+  'Mozzarella':             { cals: 280, p: 22,  c: 2.2, f: 17 },
+  'Cheese':                 { cals: 350, p: 25,  c: 2,  f: 27 },
+  'Cheese filling':         { cals: 350, p: 25,  c: 2,  f: 27 },
+  'Cream':                  { cals: 340, p: 2,   c: 3,  f: 36 },
+  'Butter':                 { cals: 717, p: 0.9, c: 0.1, f: 81 },
+  'Ghee':                   { cals: 900, p: 0,   c: 0,  f: 100 },
+  'Béchamel':               { cals: 130, p: 4,   c: 9,  f: 9 },
+  'Tzatziki':               { cals: 88,  p: 4,   c: 5,  f: 6 },
+  'Curd marinade':          { cals: 62,  p: 3.5, c: 4.7, f: 3.3 },
+  'Almond milk':            { cals: 17,  p: 0.6, c: 0.6, f: 1.5 }, // per 100ml
+  'Soy milk':               { cals: 54,  p: 3.3, c: 6,  f: 1.8 },
+  'Oat milk':               { cals: 47,  p: 1,   c: 7,  f: 1.5 },
+  'Coconut milk':           { cals: 197, p: 2,   c: 3,  f: 21 },
+  'Coconut milk (light)':   { cals: 73,  p: 1,   c: 1.5, f: 7 },
+  // Proteins (animal)
+  'Chicken breast':         { cals: 165, p: 31,  c: 0,  f: 3.6 },
+  'Chicken':                { cals: 190, p: 27,  c: 0,  f: 9 },
+  'Chicken thigh':          { cals: 209, p: 26,  c: 0,  f: 11 },
+  'Chicken thigh boneless': { cals: 209, p: 26,  c: 0,  f: 11 },
+  'Chicken thigh marinated': { cals: 220, p: 25, c: 1,  f: 12 },
+  'Ground turkey':          { cals: 189, p: 27,  c: 0,  f: 8 },
+  'Ground turkey 93/7':     { cals: 176, p: 27,  c: 0,  f: 7 },
+  'Sirloin steak':          { cals: 271, p: 27,  c: 0,  f: 18 },
+  'Lean ground beef':       { cals: 250, p: 26,  c: 0,  f: 15 },
+  'Lean beef strips':       { cals: 220, p: 26,  c: 0,  f: 12 },
+  'Beef sirloin':           { cals: 271, p: 27,  c: 0,  f: 18 },
+  'Lamb':                   { cals: 294, p: 25,  c: 0,  f: 21 },
+  'Lean lamb mince':        { cals: 220, p: 24,  c: 0,  f: 14 },
+  'Pulled pork (or chicken)': { cals: 250, p: 25, c: 0,  f: 16 },
+  'Salmon fillet':          { cals: 208, p: 20,  c: 0,  f: 13 },
+  'Cod fillet':              { cals: 82,  p: 18,  c: 0,  f: 0.7 },
+  'Sea bass fillet':        { cals: 124, p: 24,  c: 0,  f: 2.6 },
+  'Tuna in water':          { cals: 116, p: 26,  c: 0,  f: 1 },
+  'Shrimp':                 { cals: 99,  p: 24,  c: 0,  f: 0.3 },
+  'White fish fillet':      { cals: 95,  p: 20,  c: 0,  f: 1 },
+  'White fish':             { cals: 95,  p: 20,  c: 0,  f: 1 },
+  'Eggs':                   { cals: 155, p: 13,  c: 1.1, f: 11 },
+  'Whole eggs':             { cals: 155, p: 13,  c: 1.1, f: 11 },
+  'Egg whites':             { cals: 52,  p: 11,  c: 0.7, f: 0.2 },
+  'Whey protein':           { cals: 380, p: 78,  c: 8,  f: 4 },
+  'Vegan protein':          { cals: 370, p: 73,  c: 10, f: 4 },
+  // Plant proteins / legumes (cooked weights for beans/chickpeas; raw for dals)
+  'Firm tofu':              { cals: 144, p: 17,  c: 3,  f: 9 },
+  'Tempeh':                 { cals: 192, p: 20,  c: 8,  f: 11 },
+  'Edamame in pods':        { cals: 122, p: 11,  c: 10, f: 5 },
+  'Edamame shelled':        { cals: 122, p: 11,  c: 10, f: 5 },
+  'Chickpeas':              { cals: 164, p: 9,   c: 27, f: 2.6 },  // cooked
+  'Boiled chickpeas':       { cals: 164, p: 9,   c: 27, f: 2.6 },
+  'Brown chickpeas (kadala)': { cals: 164, p: 9, c: 27, f: 2.6 },
+  'Black beans':            { cals: 132, p: 9,   c: 24, f: 0.5 },
+  'Red kidney beans':       { cals: 127, p: 9,   c: 23, f: 0.5 },
+  'Red kidney beans (rajma)': { cals: 127, p: 9, c: 23, f: 0.5 },
+  'Refried beans':          { cals: 100, p: 5,   c: 17, f: 1 },
+  'Falafel':                { cals: 333, p: 13,  c: 32, f: 18 },
+  'Black bean patty':       { cals: 200, p: 11,  c: 28, f: 5 },
+  // Lentils & dals (RAW per 100g unless noted)
+  'Red lentils':            { cals: 358, p: 24,  c: 63, f: 1 },
+  'Red lentils (masoor)':   { cals: 358, p: 24,  c: 63, f: 1 },
+  'Toor dal':               { cals: 343, p: 22,  c: 63, f: 1.5 },
+  'Toor dal sambar':        { cals: 80,  p: 5,   c: 12, f: 1.5 }, // per 100ml ready
+  'Sambar':                 { cals: 80,  p: 5,   c: 12, f: 1.5 },
+  'Rasam':                  { cals: 40,  p: 1.5, c: 7,  f: 0.5 },
+  'Mixed dal':              { cals: 343, p: 22,  c: 63, f: 1 },
+  'Green lentils':          { cals: 353, p: 25,  c: 63, f: 1 },
+  'Lentils':                { cals: 353, p: 25,  c: 63, f: 1 },
+  'Black urad dal':         { cals: 341, p: 25,  c: 59, f: 1.6 },
+  'Chana dal':              { cals: 364, p: 21,  c: 60, f: 5 },
+  'Moong dal':              { cals: 347, p: 24,  c: 63, f: 1 },
+  'Yellow moong dal':       { cals: 347, p: 24,  c: 63, f: 1 },
+  'Urad dal vada':          { cals: 247, p: 11,  c: 26, f: 12 },
+  'Mixed sprouts':          { cals: 60,  p: 6,   c: 10, f: 0.7 },
+  'Roasted chana':          { cals: 369, p: 22,  c: 58, f: 5 },
+  'Besan (gram flour)':     { cals: 387, p: 22,  c: 58, f: 7 },
+  // Vegetables
+  'Mixed vegetables':       { cals: 50,  p: 2.5, c: 10, f: 0.5 },
+  'Roasted vegetables mix': { cals: 80,  p: 2,   c: 12, f: 3 },
+  'Spinach':                { cals: 23,  p: 2.9, c: 3.6, f: 0.4 },
+  'Broccoli':               { cals: 35,  p: 2.4, c: 7,  f: 0.4 },
+  'Cauliflower':            { cals: 25,  p: 1.9, c: 5,  f: 0.3 },
+  'Potato':                 { cals: 77,  p: 2,   c: 17, f: 0.1 },
+  'Sweet potato':           { cals: 86,  p: 1.6, c: 20, f: 0.1 },
+  'Roasted sweet potato':   { cals: 90,  p: 2,   c: 21, f: 0.2 },
+  'Baby potatoes':          { cals: 77,  p: 2,   c: 17, f: 0.1 },
+  'New potatoes':           { cals: 77,  p: 2,   c: 17, f: 0.1 },
+  'Mashed potato':          { cals: 88,  p: 2,   c: 17, f: 1 },
+  'Bell peppers':           { cals: 31,  p: 1,   c: 6,  f: 0.3 },
+  'Bell pepper sticks':     { cals: 31,  p: 1,   c: 6,  f: 0.3 },
+  'Tomato':                 { cals: 18,  p: 0.9, c: 3.9, f: 0.2 },
+  'Cherry tomatoes':        { cals: 18,  p: 0.9, c: 3.9, f: 0.2 },
+  'Tomato sauce':           { cals: 32,  p: 1.4, c: 7,  f: 0.2 },
+  'Marinara sauce':         { cals: 40,  p: 1.4, c: 7,  f: 1 },
+  'Tomato gravy':           { cals: 50,  p: 1.5, c: 7,  f: 2 },
+  'Enchilada sauce':        { cals: 50,  p: 1.5, c: 8,  f: 2 },
+  'Mole sauce':             { cals: 150, p: 4,   c: 16, f: 9 },
+  'Mushrooms':              { cals: 22,  p: 3.1, c: 3.3, f: 0.3 },
+  'Carrots':                { cals: 41,  p: 0.9, c: 10, f: 0.2 },
+  'Carrot sticks':          { cals: 41,  p: 0.9, c: 10, f: 0.2 },
+  'Onion':                  { cals: 40,  p: 1.1, c: 9,  f: 0.1 },
+  'Spring onion':           { cals: 32,  p: 1.8, c: 7,  f: 0.2 },
+  'Cucumber':               { cals: 16,  p: 0.7, c: 3.6, f: 0.1 },
+  'Lettuce':                { cals: 15,  p: 1.4, c: 2.9, f: 0.2 },
+  'Romaine lettuce':        { cals: 17,  p: 1.2, c: 3.3, f: 0.3 },
+  'Mixed greens':           { cals: 20,  p: 2,   c: 3,  f: 0.3 },
+  'Asparagus':              { cals: 20,  p: 2.2, c: 3.9, f: 0.1 },
+  'Green beans':            { cals: 31,  p: 1.8, c: 7,  f: 0.2 },
+  'Brussels sprouts':       { cals: 43,  p: 3.4, c: 9,  f: 0.3 },
+  'Cabbage slaw':           { cals: 30,  p: 1.4, c: 7,  f: 0.2 },
+  'Bok choy':               { cals: 13,  p: 1.5, c: 2.2, f: 0.2 },
+  'Avocado':                { cals: 160, p: 2,   c: 9,  f: 15 },
+  'Kale':                   { cals: 49,  p: 4.3, c: 9,  f: 0.9 },
+  'Eggplant':               { cals: 25,  p: 1,   c: 6,  f: 0.2 },
+  'Okra (bhindi)':          { cals: 33,  p: 1.9, c: 7,  f: 0.2 },
+  'Pumpkin':                { cals: 26,  p: 1,   c: 6.5, f: 0.1 },
+  'Green peas (matar)':     { cals: 84,  p: 5.4, c: 14, f: 0.4 },
+  'Bean sprouts':           { cals: 31,  p: 3,   c: 6,  f: 0.2 },
+  'Bamboo shoots':          { cals: 27,  p: 2.6, c: 5,  f: 0.3 },
+  'Mixed vegetable sabzi':  { cals: 80,  p: 3,   c: 10, f: 3 },
+  'Mixed sabzi':            { cals: 80,  p: 3,   c: 10, f: 3 },
+  'Potato masala':          { cals: 110, p: 2.5, c: 18, f: 3 },
+  'Onion pakora':           { cals: 290, p: 7,   c: 30, f: 16 },
+  'Mixed vegetable pakora': { cals: 290, p: 7,   c: 30, f: 16 },
+  'Cucumber-tomato salad':  { cals: 25,  p: 1,   c: 5,  f: 0.2 },
+  // Fruits (per 100g; or per piece via parenthetical)
+  'Banana':                 { cals: 89,  p: 1.1, c: 23, f: 0.3 },
+  'Apple':                  { cals: 52,  p: 0.3, c: 14, f: 0.2 },
+  'Orange':                 { cals: 47,  p: 0.9, c: 12, f: 0.1 },
+  'Mango':                  { cals: 60,  p: 0.8, c: 15, f: 0.4 },
+  'Pineapple':              { cals: 50,  p: 0.5, c: 13, f: 0.1 },
+  'Mixed berries':          { cals: 50,  p: 1,   c: 12, f: 0.3 },
+  'Frozen berries':         { cals: 50,  p: 1,   c: 12, f: 0.3 },
+  'Fresh figs':             { cals: 74,  p: 0.8, c: 19, f: 0.3 },
+  'Lemon':                  { cals: 29,  p: 1.1, c: 9,  f: 0.3 },
+  'Lime':                   { cals: 30,  p: 0.7, c: 11, f: 0.2 },
+  'Dried fruit':            { cals: 320, p: 3,   c: 75, f: 0.5 },
+  // Nuts / seeds / oils
+  'Almonds':                { cals: 579, p: 21,  c: 22, f: 50 },
+  'Walnuts':                { cals: 654, p: 15,  c: 14, f: 65 },
+  'Mixed nuts':             { cals: 607, p: 20,  c: 21, f: 54 },
+  'Cashews':                { cals: 553, p: 18,  c: 30, f: 44 },
+  'Peanuts':                { cals: 567, p: 26,  c: 16, f: 49 },
+  'Pine nuts':              { cals: 673, p: 14,  c: 13, f: 68 },
+  'Chia seeds':             { cals: 486, p: 17,  c: 42, f: 31 },
+  'Sesame seeds':           { cals: 573, p: 18,  c: 23, f: 50 },
+  'Mustard seeds':          { cals: 508, p: 26,  c: 28, f: 36 },
+  'Peanut butter':          { cals: 588, p: 25,  c: 20, f: 50 },
+  'Almond butter':          { cals: 614, p: 21,  c: 19, f: 56 },
+  'Tahini':                 { cals: 595, p: 17,  c: 21, f: 54 },
+  'Hummus':                 { cals: 166, p: 8,   c: 14, f: 10 },
+  'Guacamole':              { cals: 150, p: 2,   c: 9,  f: 13 },
+  'Olives':                 { cals: 115, p: 0.8, c: 6,  f: 11 },
+  'Olive oil':              { cals: 884, p: 0,   c: 0,  f: 100 },
+  'Sesame oil':             { cals: 884, p: 0,   c: 0,  f: 100 },
+  'Coconut oil':            { cals: 862, p: 0,   c: 0,  f: 100 },
+  'Oil':                    { cals: 884, p: 0,   c: 0,  f: 100 },
+  'Grated coconut':         { cals: 354, p: 3,   c: 15, f: 33 },
+  'Coconut (grated)':       { cals: 354, p: 3,   c: 15, f: 33 },
+  'Coconut':                { cals: 354, p: 3,   c: 15, f: 33 },
+  // Sweet / sugar
+  'Honey':                  { cals: 304, p: 0.3, c: 82, f: 0 },
+  'Maple syrup':            { cals: 260, p: 0,   c: 67, f: 0 },
+  'Mango pickle':           { cals: 150, p: 1,   c: 12, f: 11 },
+  'Dark chocolate':         { cals: 546, p: 5,   c: 61, f: 31 },
+  // Spices / small qty (calorie-negligible at typical amounts)
+  'Spices': { cals: 250, p: 10, c: 50, f: 6 },
+  'Indian spices': { cals: 250, p: 10, c: 50, f: 6 },
+  'Curry spices': { cals: 250, p: 10, c: 50, f: 6 },
+  'Tandoori spices': { cals: 250, p: 10, c: 50, f: 6 },
+  'Kashmiri spices': { cals: 250, p: 10, c: 50, f: 6 },
+  'Biryani masala': { cals: 250, p: 10, c: 50, f: 6 },
+  'Chettinad masala': { cals: 250, p: 10, c: 50, f: 6 },
+  'Hyderabadi biryani masala': { cals: 250, p: 10, c: 50, f: 6 },
+  'Chaat masala': { cals: 250, p: 10, c: 50, f: 6 },
+  'Andhra spice paste': { cals: 250, p: 5, c: 30, f: 12 },
+  'Chettinad spice paste': { cals: 250, p: 5, c: 30, f: 12 },
+  'Curry paste': { cals: 200, p: 4, c: 20, f: 12 },
+  'Thai curry paste': { cals: 200, p: 4, c: 20, f: 12 },
+  'Green curry paste': { cals: 200, p: 4, c: 20, f: 12 },
+  'Tandoori marinade': { cals: 100, p: 3, c: 8, f: 5 },
+  'Turmeric': { cals: 312, p: 10, c: 67, f: 3 },
+  'Cumin': { cals: 375, p: 18, c: 44, f: 22 },
+  'Cumin (jeera)': { cals: 375, p: 18, c: 44, f: 22 },
+  'Black pepper': { cals: 251, p: 10, c: 64, f: 3 },
+  'Cardamom': { cals: 311, p: 11, c: 68, f: 7 },
+  'Curry leaves': { cals: 100, p: 6, c: 18, f: 1 },
+  'Mint chutney': { cals: 50, p: 1, c: 10, f: 1 },
+  'Coconut chutney': { cals: 200, p: 3, c: 8, f: 18 },
+  'Caesar dressing (light)': { cals: 230, p: 1.5, c: 10, f: 21 },
+  'Salsa':                  { cals: 30,  p: 1,   c: 7,  f: 0 },
+  'Pad thai sauce':         { cals: 220, p: 1,   c: 50, f: 1 },
+  'Teriyaki sauce':         { cals: 89,  p: 5.9, c: 16, f: 0 },
+  'Soy sauce':              { cals: 53,  p: 8,   c: 5,  f: 0 },
+  'Miso paste':             { cals: 200, p: 12,  c: 27, f: 6 },
+  'Kimchi':                 { cals: 32,  p: 1.7, c: 6,  f: 0.5 },
+  'Gochujang':              { cals: 245, p: 5,   c: 53, f: 1 },
+  'Soy-garlic marinade':    { cals: 150, p: 5,   c: 25, f: 2 },
+  'Seaweed':                { cals: 35,  p: 6,   c: 5,  f: 0.5 },
+  'Roasted seaweed':        { cals: 350, p: 30,  c: 40, f: 3 },
+  'Fox nuts (makhana)':     { cals: 347, p: 9.7, c: 77, f: 0.1 },
+  'Salt & pepper':          { cals: 0,   p: 0,   c: 0,  f: 0 },
+  'Sea salt':               { cals: 0,   p: 0,   c: 0,  f: 0 },
+  'Stock':                  { cals: 7,   p: 0.7, c: 0.7, f: 0.2 },
+  'Lime juice':             { cals: 30,  p: 0.7, c: 11, f: 0.2 },
+  'Masala chai':            { cals: 60,  p: 2,   c: 9,  f: 2 }, // per 100ml
+  'Green chilli':           { cals: 40,  p: 2,   c: 9,  f: 0.4 },
+  'Cilantro':               { cals: 23,  p: 2.1, c: 3.7, f: 0.5 },
+  'Coriander':              { cals: 23,  p: 2.1, c: 3.7, f: 0.5 },
+  'Mint & coriander':       { cals: 30,  p: 2.5, c: 5,  f: 0.5 },
+  'Salsa, cabbage slaw, etc — covered above': null,
+  'Fenugreek leaves':       { cals: 49,  p: 4.4, c: 6,  f: 0.9 },
+  'Fenugreek leaves (methi)': { cals: 49, p: 4.4, c: 6,  f: 0.9 },
+  'Grape leaves':           { cals: 70,  p: 6,   c: 12, f: 2 },
+  'Ginger':                 { cals: 80,  p: 1.8, c: 18, f: 0.8 },
+  'Celery':                 { cals: 16,  p: 0.7, c: 3,  f: 0.2 },
+  // Wraps / breads not yet covered
+  'Whole wheat bun':        { cals: 270, p: 11,  c: 50, f: 4 },
+  'Papad':                  { cals: 371, p: 25,  c: 53, f: 5 },
+  "Za'atar spice":          { cals: 250, p: 10,  c: 50, f: 6 }
+};
+
+// Parse a qty string into grams (or ml treated as grams for liquids).
+// Returns null when we can't get a numeric weight, in which case the meal
+// keeps its hand-typed totals.
+function qtyToGrams(qty) {
+  const cleaned = qty.replace(/\(.*?\)/g, ' ');
+  // Direct: "80g", "250ml"
+  let m = cleaned.match(/(\d+(?:\.\d+)?)\s*g\b/);
+  if (m) return parseFloat(m[1]);
+  m = cleaned.match(/(\d+(?:\.\d+)?)\s*ml\b/);
+  if (m) return parseFloat(m[1]);
+  // Parenthetical: "1 medium (~120g)"
+  m = qty.match(/\(\s*~?\s*(\d+)\s*g/);
+  if (m) return parseFloat(m[1]);
+  m = qty.match(/\(\s*~?\s*(\d+)\s*g\s*each\s*\)/);
+  if (m) {
+    const each = parseFloat(m[1]);
+    const count = qty.match(/^(\d+)/);
+    return count ? parseFloat(count[1]) * each : each;
+  }
+  return null;
+}
+
+// Common per-piece weights (when qty is "1 medium" with no gram info)
+const PER_PIECE_G = {
+  'Banana': 120, 'Apple': 180, 'Orange': 150, 'Lemon': 60, 'Lime': 60,
+  'Eggs': 50, 'Whole eggs': 50, 'Tomato': 100, 'Bell peppers': 120,
+  'Onion': 100, 'Cucumber': 200, 'Avocado': 200, 'Naan': 100,
+  'Pita bread': 60, 'Whole wheat tortilla': 60, 'Corn tortillas': 30,
+  'Whole wheat roti': 40, 'Whole wheat paratha': 70, 'Bhature': 80,
+  'Parotta': 80, 'Appam': 50, 'Idli': 40, 'Sourdough bread': 40,
+  'Whole grain bread': 40, 'Rice cakes': 10, 'Whole wheat bun': 80,
+  'Pita bread': 60, 'Carrots': 80, 'Sweet potato': 200, 'Potato': 150,
+  'Fresh figs': 50, 'Green chilli': 5, 'Papad': 15, 'Crisp corn tortillas': 30
+};
+
+function piecesToGrams(name, qty) {
+  // Match leading number or unicode fraction
+  const m = qty.match(/^([½¼¾⅓⅔]|\d+(?:\.\d+)?)/);
+  if (!m) return null;
+  const fracs = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1/3, '⅔': 2/3 };
+  const n = fracs[m[1]] !== undefined ? fracs[m[1]] : parseFloat(m[1]);
+  const per = PER_PIECE_G[name];
+  return per ? n * per : null;
+}
+
+function computeMealNutrition(ingredients) {
+  let cals = 0, p = 0, c = 0, f = 0;
+  let unknown = 0;
+  ingredients.forEach(([name, qty]) => {
+    const nut = NUT[name];
+    if (!nut) { unknown++; return; }
+    let grams = qtyToGrams(qty);
+    if (grams === null) grams = piecesToGrams(name, qty);
+    if (grams === null) { unknown++; return; }
+    const factor = grams / 100;
+    cals += nut.cals * factor;
+    p    += nut.p    * factor;
+    c    += nut.c    * factor;
+    f    += nut.f    * factor;
+  });
+  return { cals: Math.round(cals), p: Math.round(p), c: Math.round(c), f: Math.round(f), unknown };
+}
+
 // Detect egg presence by ingredient name. `\beggs?\b` matches "egg" or "eggs" with
 // word boundaries so "Eggplant" doesn't match.
 const HAS_EGG_RE = /\beggs?\b/i;
 const mealHasEgg = (m) => m.ingredients.some(([name]) => HAS_EGG_RE.test(name));
 
-// Init pass: tag meals + auto-append cooked equivalents + demote egg meals out of strict vegetarian
+// Init pass: tag meals + auto-append cooked equivalents + demote egg meals out of
+// strict vegetarian + detect allergens + override hand-typed macros where the
+// ingredient nutrition table has high coverage.
 (function enrichMealsAtInit() {
   ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
     MEALS[slot].forEach(m => {
-      // Indian-style 'vegetarian' excludes eggs. Any veg meal containing eggs
-      // gets demoted to D.egg (still allowed for eggetarian/pescatarian/omnivore).
+      // Egg-demotion (Indian vegetarian excludes eggs)
       if (mealHasEgg(m) && m.diet.includes('vegetarian')) {
         m.diet = m.diet.filter(d => d !== 'vegetarian');
       }
       m.indulgent = INDULGENT.has(m.name);
       m.fried     = FRIED.has(m.name);
       m.sugary    = SUGARY.has(m.name);
+      // Append cooked equivalents to raw-only quantities
       m.ingredients = m.ingredients.map(([name, qty]) => {
         if (!/\braw\b/.test(qty) || /\bcooked\b/.test(qty)) return [name, qty];
         const ratio = COOKED_RATIO[name];
@@ -1379,9 +1976,295 @@ const mealHasEgg = (m) => m.ingredients.some(([name]) => HAS_EGG_RE.test(name));
         const cookedG = Math.round(parseInt(gm[1]) * ratio);
         return [name, `${qty} / ~${cookedG}g cooked`];
       });
+      // Allergen tags
+      m.allergens = detectAllergens(m);
+      // Try ingredient-level macro computation; only override hand-typed if coverage
+      // is high (≥80%) AND the result is within a sane band of the original (it's
+      // probably right if both estimates are close).
+      const total = m.ingredients.length;
+      const computed = computeMealNutrition(m.ingredients);
+      const coverage = (total - computed.unknown) / total;
+      if (coverage >= 0.8 && computed.cals > 0) {
+        const ratio = computed.cals / m.cals;
+        if (ratio >= 0.55 && ratio <= 1.7) {
+          m.cals = computed.cals;
+          m.p = computed.p;
+          m.c = computed.c;
+          m.f = computed.f;
+          m.computed = true;
+        }
+      }
     });
   });
 })();
+
+// ===== FAVORITES / HIDDEN MEALS (localStorage-backed) =====
+const FAVS_KEY = 'macroLab.favs.v1';
+const HIDDEN_KEY = 'macroLab.hidden.v1';
+const favs = new Set();
+const hiddenMeals = new Set();
+try { JSON.parse(localStorage.getItem(FAVS_KEY) || '[]').forEach(n => favs.add(n)); } catch (e) {}
+try { JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]').forEach(n => hiddenMeals.add(n)); } catch (e) {}
+
+function toggleFav(name) {
+  if (favs.has(name)) favs.delete(name); else favs.add(name);
+  try { localStorage.setItem(FAVS_KEY, JSON.stringify([...favs])); } catch (e) {}
+}
+function toggleHidden(name) {
+  if (hiddenMeals.has(name)) hiddenMeals.delete(name); else hiddenMeals.add(name);
+  try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([...hiddenMeals])); } catch (e) {}
+}
+
+// ===== ALLERGEN FILTER =====
+function getExcludedAllergens() {
+  return Array.from(document.querySelectorAll('#allergenChecks input:checked'))
+    .map(cb => cb.dataset.allergen);
+}
+function allergenOk(m, excluded) {
+  if (!excluded.length) return true;
+  return !excluded.some(a => m.allergens.includes(a));
+}
+
+// ===== DONUT CHART =====
+function renderMacroDonut(p, c, f) {
+  const cals = p * 4 + c * 4 + f * 9;
+  if (cals <= 0) { document.getElementById('macroDonutWrap').innerHTML = ''; return; }
+  const pP = (p * 4 / cals) * 100;
+  const pC = (c * 4 / cals) * 100;
+  const pF = (f * 9 / cals) * 100;
+  const C = 2 * Math.PI * 36;
+  let offset = 0;
+  const seg = (pct, color) => {
+    const len = (pct / 100) * C;
+    const r = `<circle cx="50" cy="50" r="36" fill="none" stroke="${color}" stroke-width="14" stroke-dasharray="${len} ${C - len}" stroke-dashoffset="${-offset}" transform="rotate(-90 50 50)"/>`;
+    offset += len;
+    return r;
+  };
+  document.getElementById('macroDonutWrap').innerHTML = `
+    <svg width="110" height="110" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="36" fill="none" stroke="var(--bg)" stroke-width="14"/>
+      ${seg(pP, 'var(--protein)')}
+      ${seg(pC, 'var(--carbs)')}
+      ${seg(pF, 'var(--fat)')}
+      <text x="50" y="48" class="macro-donut-center" style="font-size: 14px;">${Math.round(cals).toLocaleString()}</text>
+      <text x="50" y="60" class="macro-donut-center" style="font-size: 7px; fill: var(--muted); font-weight: 500;">kcal/day</text>
+    </svg>
+    <div class="macro-donut-legend">
+      <div class="donut-legend-row"><span class="donut-swatch" style="background:var(--protein)"></span><strong>${p}g</strong> protein <span style="color:var(--muted)">· ${Math.round(pP)}%</span></div>
+      <div class="donut-legend-row"><span class="donut-swatch" style="background:var(--carbs)"></span><strong>${c}g</strong> carbs <span style="color:var(--muted)">· ${Math.round(pC)}%</span></div>
+      <div class="donut-legend-row"><span class="donut-swatch" style="background:var(--fat)"></span><strong>${f}g</strong> fat <span style="color:var(--muted)">· ${Math.round(pF)}%</span></div>
+    </div>`;
+}
+
+// ===== DARK MODE =====
+const DARK_KEY = 'macroLab.dark';
+function applyDarkPreference() {
+  const stored = localStorage.getItem(DARK_KEY);
+  const prefersDark = stored === null
+    ? window.matchMedia('(prefers-color-scheme: dark)').matches
+    : stored === '1';
+  document.documentElement.classList.toggle('dark', prefersDark);
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = prefersDark ? '☀️' : '🌙';
+}
+function toggleDark() {
+  const next = !document.documentElement.classList.contains('dark');
+  document.documentElement.classList.toggle('dark', next);
+  try { localStorage.setItem(DARK_KEY, next ? '1' : '0'); } catch (e) {}
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = next ? '☀️' : '🌙';
+}
+
+// ===== SHARE VIA URL =====
+function collectShareState() {
+  const data = {};
+  ['age','height','weight','activity','bodyFat','cuisine','diet','health','duration'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data[id] = el.value;
+  });
+  data.unit = state.unit; data.sex = state.sex; data.goal = state.goal;
+  data.allergens = getExcludedAllergens();
+  return data;
+}
+function shareUrl() {
+  const data = collectShareState();
+  const hash = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const url = `${location.origin}${location.pathname}#s=${hash}`;
+  navigator.clipboard.writeText(url).then(
+    () => { flashShareBtn('Copied URL ✓'); },
+    () => { prompt('Copy this URL:', url); }
+  );
+}
+function flashShareBtn(text) {
+  const btn = document.getElementById('shareBtn');
+  if (!btn) return;
+  const prev = btn.textContent;
+  btn.textContent = text;
+  setTimeout(() => { btn.textContent = prev; }, 1500);
+}
+function applyShareStateFromHash() {
+  const m = location.hash.match(/s=([^&]+)/);
+  if (!m) return false;
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+    ['age','height','weight','activity','bodyFat','cuisine','diet','health','duration'].forEach(id => {
+      if (data[id] === undefined) return;
+      const el = document.getElementById(id);
+      if (el) el.value = data[id];
+    });
+    if (data.allergens) {
+      data.allergens.forEach(a => {
+        const cb = document.querySelector(`#allergenChecks input[data-allergen="${a}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+    [{ setId: 'unitSeg', key: 'unit', state: 'unit' },
+     { setId: 'sexSeg',  key: 'sex',  state: 'sex' },
+     { setId: 'goalSeg', key: 'goal', state: 'goal' }].forEach(({ setId, key, state: sKey }) => {
+      if (!data[key]) return;
+      document.querySelectorAll(`#${setId} button`).forEach(b => {
+        const match = b.dataset[key] === data[key];
+        b.classList.toggle('active', match);
+        if (match) state[sKey] = data[key];
+      });
+    });
+    if (data.unit === 'imperial') updateUnitLabels();
+    return true;
+  } catch (e) { return false; }
+}
+
+// ===== RESET =====
+function resetAll() {
+  if (!confirm('Reset all settings to defaults? This clears your saved inputs, favorites, and hidden meals.')) return;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(FAVS_KEY);
+    localStorage.removeItem(HIDDEN_KEY);
+    localStorage.removeItem(DARK_KEY);
+  } catch (e) {}
+  location.hash = '';
+  location.reload();
+}
+
+// ===== GROCERY GROUPING =====
+const SECTION_OF = {
+  // Produce
+  'Banana': 'produce', 'Apple': 'produce', 'Orange': 'produce', 'Mango': 'produce',
+  'Pineapple': 'produce', 'Mixed berries': 'produce', 'Fresh figs': 'produce',
+  'Lemon': 'produce', 'Lime': 'produce',
+  'Spinach': 'produce', 'Broccoli': 'produce', 'Cauliflower': 'produce',
+  'Potato': 'produce', 'Sweet potato': 'produce', 'Roasted sweet potato': 'produce',
+  'Baby potatoes': 'produce', 'New potatoes': 'produce', 'Mashed potato': 'produce',
+  'Bell peppers': 'produce', 'Bell pepper sticks': 'produce', 'Tomato': 'produce',
+  'Cherry tomatoes': 'produce', 'Mushrooms': 'produce', 'Carrots': 'produce',
+  'Carrot sticks': 'produce', 'Onion': 'produce', 'Spring onion': 'produce',
+  'Cucumber': 'produce', 'Lettuce': 'produce', 'Romaine lettuce': 'produce',
+  'Mixed greens': 'produce', 'Asparagus': 'produce', 'Green beans': 'produce',
+  'Brussels sprouts': 'produce', 'Cabbage slaw': 'produce', 'Bok choy': 'produce',
+  'Avocado': 'produce', 'Kale': 'produce', 'Eggplant': 'produce',
+  'Okra (bhindi)': 'produce', 'Pumpkin': 'produce', 'Green peas (matar)': 'produce',
+  'Bean sprouts': 'produce', 'Bamboo shoots': 'produce', 'Mixed vegetables': 'produce',
+  'Roasted vegetables mix': 'produce', 'Mixed vegetable sabzi': 'produce',
+  'Mixed sabzi': 'produce', 'Frozen berries': 'frozen',
+  'Cucumber-tomato salad': 'produce', 'Cilantro': 'produce', 'Coriander': 'produce',
+  'Mint & coriander': 'produce', 'Fenugreek leaves (methi)': 'produce',
+  'Fenugreek leaves': 'produce', 'Green chilli': 'produce', 'Ginger': 'produce',
+  'Celery': 'produce', 'Grape leaves': 'pantry', 'Curry leaves': 'produce',
+  'Mixed sprouts': 'produce',
+  // Dairy & alternatives
+  'Greek yogurt 0%': 'dairy', 'Cottage cheese': 'dairy', 'Curd': 'dairy',
+  'Paneer': 'dairy', 'Feta cheese': 'dairy', 'Halloumi': 'dairy',
+  'Parmesan': 'dairy', 'Mozzarella': 'dairy', 'Cheese': 'dairy',
+  'Cheese filling': 'dairy', 'Cream': 'dairy', 'Butter': 'dairy',
+  'Ghee': 'dairy', 'Almond milk': 'dairy', 'Soy milk': 'dairy',
+  'Oat milk': 'dairy', 'Coconut milk': 'pantry', 'Coconut milk (light)': 'pantry',
+  'Béchamel': 'dairy', 'Tzatziki': 'dairy', 'Curd marinade': 'dairy',
+  // Proteins
+  'Chicken breast': 'protein', 'Chicken': 'protein', 'Chicken thigh': 'protein',
+  'Chicken thigh boneless': 'protein', 'Chicken thigh marinated': 'protein',
+  'Ground turkey': 'protein', 'Ground turkey 93/7': 'protein',
+  'Sirloin steak': 'protein', 'Lean ground beef': 'protein',
+  'Lean beef strips': 'protein', 'Beef sirloin': 'protein',
+  'Lamb': 'protein', 'Lean lamb mince': 'protein',
+  'Pulled pork (or chicken)': 'protein', 'Salmon fillet': 'protein',
+  'Cod fillet': 'protein', 'Sea bass fillet': 'protein',
+  'Tuna in water': 'protein', 'Shrimp': 'protein',
+  'White fish fillet': 'protein', 'White fish': 'protein',
+  'Eggs': 'protein', 'Whole eggs': 'protein', 'Egg whites': 'protein',
+  'Whey protein': 'protein', 'Vegan protein': 'protein',
+  'Firm tofu': 'protein', 'Tempeh': 'protein',
+  'Edamame in pods': 'protein', 'Edamame shelled': 'protein',
+  'Black bean patty': 'protein', 'Falafel': 'protein',
+  // Grains & legumes
+  'Rolled oats': 'grains', 'Oat flour': 'grains',
+  'Basmati rice': 'grains', 'Brown rice': 'grains',
+  'Jasmine rice': 'grains', 'Sushi rice': 'grains',
+  'Arborio rice': 'grains', 'Rice': 'grains', 'Cooked rice': 'grains',
+  'Whole wheat pasta': 'grains', 'Whole wheat flour': 'grains',
+  'Whole wheat flour (atta)': 'grains', 'Quinoa': 'grains',
+  'Semolina (sooji)': 'grains', 'Flattened rice (poha)': 'grains',
+  'Dosa batter': 'grains', 'Sourdough bread': 'grains',
+  'Whole grain bread': 'grains', 'Whole wheat tortilla': 'grains',
+  'Corn tortillas': 'grains', 'Naan': 'grains', 'Pita bread': 'grains',
+  'Bhature': 'grains', 'Parotta': 'grains', 'Appam': 'grains',
+  'Idli': 'grains', 'Whole wheat roti': 'grains',
+  'Whole wheat paratha': 'grains', 'Granola': 'grains',
+  'Crisp corn tortillas': 'grains', 'Whole wheat bun': 'grains',
+  'Ramen noodles': 'grains', 'Rice noodles': 'grains',
+  'Chickpeas': 'grains', 'Boiled chickpeas': 'grains',
+  'Brown chickpeas (kadala)': 'grains', 'Black beans': 'grains',
+  'Red kidney beans': 'grains', 'Red kidney beans (rajma)': 'grains',
+  'Refried beans': 'grains', 'Red lentils': 'grains',
+  'Red lentils (masoor)': 'grains', 'Toor dal': 'grains',
+  'Mixed dal': 'grains', 'Green lentils': 'grains', 'Lentils': 'grains',
+  'Black urad dal': 'grains', 'Chana dal': 'grains', 'Moong dal': 'grains',
+  'Yellow moong dal': 'grains', 'Roasted chana': 'grains',
+  'Besan (gram flour)': 'grains', 'Fox nuts (makhana)': 'grains',
+  'Vegetable dumplings': 'frozen', 'Urad dal vada': 'grains',
+  // Nuts/seeds/oils/condiments → pantry
+  'Almonds': 'pantry', 'Walnuts': 'pantry', 'Mixed nuts': 'pantry',
+  'Cashews': 'pantry', 'Peanuts': 'pantry', 'Pine nuts': 'pantry',
+  'Chia seeds': 'pantry', 'Sesame seeds': 'pantry', 'Mustard seeds': 'pantry',
+  'Peanut butter': 'pantry', 'Almond butter': 'pantry', 'Tahini': 'pantry',
+  'Hummus': 'dairy', 'Guacamole': 'produce', 'Olives': 'pantry',
+  'Olive oil': 'pantry', 'Sesame oil': 'pantry', 'Coconut oil': 'pantry',
+  'Oil': 'pantry', 'Oil (for frying)': 'pantry', 'Grated coconut': 'pantry',
+  'Coconut (grated)': 'pantry', 'Coconut': 'pantry',
+  'Honey': 'pantry', 'Maple syrup': 'pantry', 'Mango pickle': 'pantry',
+  'Dried fruit': 'pantry', 'Dark chocolate': 'pantry',
+  'Tortilla chips': 'pantry', 'Corn chips': 'pantry', 'Pita chips': 'pantry',
+  'Rice crackers': 'pantry', 'Murukku': 'pantry', 'Banana chips': 'pantry',
+  'Rice cakes': 'pantry', 'Papad': 'pantry',
+  // Sauces & spices (pantry/spices)
+  'Spices': 'spices', 'Indian spices': 'spices', 'Curry spices': 'spices',
+  'Tandoori spices': 'spices', 'Kashmiri spices': 'spices',
+  'Biryani masala': 'spices', 'Chettinad masala': 'spices',
+  'Hyderabadi biryani masala': 'spices', 'Chaat masala': 'spices',
+  'Andhra spice paste': 'spices', 'Chettinad spice paste': 'spices',
+  'Curry paste': 'spices', 'Thai curry paste': 'spices',
+  'Green curry paste': 'spices', 'Tandoori marinade': 'spices',
+  'Turmeric': 'spices', 'Cumin': 'spices', 'Cumin (jeera)': 'spices',
+  'Black pepper': 'spices', 'Cardamom': 'spices',
+  'Mint chutney': 'pantry', 'Coconut chutney': 'pantry',
+  "Za'atar spice": 'spices', 'Salt & pepper': 'spices', 'Sea salt': 'spices',
+  'Tomato sauce': 'pantry', 'Marinara sauce': 'pantry',
+  'Tomato gravy': 'pantry', 'Enchilada sauce': 'pantry',
+  'Mole sauce': 'pantry', 'Salsa': 'pantry',
+  'Pad thai sauce': 'pantry', 'Teriyaki sauce': 'pantry',
+  'Soy sauce': 'pantry', 'Miso paste': 'pantry', 'Kimchi': 'pantry',
+  'Gochujang': 'pantry', 'Soy-garlic marinade': 'pantry',
+  'Caesar dressing (light)': 'pantry', 'Seaweed': 'pantry',
+  'Roasted seaweed': 'pantry', 'Stock': 'pantry', 'Lime juice': 'pantry',
+  'Masala chai': 'pantry', 'Sambar': 'pantry', 'Rasam': 'pantry',
+  'Toor dal sambar': 'pantry', 'Potato masala': 'pantry',
+  'Onion pakora': 'frozen', 'Mixed vegetable pakora': 'frozen'
+};
+const SECTION_LABELS = {
+  produce: 'Produce', dairy: 'Dairy & alternatives', protein: 'Protein',
+  grains: 'Grains & legumes', pantry: 'Pantry & condiments',
+  spices: 'Spices', frozen: 'Frozen / prepared', other: 'Other'
+};
+const SECTION_ORDER = ['produce', 'protein', 'dairy', 'grains', 'pantry', 'spices', 'frozen', 'other'];
 
 function healthOk(m, filter) {
   switch (filter) {
@@ -1400,15 +2283,18 @@ function generateMealPlan() {
   const diet = document.getElementById('diet').value;
   const cuisine = document.getElementById('cuisine').value;
   const health = document.getElementById('health').value;
+  const duration = +document.getElementById('duration').value || 7;
+  const excluded = getExcludedAllergens();
   const dist = { breakfast: 0.25, lunch: 0.30, dinner: 0.30, snack: 0.15 };
+  const DAYS_ARR = getDays(duration);
 
   const plan = [];
   const groceryMap = {};
   const usedBySlot = { breakfast: new Set(), lunch: new Set(), dinner: new Set(), snack: new Set() };
   let fallbackUsed = false;
 
-  for (let d = 0; d < 7; d++) {
-    const day = { name: DAYS[d], meals: [] };
+  for (let d = 0; d < duration; d++) {
+    const day = { name: DAYS_ARR[d], meals: [] };
     let dayCals = 0;
     let dayP = 0;
 
@@ -1421,17 +2307,16 @@ function generateMealPlan() {
         if (cuisine === 'indian') return m.cuisine === 'indian-north' || m.cuisine === 'indian-south';
         return m.cuisine === cuisine;
       };
-      // Filter by diet + cuisine + health; tiered fallback if pool is too thin:
-      //   tier 1: relax cuisine
-      //   tier 2: relax health (last resort — e.g. high-protein snacks have no native matches)
-      let eligible = MEALS[slot].filter(m =>
-        m.diet.includes(diet) && cuisineMatches(m) && healthOk(m, health)
-      );
+      // Base filter: diet + cuisine + health + allergens + hidden
+      const baseFilter = (m) => m.diet.includes(diet) && cuisineMatches(m)
+        && healthOk(m, health) && allergenOk(m, excluded)
+        && !hiddenMeals.has(m.name);
+      let eligible = MEALS[slot].filter(baseFilter);
       if (eligible.length < MIN_POOL) {
         const tryAddFrom = (pred) => {
           const used = new Set(eligible.map(m => m.name));
           const aug = MEALS[slot]
-            .filter(m => pred(m) && !used.has(m.name))
+            .filter(m => pred(m) && !used.has(m.name) && !hiddenMeals.has(m.name) && allergenOk(m, excluded))
             .sort((a, b) => Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals));
           while (eligible.length < MIN_POOL && aug.length) eligible.push(aug.shift());
         };
@@ -1443,8 +2328,10 @@ function generateMealPlan() {
         Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals)
       );
       const pool = ranked.slice(0, Math.min(5, ranked.length));
+      // Bias: favorites first (if any are in pool), then meals not yet used this week
+      const favsInPool = pool.filter(m => favs.has(m.name) && !usedBySlot[slot].has(m.name));
       const fresh = pool.filter(m => !usedBySlot[slot].has(m.name));
-      const candidates = fresh.length ? fresh : pool;
+      const candidates = favsInPool.length ? favsInPool : (fresh.length ? fresh : pool);
       const pick = candidates[Math.floor(Math.random() * candidates.length)];
       usedBySlot[slot].add(pick.name);
 
@@ -1496,14 +2383,15 @@ function swapMeal(dayIdx, slot) {
     return m.cuisine === cuisine;
   };
 
-  let eligible = MEALS[slot].filter(m =>
-    m.diet.includes(diet) && cuisineMatches(m) && healthOk(m, health)
-  );
+  const excluded = getExcludedAllergens();
+  const baseFilter = (m) => m.diet.includes(diet) && cuisineMatches(m)
+    && healthOk(m, health) && allergenOk(m, excluded) && !hiddenMeals.has(m.name);
+  let eligible = MEALS[slot].filter(baseFilter);
   if (eligible.length < MIN_POOL) {
     const tryAddFrom = (pred) => {
       const used = new Set(eligible.map(m => m.name));
       const aug = MEALS[slot]
-        .filter(m => pred(m) && !used.has(m.name))
+        .filter(m => pred(m) && !used.has(m.name) && !hiddenMeals.has(m.name) && allergenOk(m, excluded))
         .sort((a, b) => Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals));
       while (eligible.length < MIN_POOL && aug.length) eligible.push(aug.shift());
     };
@@ -1588,10 +2476,10 @@ function renderMealPlan(plan) {
       </div>
       <div class="day-meals">
         ${day.meals.map(m => `
-          <div class="meal-row">
-            <div class="meal-slot">${slotLabels[m.slot]}</div>
+          <div class="meal-row" draggable="true" data-day-idx="${idx}" data-slot="${m.slot}" data-name="${m.name.replace(/"/g, '&quot;')}">
+            <div class="meal-slot"><span class="drag-handle" title="Drag to swap with same slot on another day">⋮⋮</span>${slotLabels[m.slot]}</div>
             <div>
-              <div class="meal-name">${m.name}</div>
+              <div class="meal-name">${m.name}${m.computed ? '<span class="computed-badge" title="Macros computed from ingredient nutrition">✓ computed</span>' : ''}</div>
               <div class="meal-macros-mini">
                 P ${m.p}g <span class="dot">·</span> C ${m.c}g <span class="dot">·</span> F ${m.f}g
               </div>
@@ -1604,7 +2492,9 @@ function renderMealPlan(plan) {
                 `).join('')}
               </ul>
               <div class="meal-actions">
-                <button class="swap-btn" type="button" onclick="swapMeal(${idx}, '${m.slot}')" aria-label="Swap this meal">↻ Swap this meal</button>
+                <button class="mini-btn ${favs.has(m.name) ? 'is-active' : ''}" type="button" onclick="favoriteMeal(this, '${m.name.replace(/'/g, "\\'")}')" title="${favs.has(m.name) ? 'Unfavorite — generator will no longer prefer this' : 'Favorite — generator will prefer this'}">${favs.has(m.name) ? '★ Favorited' : '☆ Favorite'}</button>
+                <button class="mini-btn" type="button" onclick="hideMeal(this, '${m.name.replace(/'/g, "\\'")}')" title="Never show this meal again">🚫 Hide</button>
+                <button class="swap-btn" type="button" onclick="swapMeal(${idx}, '${m.slot}')" aria-label="Swap this meal">↻ Swap</button>
               </div>
             </div>
             <div class="meal-cals">${m.cals} kcal</div>
@@ -1613,6 +2503,7 @@ function renderMealPlan(plan) {
       </div>
     </div>
   `).join('');
+  attachDragHandlers();
 
   // Toggle day on header click
   container.querySelectorAll('.day-header').forEach(btn => {
@@ -1724,24 +2615,121 @@ function formatGroceryTotal(totals, fallbackCount) {
 function renderGroceryList(groceryMap) {
   const container = document.getElementById('groceryList');
   const items = Object.keys(groceryMap).sort();
-  container.innerHTML = items.map(item => {
-    const qtys = groceryMap[item];
-    const display = formatGroceryTotal(aggregateQtys(qtys), qtys.length);
+  const bySection = {};
+  items.forEach(it => {
+    const sec = SECTION_OF[it] || 'other';
+    if (!bySection[sec]) bySection[sec] = [];
+    bySection[sec].push(it);
+  });
+  container.className = ''; // strip grid styling so we can do sections
+  container.innerHTML = SECTION_ORDER.filter(sec => bySection[sec]).map(sec => {
+    const list = bySection[sec];
     return `
-      <div class="grocery-item">
-        <span>${item}</span>
-        <span class="qty">${display}</span>
-      </div>
-    `;
+      <div class="grocery-section">
+        <div class="grocery-section-head">
+          <h4>${SECTION_LABELS[sec]}</h4>
+          <span class="count">${list.length} item${list.length === 1 ? '' : 's'}</span>
+        </div>
+        <div class="grocery-list">
+          ${list.map(item => {
+            const qtys = groceryMap[item];
+            const display = formatGroceryTotal(aggregateQtys(qtys), qtys.length);
+            return `<div class="grocery-item"><span>${item}</span><span class="qty">${display}</span></div>`;
+          }).join('')}
+        </div>
+      </div>`;
   }).join('');
   const countEl = document.getElementById('groceryCount');
   if (countEl) countEl.textContent = `${items.length} items`;
 }
 
+// ===== FAVORITE / HIDE meal handlers =====
+function favoriteMeal(btn, name) {
+  toggleFav(name);
+  const on = favs.has(name);
+  btn.classList.toggle('is-active', on);
+  btn.textContent = on ? '★ Favorited' : '☆ Favorite';
+  btn.title = on ? 'Unfavorite' : 'Favorite — generator will prefer this';
+}
+function hideMeal(btn, name) {
+  if (!confirm(`Hide "${name}" from all future plans?`)) return;
+  toggleHidden(name);
+  // Re-run the plan so the hidden meal disappears
+  calculate();
+}
+
+// ===== DRAG & DROP swap =====
+let dragSrc = null;
+function attachDragHandlers() {
+  document.querySelectorAll('#mealPlan .meal-row').forEach(row => {
+    row.addEventListener('dragstart', (e) => {
+      dragSrc = {
+        dayIdx: +row.dataset.dayIdx,
+        slot: row.dataset.slot
+      };
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', row.dataset.name); } catch (err) {}
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      document.querySelectorAll('.meal-row.drag-over').forEach(r => r.classList.remove('drag-over'));
+      dragSrc = null;
+    });
+    row.addEventListener('dragover', (e) => {
+      if (!dragSrc) return;
+      // Only allow drop into same slot, different day
+      if (row.dataset.slot !== dragSrc.slot) return;
+      if (+row.dataset.dayIdx === dragSrc.dayIdx) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      row.classList.add('drag-over');
+    });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', (e) => {
+      e.preventDefault();
+      row.classList.remove('drag-over');
+      if (!dragSrc) return;
+      const dstDay = +row.dataset.dayIdx;
+      const dstSlot = row.dataset.slot;
+      if (dstSlot !== dragSrc.slot || dstDay === dragSrc.dayIdx) return;
+      // Swap meals between two days for this slot
+      const A = state.currentPlan[dragSrc.dayIdx];
+      const B = state.currentPlan[dstDay];
+      const iA = A.meals.findIndex(m => m.slot === dstSlot);
+      const iB = B.meals.findIndex(m => m.slot === dstSlot);
+      if (iA < 0 || iB < 0) return;
+      [A.meals[iA], B.meals[iB]] = [B.meals[iB], A.meals[iA]];
+      [A, B].forEach(d => {
+        d.totalCals = d.meals.reduce((s, m) => s + m.cals, 0);
+        d.totalP    = d.meals.reduce((s, m) => s + m.p, 0);
+      });
+      const openDays = Array.from(document.querySelectorAll('.day-card.is-open'))
+        .map(c => +c.dataset.dayIdx);
+      renderMealPlan(state.currentPlan);
+      openDays.forEach(i => {
+        const c = document.getElementById(`day-${i}`);
+        if (c) { c.classList.add('is-open'); c.querySelector('.day-header').setAttribute('aria-expanded', 'true'); }
+      });
+      if (!openDays.includes(0)) {
+        const c0 = document.getElementById('day-0');
+        if (c0) { c0.classList.remove('is-open'); c0.querySelector('.day-header').setAttribute('aria-expanded', 'false'); }
+      }
+      // Rebuild grocery list
+      const gmap = {};
+      state.currentPlan.forEach(d => d.meals.forEach(m => m.ingredients.forEach(([item, qty]) => {
+        if (!gmap[item]) gmap[item] = [];
+        gmap[item].push(qty);
+      })));
+      renderGroceryList(gmap);
+    });
+  });
+}
+
 // ===== PERSISTENCE =====
 // Save user inputs to localStorage so a reload doesn't lose their plan.
 const STORAGE_KEY = 'macroLab.v1';
-const PERSIST_INPUTS = ['age', 'height', 'weight', 'activity', 'bodyFat', 'cuisine', 'diet', 'health'];
+const PERSIST_INPUTS = ['age', 'height', 'weight', 'activity', 'bodyFat', 'cuisine', 'diet', 'health', 'duration'];
 const PERSIST_SEGMENTED = [
   { setId: 'unitSeg',  key: 'unit',  state: 'unit'  },
   { setId: 'sexSeg',   key: 'sex',   state: 'sex'   },
@@ -1755,6 +2743,7 @@ function savePrefs() {
     if (el) data[id] = el.value;
   });
   PERSIST_SEGMENTED.forEach(({ key, state: sKey }) => { data[key] = state[sKey]; });
+  data.allergens = getExcludedAllergens();
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
 }
 
@@ -1779,6 +2768,12 @@ function restorePrefs() {
     const el = document.getElementById(id);
     if (el) el.value = data[id];
   });
+  if (Array.isArray(data.allergens)) {
+    data.allergens.forEach(a => {
+      const cb = document.querySelector(`#allergenChecks input[data-allergen="${a}"]`);
+      if (cb) cb.checked = true;
+    });
+  }
 }
 
 // Wire change listeners after initial restore
@@ -1792,10 +2787,13 @@ function wirePersistence() {
       b.addEventListener('click', savePrefs);
     });
   });
+  document.querySelectorAll('#allergenChecks input').forEach(cb => cb.addEventListener('change', savePrefs));
 }
 
-// Initial: restore, calculate, wire persistence, init section nav
-restorePrefs();
+// Initial: apply dark prefs, restore inputs (from URL hash first, else storage),
+// then calculate, wire persistence, init section nav.
+applyDarkPreference();
+if (!applyShareStateFromHash()) restorePrefs();
 calculate();
 wirePersistence();
 initSectionNav();
