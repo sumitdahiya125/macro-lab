@@ -759,6 +759,19 @@ footer {
       </div>
     </div>
 
+    <div class="field-group">
+      <label for="health">Health filter</label>
+      <select id="health">
+        <option value="healthy" selected>Healthy only (recommended)</option>
+        <option value="all">Show all (incl. fried &amp; indulgent)</option>
+        <option value="diabetes">Diabetes-friendly (no added sugar)</option>
+        <option value="heart">Heart-friendly (no fried, no rich)</option>
+        <option value="pcos">PCOS-friendly (no added sugar)</option>
+        <option value="high-protein">High protein only (≥30g per meal)</option>
+      </select>
+      <div class="field-help">Informational only — not medical advice. Consult a registered dietitian for specific conditions.</div>
+    </div>
+
     <div class="form-section-label">Goal</div>
     <div class="segmented" id="goalSeg" role="group" aria-label="Goal">
       <button type="button" data-goal="cut" class="active">Cut</button>
@@ -1186,11 +1199,77 @@ const MEALS = {
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+// ===== HEALTH TAGGING =====
+// Single source of truth for "indulgent", "fried", "sugary" meals.
+// Cleaner than adding flags to every meal entry by hand.
+const INDULGENT = new Set([
+  'Medu vada with sambar', 'Chole bhature', 'Dal makhani with naan',
+  'Paneer butter masala with naan', 'Butter chicken with rice',
+  'Mutton rogan josh with rice', 'Chettinad chicken with parotta',
+  'Lamb moussaka', 'Vegetable pakora with mint chutney',
+  'Murukku', 'Banana chips with chai'
+]);
+const FRIED = new Set([
+  'Medu vada with sambar', 'Chole bhature', 'Vegetable pakora with mint chutney',
+  'Murukku', 'Banana chips with chai', 'Falafel & hummus wrap',
+  'Black bean tostadas with guacamole', 'Chile relleno with rice & beans',
+  'Salsa & corn chips', 'Rasam rice with potato fry'
+]);
+const SUGARY = new Set([
+  'Greek yogurt bowl with berries', 'Protein pancakes',
+  'Peanut butter banana oats', 'Chia pudding with mango',
+  'Greek yogurt with honey & walnuts', 'Curd with fruit & honey',
+  'Lassi with nuts', 'Trail mix', 'Banana nut granola bowl'
+]);
+
+// Raw → cooked ratios (volume/weight roughly triples for grains, ~2.5x for legumes, ~2x for pasta)
+const COOKED_RATIO = {
+  'Quinoa': 3, 'Brown rice': 3, 'Sushi rice': 3, 'Jasmine rice': 3,
+  'Arborio rice': 3, 'Basmati rice': 3, 'Rice': 3, 'Cooked rice': null,
+  'Whole wheat pasta': 2,
+  'Toor dal': 2.5, 'Mixed dal': 2.5, 'Red lentils': 2.5, 'Red lentils (masoor)': 2.5,
+  'Green lentils': 2.5, 'Black urad dal': 2.5, 'Chana dal': 2.5,
+  'Moong dal': 2.5, 'Yellow moong dal': 2.5, 'Rajma': 2.5, 'Lentils': 2.5
+};
+
+// Init pass: tag meals + auto-append cooked equivalents to raw-only quantities
+(function enrichMealsAtInit() {
+  ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
+    MEALS[slot].forEach(m => {
+      m.indulgent = INDULGENT.has(m.name);
+      m.fried     = FRIED.has(m.name);
+      m.sugary    = SUGARY.has(m.name);
+      m.ingredients = m.ingredients.map(([name, qty]) => {
+        if (!/\braw\b/.test(qty) || /\bcooked\b/.test(qty)) return [name, qty];
+        const ratio = COOKED_RATIO[name];
+        if (!ratio) return [name, qty];
+        const gm = qty.match(/^(\d+)g/);
+        if (!gm) return [name, qty];
+        const cookedG = Math.round(parseInt(gm[1]) * ratio);
+        return [name, `${qty} / ~${cookedG}g cooked`];
+      });
+    });
+  });
+})();
+
+function healthOk(m, filter) {
+  switch (filter) {
+    case 'healthy':      return !m.indulgent;
+    case 'diabetes':     return !m.sugary && !m.indulgent;
+    case 'heart':        return !m.fried && !m.indulgent;
+    case 'pcos':         return !m.sugary && !m.indulgent;
+    case 'high-protein': return m.p >= 30;
+    case 'all':
+    default:             return true;
+  }
+}
+
 // ===== MEAL PLAN GENERATOR =====
 function generateMealPlan() {
   const target = state.targetCals;
   const diet = document.getElementById('diet').value;
   const cuisine = document.getElementById('cuisine').value;
+  const health = document.getElementById('health').value;
   const dist = { breakfast: 0.25, lunch: 0.30, dinner: 0.30, snack: 0.15 };
 
   const plan = [];
@@ -1212,14 +1291,22 @@ function generateMealPlan() {
         if (cuisine === 'indian') return m.cuisine === 'indian-north' || m.cuisine === 'indian-south';
         return m.cuisine === cuisine;
       };
-      // Filter by diet AND cuisine; if the pool is too thin for variety,
-      // augment with diet-matching meals from other cuisines (closest calories first).
-      let eligible = MEALS[slot].filter(m => m.diet.includes(diet) && cuisineMatches(m));
-      if (cuisine !== 'any' && eligible.length < MIN_POOL) {
-        const augment = MEALS[slot]
-          .filter(m => m.diet.includes(diet) && !cuisineMatches(m))
-          .sort((a, b) => Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals));
-        while (eligible.length < MIN_POOL && augment.length) eligible.push(augment.shift());
+      // Filter by diet + cuisine + health; tiered fallback if pool is too thin:
+      //   tier 1: relax cuisine
+      //   tier 2: relax health (last resort — e.g. high-protein snacks have no native matches)
+      let eligible = MEALS[slot].filter(m =>
+        m.diet.includes(diet) && cuisineMatches(m) && healthOk(m, health)
+      );
+      if (eligible.length < MIN_POOL) {
+        const tryAddFrom = (pred) => {
+          const used = new Set(eligible.map(m => m.name));
+          const aug = MEALS[slot]
+            .filter(m => pred(m) && !used.has(m.name))
+            .sort((a, b) => Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals));
+          while (eligible.length < MIN_POOL && aug.length) eligible.push(aug.shift());
+        };
+        if (cuisine !== 'any') tryAddFrom(m => m.diet.includes(diet) && healthOk(m, health));
+        if (eligible.length < MIN_POOL) tryAddFrom(m => m.diet.includes(diet));
         fallbackUsed = true;
       }
       const ranked = [...eligible].sort((a, b) =>
