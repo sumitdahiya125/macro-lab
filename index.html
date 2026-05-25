@@ -753,7 +753,8 @@ footer {
         <select id="diet">
           <option value="omnivore" selected>No restrictions</option>
           <option value="pescatarian">Pescatarian</option>
-          <option value="vegetarian">Vegetarian</option>
+          <option value="eggetarian">Eggetarian (veg + eggs)</option>
+          <option value="vegetarian">Vegetarian (no eggs)</option>
           <option value="vegan">Vegan</option>
         </select>
       </div>
@@ -996,13 +997,16 @@ function calculate() {
 }
 
 // ===== MEAL DATABASE =====
-// `diet` uses nested arrays so vegan ⊂ vegetarian ⊂ pescatarian ⊂ omnivore.
+// `diet` uses nested arrays so vegan ⊂ vegetarian ⊂ eggetarian ⊂ pescatarian ⊂ omnivore.
 // `cuisine` is a single tag per meal; the picker can filter strictly or allow Any.
+// Note: 'vegetarian' here is STRICT (no eggs) — common in India. Egg-containing meals
+//        are auto-promoted to D.egg at init by removing 'vegetarian' from the array.
 const D = {
   meat:  ['omnivore'],
   fish:  ['omnivore', 'pescatarian'],
-  veg:   ['omnivore', 'pescatarian', 'vegetarian'],
-  vegan: ['omnivore', 'pescatarian', 'vegetarian', 'vegan']
+  egg:   ['omnivore', 'pescatarian', 'eggetarian'],
+  veg:   ['omnivore', 'pescatarian', 'eggetarian', 'vegetarian'],
+  vegan: ['omnivore', 'pescatarian', 'eggetarian', 'vegetarian', 'vegan']
 };
 
 const MEALS = {
@@ -1232,10 +1236,20 @@ const COOKED_RATIO = {
   'Moong dal': 2.5, 'Yellow moong dal': 2.5, 'Rajma': 2.5, 'Lentils': 2.5
 };
 
-// Init pass: tag meals + auto-append cooked equivalents to raw-only quantities
+// Detect egg presence by ingredient name. `\beggs?\b` matches "egg" or "eggs" with
+// word boundaries so "Eggplant" doesn't match.
+const HAS_EGG_RE = /\beggs?\b/i;
+const mealHasEgg = (m) => m.ingredients.some(([name]) => HAS_EGG_RE.test(name));
+
+// Init pass: tag meals + auto-append cooked equivalents + demote egg meals out of strict vegetarian
 (function enrichMealsAtInit() {
   ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
     MEALS[slot].forEach(m => {
+      // Indian-style 'vegetarian' excludes eggs. Any veg meal containing eggs
+      // gets demoted to D.egg (still allowed for eggetarian/pescatarian/omnivore).
+      if (mealHasEgg(m) && m.diet.includes('vegetarian')) {
+        m.diet = m.diet.filter(d => d !== 'vegetarian');
+      }
       m.indulgent = INDULGENT.has(m.name);
       m.fried     = FRIED.has(m.name);
       m.sugary    = SUGARY.has(m.name);
