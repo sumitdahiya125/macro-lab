@@ -181,6 +181,71 @@ header {
   font-size: 12px;
   color: var(--muted);
 }
+.optional {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 12px;
+}
+.bmr-method {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.extras-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+  flex-wrap: wrap;
+}
+.extra {
+  display: flex;
+  flex-direction: column;
+}
+.extra-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+.extra-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.swap-btn, .print-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.swap-btn:hover, .print-btn:hover {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--muted);
+}
+.print-btn { margin-left: 8px; }
+.meal-row { position: relative; }
+.meal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -653,6 +718,28 @@ header {
   font-weight: 500;
 }
 
+/* PRINT */
+@media print {
+  header, footer, .card-form, .section-nav, .regen-btn,
+  .day-controls, .day-chevron, .day-summary, .swap-btn,
+  .print-btn, .meal-actions, .field-help, .macros-disclaimer,
+  .plan-notice, .results-empty { display: none !important; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .app { display: block; max-width: none; padding: 0; }
+  .results { display: block; }
+  .results-content { display: block !important; }
+  .card { box-shadow: none; border: 1px solid #999; break-inside: avoid; margin-bottom: 12px; padding: 12px; }
+  .day-card { break-inside: avoid; border: 1px solid #999; margin-bottom: 8px; }
+  .day-card .day-meals { display: block !important; padding: 4px 12px; }
+  .day-card .day-header { background: #f0f0f0; padding: 8px 12px; cursor: default; }
+  .meal-row { padding: 6px 0; border-bottom: 1px dotted #aaa; }
+  .meal-ingredients { display: block; padding: 0; }
+  .meal-ingredient { display: flex; padding: 1px 0; font-size: 10pt; }
+  .macro-bar { display: none; }
+  .calorie-num { font-size: 28pt; }
+  a { color: #000; text-decoration: none; }
+}
+
 /* FOOTER */
 footer {
   border-top: 1px solid var(--border);
@@ -725,13 +812,18 @@ footer {
       <div class="field-group">
         <label for="activity">Activity</label>
         <select id="activity">
-          <option value="1.2">Sedentary</option>
+          <option value="1.2">Sedentary (desk job)</option>
           <option value="1.375">Light (1-3 d/wk)</option>
           <option value="1.55" selected>Moderate (3-5 d/wk)</option>
           <option value="1.725">Heavy (6-7 d/wk)</option>
-          <option value="1.9">Athlete</option>
+          <option value="1.9">Athlete (2× day)</option>
         </select>
       </div>
+    </div>
+
+    <div class="field-group">
+      <label for="bodyFat">Body fat % <span class="optional">(optional — uses Katch-McArdle for higher accuracy)</span></label>
+      <input type="number" id="bodyFat" min="3" max="60" step="0.5" placeholder="leave blank to use Mifflin-St Jeor">
     </div>
 
     <div class="field-row">
@@ -767,7 +859,6 @@ footer {
         <option value="all">Show all (incl. fried &amp; indulgent)</option>
         <option value="diabetes">Diabetes-friendly (no added sugar)</option>
         <option value="heart">Heart-friendly (no fried, no rich)</option>
-        <option value="pcos">PCOS-friendly (no added sugar)</option>
         <option value="high-protein">High protein only (≥30g per meal)</option>
       </select>
       <div class="field-help">Informational only — not medical advice. Consult a registered dietitian for specific conditions.</div>
@@ -844,7 +935,20 @@ footer {
             <div class="macro-pct" id="fatPct">25%</div>
           </div>
         </div>
-        <div class="macros-disclaimer">Calorie target uses the Mifflin–St Jeor formula. Per-meal values are approximate (±10–15%) — they depend on portion size, cooking fat, and ingredient variation.</div>
+        <div class="extras-row">
+          <div class="extra">
+            <span class="extra-label">Water / day</span>
+            <span class="extra-value" id="waterTarget">2.6 L</span>
+          </div>
+          <div class="extra">
+            <span class="extra-label">BMR method</span>
+            <span class="extra-value" id="bmrMethod" style="font-size: 13px;">Mifflin-St Jeor</span>
+          </div>
+          <div class="extra" style="margin-left: auto;">
+            <button class="print-btn" type="button" onclick="window.print()" aria-label="Print plan">Print plan ↗</button>
+          </div>
+        </div>
+        <div class="macros-disclaimer">Calorie target from BMR × activity. Per-meal values are approximate (±10–15%).</div>
       </div>
 
       <!-- Meal plan card -->
@@ -936,19 +1040,30 @@ function calculate() {
   let height = +document.getElementById('height').value;
   let weight = +document.getElementById('weight').value;
   const activity = +document.getElementById('activity').value;
+  const bodyFatRaw = document.getElementById('bodyFat').value;
+  const bodyFat = bodyFatRaw === '' ? null : +bodyFatRaw;
 
   if (state.unit === 'imperial') {
     height = height * 2.54;
     weight = weight * 0.453592;
   }
 
-  let bmr;
-  if (state.sex === 'male') {
+  let bmr, bmrMethod;
+  if (bodyFat !== null && bodyFat >= 3 && bodyFat <= 60) {
+    // Katch-McArdle — more accurate when lean body mass is known
+    const lbm = weight * (1 - bodyFat / 100);
+    bmr = 370 + 21.6 * lbm;
+    bmrMethod = 'Katch-McArdle';
+  } else if (state.sex === 'male') {
     bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+    bmrMethod = 'Mifflin-St Jeor';
   } else {
     bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+    bmrMethod = 'Mifflin-St Jeor';
   }
   const tdee = Math.round(bmr * activity);
+  // Water intake: ~35ml/kg + extra for activity (rough; varies by climate / training intensity)
+  const waterMl = Math.round((weight * 35 + (activity - 1.2) * 500) / 100) * 100;
 
   let calories;
   if (state.goal === 'cut') calories = Math.round(tdee - 500);
@@ -975,6 +1090,8 @@ function calculate() {
   document.getElementById('resultsContent').classList.add('active');
   document.getElementById('calorieNum').textContent = calories.toLocaleString();
   document.getElementById('tdeeDisplay').textContent = `Maintenance: ${tdee.toLocaleString()} kcal`;
+  document.getElementById('waterTarget').textContent = waterMl >= 1000 ? `${(waterMl/1000).toFixed(1)} L` : `${waterMl} ml`;
+  document.getElementById('bmrMethod').textContent = bmrMethod;
   document.getElementById('proteinG').textContent = proteinG + 'g';
   document.getElementById('carbsG').textContent = carbsG + 'g';
   document.getElementById('fatG').textContent = fatG + 'g';
@@ -1271,7 +1388,6 @@ function healthOk(m, filter) {
     case 'healthy':      return !m.indulgent;
     case 'diabetes':     return !m.sugary && !m.indulgent;
     case 'heart':        return !m.fried && !m.indulgent;
-    case 'pcos':         return !m.sugary && !m.indulgent;
     case 'high-protein': return m.p >= 30;
     case 'all':
     default:             return true;
@@ -1346,6 +1462,7 @@ function generateMealPlan() {
     plan.push(day);
   }
 
+  state.currentPlan = plan;
   renderMealPlan(plan);
   renderGroceryList(groceryMap);
 
@@ -1358,6 +1475,98 @@ function generateMealPlan() {
     notice.hidden = true;
     notice.textContent = '';
   }
+}
+
+// Re-pick one meal in one day without regenerating the whole week.
+// Respects current diet / cuisine / health filters, prefers meals not yet
+// used elsewhere that week, and guarantees the new pick is different.
+function swapMeal(dayIdx, slot) {
+  if (!state.currentPlan) return;
+  const target = state.targetCals;
+  const diet = document.getElementById('diet').value;
+  const cuisine = document.getElementById('cuisine').value;
+  const health = document.getElementById('health').value;
+  const dist = { breakfast: 0.25, lunch: 0.30, dinner: 0.30, snack: 0.15 };
+  const targetCals = target * dist[slot];
+  const MIN_POOL = 3;
+
+  const cuisineMatches = (m) => {
+    if (cuisine === 'any') return true;
+    if (cuisine === 'indian') return m.cuisine === 'indian-north' || m.cuisine === 'indian-south';
+    return m.cuisine === cuisine;
+  };
+
+  let eligible = MEALS[slot].filter(m =>
+    m.diet.includes(diet) && cuisineMatches(m) && healthOk(m, health)
+  );
+  if (eligible.length < MIN_POOL) {
+    const tryAddFrom = (pred) => {
+      const used = new Set(eligible.map(m => m.name));
+      const aug = MEALS[slot]
+        .filter(m => pred(m) && !used.has(m.name))
+        .sort((a, b) => Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals));
+      while (eligible.length < MIN_POOL && aug.length) eligible.push(aug.shift());
+    };
+    if (cuisine !== 'any') tryAddFrom(m => m.diet.includes(diet) && healthOk(m, health));
+    if (eligible.length < MIN_POOL) tryAddFrom(m => m.diet.includes(diet));
+  }
+
+  // Build "used elsewhere this week" set (same slot, other days), plus the current meal
+  const day = state.currentPlan[dayIdx];
+  const slotIdx = day.meals.findIndex(m => m.slot === slot);
+  if (slotIdx === -1) return;
+  const currentName = day.meals[slotIdx].name;
+  const usedElsewhere = new Set([currentName]);
+  state.currentPlan.forEach((d, i) => {
+    if (i === dayIdx) return;
+    const m = d.meals.find(x => x.slot === slot);
+    if (m) usedElsewhere.add(m.name);
+  });
+
+  // Rank by calorie distance, prefer un-used
+  const ranked = [...eligible].sort((a, b) => Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals));
+  const pool = ranked.slice(0, Math.min(5, ranked.length));
+  let candidates = pool.filter(m => !usedElsewhere.has(m.name));
+  if (candidates.length === 0) candidates = pool.filter(m => m.name !== currentName);
+  if (candidates.length === 0) return; // nothing different to swap to
+
+  const newMeal = candidates[Math.floor(Math.random() * candidates.length)];
+  day.meals[slotIdx] = { slot, ...newMeal };
+  day.totalCals = day.meals.reduce((s, m) => s + m.cals, 0);
+  day.totalP    = day.meals.reduce((s, m) => s + m.p, 0);
+
+  // Re-render plan (keeping current expanded state)
+  const openDays = Array.from(document.querySelectorAll('.day-card.is-open'))
+    .map(c => +c.dataset.dayIdx);
+  renderMealPlan(state.currentPlan);
+  // Restore expanded state
+  openDays.forEach(i => {
+    const card = document.getElementById(`day-${i}`);
+    if (card) {
+      card.classList.add('is-open');
+      card.querySelector('.day-header').setAttribute('aria-expanded', 'true');
+    }
+  });
+  // First day was added by renderMealPlan; remove if not originally open
+  if (!openDays.includes(0)) {
+    const c0 = document.getElementById('day-0');
+    if (c0) {
+      c0.classList.remove('is-open');
+      c0.querySelector('.day-header').setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  // Rebuild grocery
+  const groceryMap = {};
+  state.currentPlan.forEach(d => {
+    d.meals.forEach(m => {
+      m.ingredients.forEach(([item, qty]) => {
+        if (!groceryMap[item]) groceryMap[item] = [];
+        groceryMap[item].push(qty);
+      });
+    });
+  });
+  renderGroceryList(groceryMap);
 }
 
 function renderMealPlan(plan) {
@@ -1394,6 +1603,9 @@ function renderMealPlan(plan) {
                   </li>
                 `).join('')}
               </ul>
+              <div class="meal-actions">
+                <button class="swap-btn" type="button" onclick="swapMeal(${idx}, '${m.slot}')" aria-label="Swap this meal">↻ Swap this meal</button>
+              </div>
             </div>
             <div class="meal-cals">${m.cals} kcal</div>
           </div>
@@ -1526,8 +1738,66 @@ function renderGroceryList(groceryMap) {
   if (countEl) countEl.textContent = `${items.length} items`;
 }
 
-// Initial render with default values
+// ===== PERSISTENCE =====
+// Save user inputs to localStorage so a reload doesn't lose their plan.
+const STORAGE_KEY = 'macroLab.v1';
+const PERSIST_INPUTS = ['age', 'height', 'weight', 'activity', 'bodyFat', 'cuisine', 'diet', 'health'];
+const PERSIST_SEGMENTED = [
+  { setId: 'unitSeg',  key: 'unit',  state: 'unit'  },
+  { setId: 'sexSeg',   key: 'sex',   state: 'sex'   },
+  { setId: 'goalSeg',  key: 'goal',  state: 'goal'  }
+];
+
+function savePrefs() {
+  const data = { _v: 1 };
+  PERSIST_INPUTS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data[id] = el.value;
+  });
+  PERSIST_SEGMENTED.forEach(({ key, state: sKey }) => { data[key] = state[sKey]; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+
+function restorePrefs() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch (e) { return; }
+  if (!data) return;
+  // Restore segmented controls first (they affect unit labels)
+  PERSIST_SEGMENTED.forEach(({ setId, key, state: sKey }) => {
+    if (!data[key]) return;
+    const btns = document.querySelectorAll(`#${setId} button`);
+    btns.forEach(b => {
+      const match = b.dataset[key] === data[key];
+      b.classList.toggle('active', match);
+      if (match) state[sKey] = data[key];
+    });
+  });
+  if (data.unit === 'imperial') updateUnitLabels();
+  // Then restore input values (so unit changes don't clobber them)
+  PERSIST_INPUTS.forEach(id => {
+    if (data[id] === undefined) return;
+    const el = document.getElementById(id);
+    if (el) el.value = data[id];
+  });
+}
+
+// Wire change listeners after initial restore
+function wirePersistence() {
+  PERSIST_INPUTS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', savePrefs);
+  });
+  PERSIST_SEGMENTED.forEach(({ setId }) => {
+    document.querySelectorAll(`#${setId} button`).forEach(b => {
+      b.addEventListener('click', savePrefs);
+    });
+  });
+}
+
+// Initial: restore, calculate, wire persistence, init section nav
+restorePrefs();
 calculate();
+wirePersistence();
 initSectionNav();
 </script>
 
