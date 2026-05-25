@@ -1336,15 +1336,91 @@ function initSectionNav() {
   sections.forEach(s => obs.observe(s));
 }
 
+// Parse a meal ingredient qty string into a { amount, unit, state? } total
+// so the grocery list can sum across the week instead of just counting uses.
+// Examples:
+//   '80g · 1 cup dry'         -> { amount: 80,  unit: 'g' }
+//   '1 medium (~120g)'        -> { amount: 1,   unit: 'piece' }
+//   '½ medium'                -> { amount: 0.5, unit: 'piece' }
+//   '150g cooked · ¾ cup'     -> { amount: 150, unit: 'g', state: 'cooked' }
+//   '70g · ⅓ cup raw'         -> { amount: 70,  unit: 'g', state: 'raw' }
+//   '250ml · 1 cup'           -> { amount: 250, unit: 'ml' }
+//   '5 leaves'                -> { amount: 5,   unit: 'leaf' }
+function parseQtyForAggregation(qty) {
+  const cleaned = qty.replace(/\(.*?\)/g, '').trim();
+  const m = cleaned.match(/^([½¼¾⅓⅔⅛]|\d+(?:[.,]\d+)?)\s*([a-zA-Z]*)/);
+  if (!m) return null;
+  const numMap = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1/3, '⅔': 2/3, '⅛': 0.125 };
+  const amount = numMap[m[1]] !== undefined ? numMap[m[1]] : parseFloat(m[1].replace(',', '.'));
+  if (isNaN(amount)) return null;
+  const unit = (m[2] || '').toLowerCase();
+  const state = /\braw\b/.test(qty) ? 'raw' : /\bcooked\b/.test(qty) ? 'cooked' : null;
+  if (unit === 'g' || unit === 'kg') return { amount: unit === 'kg' ? amount * 1000 : amount, unit: 'g', state };
+  if (unit === 'ml' || unit === 'l')  return { amount: unit === 'l' ? amount * 1000 : amount, unit: 'ml' };
+  if (unit.startsWith('slice')) return { amount, unit: 'slice' };
+  if (unit.startsWith('leaf') || unit.startsWith('leave')) return { amount, unit: 'leaf' };
+  if (unit.startsWith('scoop')) return { amount, unit: 'scoop' };
+  if (unit.startsWith('tbsp')) return { amount, unit: 'tbsp' };
+  if (unit.startsWith('tsp'))  return { amount, unit: 'tsp' };
+  return { amount, unit: 'piece' };
+}
+
+function aggregateQtys(qtys) {
+  const totals = {};
+  for (const q of qtys) {
+    const p = parseQtyForAggregation(q);
+    if (!p) continue;
+    if (!totals[p.unit]) totals[p.unit] = { amount: 0, state: null };
+    totals[p.unit].amount += p.amount;
+    if (p.state && !totals[p.unit].state) totals[p.unit].state = p.state;
+  }
+  return totals;
+}
+
+function formatGroceryTotal(totals, fallbackCount) {
+  const parts = [];
+  if (totals.g) {
+    const { amount, state } = totals.g;
+    const w = amount >= 1000 ? `${(amount/1000).toFixed(amount >= 10000 ? 0 : 1)} kg` : `${Math.round(amount)}g`;
+    parts.push(state ? `${w} ${state}` : w);
+  }
+  if (totals.ml) {
+    const ml = totals.ml.amount;
+    parts.push(ml >= 1000 ? `${(ml/1000).toFixed(1)} L` : `${Math.round(ml)}ml`);
+  }
+  const fmt = (n) => {
+    if (Number.isInteger(n)) return String(n);
+    const whole = Math.floor(n);
+    const frac = n - whole;
+    const fracs = [[0.5, '½'], [0.25, '¼'], [0.75, '¾'], [1/3, '⅓'], [2/3, '⅔']];
+    for (const [v, glyph] of fracs) {
+      if (Math.abs(frac - v) < 0.02) return whole > 0 ? `${whole}${glyph}` : glyph;
+    }
+    return (Math.round(n * 10) / 10).toString();
+  };
+  ['piece', 'slice', 'leaf', 'scoop', 'tbsp', 'tsp'].forEach(u => {
+    if (totals[u]) {
+      const n = totals[u].amount;
+      const word = u === 'leaf' && n !== 1 ? 'leaves' : (n === 1 ? u : u + 's');
+      parts.push(`${fmt(n)} ${word}`);
+    }
+  });
+  return parts.length ? parts.join(' + ') : `×${fallbackCount}`;
+}
+
 function renderGroceryList(groceryMap) {
   const container = document.getElementById('groceryList');
   const items = Object.keys(groceryMap).sort();
-  container.innerHTML = items.map(item => `
-    <div class="grocery-item">
-      <span>${item}</span>
-      <span class="qty">×${groceryMap[item].length}</span>
-    </div>
-  `).join('');
+  container.innerHTML = items.map(item => {
+    const qtys = groceryMap[item];
+    const display = formatGroceryTotal(aggregateQtys(qtys), qtys.length);
+    return `
+      <div class="grocery-item">
+        <span>${item}</span>
+        <span class="qty">${display}</span>
+      </div>
+    `;
+  }).join('');
   const countEl = document.getElementById('groceryCount');
   if (countEl) countEl.textContent = `${items.length} items`;
 }
