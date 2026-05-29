@@ -900,6 +900,55 @@ header {
   margin-left: 6px;
   vertical-align: 2px;
 }
+.micro-tag { font-size: 11px; margin-left: 4px; vertical-align: 1px; }
+
+/* Nutrition detail panel */
+.nutri-panel {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+.nutri-head {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.nutri-head .nutri-sub {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+.nutri-row {
+  display: grid;
+  grid-template-columns: 110px 70px 1fr;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 13px;
+}
+.nutri-label { color: var(--ink-2); }
+.nutri-value { text-align: right; font-variant-numeric: tabular-nums; }
+.nutri-note { font-size: 11px; color: var(--muted); }
+.nutri-note.good { color: #2e9b5b; }
+.nutri-note.ok   { color: #c9962a; }
+.nutri-note.warn { color: var(--accent); }
+.nutri-micros { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.micro-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+}
+:root.dark .nutri-note.good { color: #5fcf8c; }
+:root.dark .nutri-note.ok   { color: #e0b85a; }
 
 /* Reset button */
 .btn-secondary {
@@ -1197,7 +1246,10 @@ footer {
             <button class="print-btn" type="button" onclick="window.print()" aria-label="Print plan">Print plan ↗</button>
           </div>
         </div>
-        <div class="macros-disclaimer">Calorie target from BMR × activity. Per-meal values are approximate (±10–15%).</div>
+
+        <div class="nutri-panel" id="nutriPanel"></div>
+
+        <div class="macros-disclaimer">Calorie target from BMR × activity. Fiber / sat-fat / sodium / sugar are computed from the ingredient database (estimates, ±10–15%).</div>
       </div>
 
       <!-- Meal plan card -->
@@ -1891,7 +1943,6 @@ const NUT = {
   'Cilantro':               { cals: 23,  p: 2.1, c: 3.7, f: 0.5 },
   'Coriander':              { cals: 23,  p: 2.1, c: 3.7, f: 0.5 },
   'Mint & coriander':       { cals: 30,  p: 2.5, c: 5,  f: 0.5 },
-  'Salsa, cabbage slaw, etc — covered above': null,
   'Fenugreek leaves':       { cals: 49,  p: 4.4, c: 6,  f: 0.9 },
   'Fenugreek leaves (methi)': { cals: 49, p: 4.4, c: 6,  f: 0.9 },
   'Grape leaves':           { cals: 70,  p: 6,   c: 12, f: 2 },
@@ -1900,8 +1951,188 @@ const NUT = {
   // Wraps / breads not yet covered
   'Whole wheat bun':        { cals: 270, p: 11,  c: 50, f: 4 },
   'Papad':                  { cals: 371, p: 25,  c: 53, f: 5 },
-  "Za'atar spice":          { cals: 250, p: 10,  c: 50, f: 6 }
+  "Za'atar spice":          { cals: 250, p: 10,  c: 50, f: 6 },
+  // Alias variants used in meal data (so coverage hits 100%)
+  'Cauliflower (gobi)':     { cals: 25,  p: 1.9, c: 5,  f: 0.3 },
+  'Chickpeas (chana)':      { cals: 164, p: 9,   c: 27, f: 2.6 },
+  'Chickpeas (chole)':      { cals: 164, p: 9,   c: 27, f: 2.6 },
+  'Curd (raita)':           { cals: 62,  p: 3.5, c: 4.7, f: 3.3 },
+  'Lamb (mutton)':          { cals: 294, p: 25,  c: 0,  f: 21 },
+  'Leftover idli':          { cals: 130, p: 4,   c: 26, f: 0.5 },
+  'Mustard tempering':      { cals: 550, p: 8,   c: 15, f: 50 },
+  'Oil (for frying)':       { cals: 884, p: 0,   c: 0,  f: 100 },
+  'Poblano pepper':         { cals: 20,  p: 1,   c: 4,  f: 0.2 },
+  'Potato (aloo)':          { cals: 77,  p: 2,   c: 17, f: 0.1 },
+  'Rajma':                  { cals: 127, p: 9,   c: 23, f: 0.5 },
+  'Spinach (palak)':        { cals: 23,  p: 2.9, c: 3.6, f: 0.4 },
+  'Spinach (saag)':         { cals: 23,  p: 2.9, c: 3.6, f: 0.4 },
+  'Tamarind':               { cals: 239, p: 2.8, c: 63, f: 0.6 }
 };
+
+// ===== MICRONUTRIENTS per 100g (or 100ml) =====
+// [fiber_g, saturated_fat_g, sodium_mg, sugar_g]. Listed for meaningful
+// contributors; everything else derives from getMicros() defaults
+// (fiber 0, sat = 30% of total fat, sodium 0, sugar 0).
+const MICRO = {
+  // Grains / starches
+  'Rolled oats': [10, 1.2, 2, 1], 'Oat flour': [10, 1.5, 5, 1],
+  'Basmati rice': [1.3, 0.3, 5, 0.1], 'Brown rice': [3.5, 0.6, 7, 0.7],
+  'Jasmine rice': [1.3, 0.3, 5, 0.1], 'Sushi rice': [1.3, 0.3, 5, 0.1],
+  'Arborio rice': [1.4, 0.3, 5, 0.1], 'Rice': [1.3, 0.3, 5, 0.1],
+  'Cooked rice': [0.4, 0.1, 1, 0.1], 'Whole wheat pasta': [8, 0.5, 8, 2.5],
+  'Whole wheat flour': [11, 0.5, 5, 0.4], 'Whole wheat flour (atta)': [11, 0.5, 5, 0.4],
+  'Quinoa': [7, 0.7, 5, 0], 'Semolina (sooji)': [4, 0.2, 1, 0],
+  'Flattened rice (poha)': [1.5, 0.3, 10, 0.5], 'Dosa batter': [1, 0.1, 200, 0.5],
+  'Sourdough bread': [3, 0.3, 480, 2], 'Whole grain bread': [7, 0.8, 450, 5],
+  'Whole wheat tortilla': [5, 2, 530, 2], 'Corn tortillas': [6, 0.4, 45, 1],
+  'Naan': [2, 2, 480, 3], 'Pita bread': [2, 0.2, 530, 1],
+  'Bhature': [2, 3, 400, 2], 'Parotta': [2, 5, 500, 1],
+  'Appam': [1, 0.3, 150, 2], 'Idli': [1, 0.1, 200, 0.5], 'Leftover idli': [1, 0.1, 200, 0.5],
+  'Rice cakes': [1.5, 0.3, 20, 0.3], 'Whole wheat roti': [5, 0.8, 230, 1],
+  'Whole wheat paratha': [4, 4, 350, 1], 'Granola': [7, 3, 30, 20],
+  'Crisp corn tortillas': [6, 3, 350, 1], 'Tortilla chips': [4, 4, 400, 1],
+  'Corn chips': [4, 4, 400, 1], 'Pita chips': [3, 3, 400, 2],
+  'Rice crackers': [1, 0.5, 350, 2], 'Murukku': [3, 10, 400, 1],
+  'Banana chips': [3, 28, 5, 35], 'Ramen noodles': [2, 7, 1500, 2],
+  'Rice noodles': [1.8, 0.1, 100, 0.5], 'Vegetable dumplings': [2, 1.5, 400, 2],
+  // Dairy / alternatives
+  'Greek yogurt 0%': [0, 0.1, 36, 4], 'Cottage cheese': [0, 2.5, 364, 3],
+  'Curd': [0, 2, 46, 4.7], 'Curd (raita)': [0, 2, 46, 4.7],
+  'Paneer': [0, 14, 18, 4], 'Feta cheese': [0, 14, 1140, 1],
+  'Halloumi': [0, 16, 1050, 2], 'Parmesan': [0, 17, 1600, 1],
+  'Mozzarella': [0, 10, 627, 1], 'Cheese': [0, 18, 620, 1],
+  'Cheese filling': [0, 18, 620, 1], 'Cream': [0, 23, 38, 3],
+  'Butter': [0, 51, 11, 0.1], 'Ghee': [0, 62, 0, 0], 'Béchamel': [0, 5, 200, 4],
+  'Tzatziki': [0.5, 3, 300, 3], 'Curd marinade': [0, 2, 46, 4.7],
+  'Almond milk': [0.4, 0.1, 60, 0.3], 'Soy milk': [0.6, 0.3, 50, 4],
+  'Oat milk': [0.8, 0.2, 50, 5], 'Coconut milk': [2, 18, 15, 3],
+  'Coconut milk (light)': [1, 6, 12, 1.5],
+  // Proteins (animal) — sodium for processed/marinated; sat fat varies
+  'Chicken breast': [0, 1, 74, 0], 'Chicken': [0, 2.5, 82, 0],
+  'Chicken thigh': [0, 3, 86, 0], 'Chicken thigh boneless': [0, 3, 86, 0],
+  'Chicken thigh marinated': [0, 3, 350, 1], 'Ground turkey': [0, 2.3, 75, 0],
+  'Ground turkey 93/7': [0, 2, 70, 0], 'Sirloin steak': [0, 7, 55, 0],
+  'Lean ground beef': [0, 6, 75, 0], 'Lean beef strips': [0, 5, 60, 0],
+  'Beef sirloin': [0, 7, 55, 0], 'Lamb': [0, 9, 72, 0], 'Lamb (mutton)': [0, 9, 72, 0],
+  'Lean lamb mince': [0, 6, 70, 0], 'Pulled pork (or chicken)': [0, 6, 380, 0],
+  'Salmon fillet': [0, 3, 59, 0], 'Cod fillet': [0, 0.1, 78, 0],
+  'Sea bass fillet': [0, 0.6, 68, 0], 'Tuna in water': [0, 0.3, 320, 0],
+  'Shrimp': [0, 0.1, 220, 0], 'White fish fillet': [0, 0.2, 80, 0],
+  'White fish': [0, 0.2, 80, 0], 'Eggs': [0, 3.3, 124, 1.1],
+  'Whole eggs': [0, 3.3, 124, 1.1], 'Egg whites': [0, 0, 166, 0.7],
+  'Whey protein': [1, 2, 200, 5], 'Vegan protein': [3, 1, 250, 3],
+  // Plant proteins / legumes
+  'Firm tofu': [1, 1.3, 12, 0.6], 'Tempeh': [9, 2, 9, 0],
+  'Edamame in pods': [5, 0.6, 6, 2], 'Edamame shelled': [5, 0.6, 6, 2],
+  'Chickpeas': [8, 0.3, 240, 5], 'Boiled chickpeas': [8, 0.3, 6, 5],
+  'Chickpeas (chana)': [8, 0.3, 6, 5], 'Chickpeas (chole)': [8, 0.3, 240, 5],
+  'Brown chickpeas (kadala)': [10, 0.3, 6, 4], 'Black beans': [8.7, 0.1, 240, 0.3],
+  'Red kidney beans': [7, 0.1, 240, 0.3], 'Red kidney beans (rajma)': [7, 0.1, 6, 0.3],
+  'Rajma': [7, 0.1, 6, 0.3], 'Refried beans': [5, 0.3, 380, 1],
+  'Falafel': [5, 2.4, 290, 2], 'Black bean patty': [6, 0.8, 350, 2],
+  'Red lentils': [11, 0.2, 6, 2], 'Red lentils (masoor)': [11, 0.2, 6, 2],
+  'Toor dal': [15, 0.4, 17, 2], 'Toor dal sambar': [3, 0.3, 380, 2],
+  'Sambar': [3, 0.3, 380, 2], 'Rasam': [1, 0.1, 350, 2],
+  'Mixed dal': [14, 0.3, 10, 2], 'Green lentils': [11, 0.2, 6, 2],
+  'Lentils': [11, 0.2, 6, 2], 'Black urad dal': [18, 0.3, 38, 1],
+  'Chana dal': [12, 0.5, 24, 3], 'Moong dal': [16, 0.2, 15, 3],
+  'Yellow moong dal': [16, 0.2, 15, 3], 'Urad dal vada': [6, 1.5, 350, 1],
+  'Mixed sprouts': [4, 0.1, 12, 2], 'Roasted chana': [11, 0.6, 50, 4],
+  'Besan (gram flour)': [11, 0.8, 64, 3],
+  // Vegetables
+  'Mixed vegetables': [3, 0.1, 30, 4], 'Roasted vegetables mix': [3.5, 0.4, 40, 5],
+  'Spinach': [2.2, 0.1, 79, 0.4], 'Spinach (palak)': [2.2, 0.1, 79, 0.4],
+  'Spinach (saag)': [2.2, 0.1, 79, 0.4], 'Broccoli': [2.6, 0.1, 33, 1.7],
+  'Cauliflower': [2, 0.1, 30, 1.9], 'Cauliflower (gobi)': [2, 0.1, 30, 1.9],
+  'Potato': [2.2, 0, 6, 0.8], 'Potato (aloo)': [2.2, 0, 6, 0.8],
+  'Sweet potato': [3, 0, 55, 4], 'Roasted sweet potato': [3.3, 0.1, 60, 5],
+  'Baby potatoes': [2.2, 0, 6, 0.8], 'New potatoes': [2.2, 0, 6, 0.8],
+  'Mashed potato': [1.5, 0.6, 300, 1], 'Bell peppers': [2, 0.1, 4, 4.2],
+  'Bell pepper sticks': [2, 0.1, 4, 4.2], 'Poblano pepper': [2.5, 0, 5, 2],
+  'Tomato': [1.2, 0, 5, 2.6], 'Cherry tomatoes': [1.2, 0, 5, 2.6],
+  'Tomato sauce': [1.5, 0.1, 460, 5], 'Marinara sauce': [2, 0.2, 480, 6],
+  'Tomato gravy': [2, 0.5, 450, 5], 'Enchilada sauce': [1.5, 0.5, 500, 5],
+  'Mole sauce': [3, 2, 450, 8], 'Mushrooms': [1, 0.1, 5, 2],
+  'Carrots': [2.8, 0, 69, 4.7], 'Carrot sticks': [2.8, 0, 69, 4.7],
+  'Onion': [1.7, 0, 4, 4.2], 'Spring onion': [2.6, 0, 16, 2.3],
+  'Cucumber': [0.5, 0, 2, 1.7], 'Lettuce': [1.3, 0, 28, 0.8],
+  'Romaine lettuce': [2.1, 0, 8, 1.2], 'Mixed greens': [2, 0, 20, 1],
+  'Asparagus': [2.1, 0, 2, 1.9], 'Green beans': [3.4, 0, 6, 3.3],
+  'Brussels sprouts': [3.8, 0.1, 25, 2.2], 'Cabbage slaw': [2.5, 0, 25, 3],
+  'Bok choy': [1, 0, 65, 1.2], 'Avocado': [7, 2.1, 7, 0.7],
+  'Kale': [3.6, 0.1, 38, 2.3], 'Eggplant': [3, 0, 2, 3.5],
+  'Okra (bhindi)': [3.2, 0, 7, 1.5], 'Pumpkin': [0.5, 0.1, 1, 2.8],
+  'Green peas (matar)': [5, 0.1, 5, 6], 'Bean sprouts': [1.8, 0, 6, 4],
+  'Bamboo shoots': [2.2, 0.1, 4, 3], 'Mixed vegetable sabzi': [3, 0.5, 250, 4],
+  'Mixed sabzi': [3, 0.5, 250, 4], 'Potato masala': [2, 0.5, 350, 1.5],
+  'Onion pakora': [3, 2, 400, 3], 'Mixed vegetable pakora': [3, 2, 400, 3],
+  'Cucumber-tomato salad': [1, 0, 80, 2],
+  // Fruits
+  'Banana': [2.6, 0.1, 1, 12], 'Apple': [2.4, 0, 1, 10],
+  'Orange': [2.4, 0, 0, 9], 'Mango': [1.6, 0.1, 1, 14],
+  'Pineapple': [1.4, 0, 1, 10], 'Mixed berries': [3, 0, 1, 8],
+  'Frozen berries': [3, 0, 1, 8], 'Fresh figs': [2.9, 0.1, 1, 16],
+  'Lemon': [2.8, 0, 2, 2.5], 'Lime': [2.8, 0, 2, 1.7],
+  'Dried fruit': [6, 0.1, 25, 60],
+  // Nuts / seeds / oils
+  'Almonds': [12, 3.8, 1, 4], 'Walnuts': [7, 6, 2, 2.6],
+  'Mixed nuts': [9, 7, 5, 4], 'Cashews': [3.3, 8, 12, 6],
+  'Peanuts': [8.5, 7, 18, 4], 'Pine nuts': [3.7, 5, 2, 3.6],
+  'Chia seeds': [34, 3.3, 16, 0], 'Sesame seeds': [12, 7, 11, 0.3],
+  'Mustard seeds': [12, 2, 13, 7], 'Peanut butter': [6, 10, 17, 9],
+  'Almond butter': [10, 4, 1, 4], 'Tahini': [9, 7.5, 35, 0.5],
+  'Hummus': [6, 1.4, 380, 0], 'Guacamole': [6, 2.5, 7, 0.7],
+  'Olives': [3.2, 1.4, 1556, 0], 'Olive oil': [0, 14, 2, 0],
+  'Sesame oil': [0, 14, 0, 0], 'Coconut oil': [0, 87, 0, 0],
+  'Oil': [0, 14, 0, 0], 'Oil (for frying)': [0, 14, 0, 0],
+  'Mustard tempering': [2, 6, 50, 1], 'Grated coconut': [9, 30, 20, 6],
+  'Coconut (grated)': [9, 30, 20, 6], 'Coconut': [9, 30, 20, 6],
+  // Sweet / sugar
+  'Honey': [0.2, 0, 4, 82], 'Maple syrup': [0, 0, 12, 60],
+  'Mango pickle': [2, 1, 2500, 5], 'Dried fruit ': [6, 0.1, 25, 60],
+  'Dark chocolate': [7, 19, 24, 48],
+  // Sauces / condiments / spices (sodium-heavy)
+  'Salsa': [1.5, 0, 430, 5], 'Pad thai sauce': [0.5, 0.2, 1100, 40],
+  'Teriyaki sauce': [0.2, 0, 3500, 15], 'Soy sauce': [0.8, 0, 5500, 0.4],
+  'Miso paste': [5, 1, 3700, 6], 'Kimchi': [1.6, 0.1, 500, 4],
+  'Gochujang': [3, 0.2, 2400, 30], 'Soy-garlic marinade': [1, 0.2, 2500, 12],
+  'Caesar dressing (light)': [0, 3, 800, 4], 'Seaweed': [1, 0.1, 230, 0.5],
+  'Roasted seaweed': [4, 0.3, 1500, 2], 'Stock': [0, 0.1, 350, 0.5],
+  'Lime juice': [0.4, 0, 1, 1.7], 'Salsa, na covered': null,
+  'Mint chutney': [2, 0.2, 400, 3], 'Coconut chutney': [4, 14, 200, 2],
+  'Tandoori marinade': [0.5, 0.5, 500, 3], 'Curry paste': [3, 4, 800, 5],
+  'Thai curry paste': [3, 4, 1200, 5], 'Green curry paste': [3, 4, 1200, 5],
+  'Andhra spice paste': [4, 2, 600, 3], 'Chettinad spice paste': [4, 2, 600, 3],
+  'Chaat masala': [5, 1, 3000, 2], 'Mango pickle ': [2, 1, 2500, 5],
+  'Salt & pepper': [0, 0, 38000, 0], 'Sea salt': [0, 0, 38000, 0],
+  'Papad': [10, 1, 1500, 1], 'Fox nuts (makhana)': [14, 0.1, 30, 1.5],
+  'Masala chai': [0, 1, 25, 8], 'Lassi base (curd)': [0, 2, 46, 5],
+  'Hyderabadi biryani masala': [5, 1, 1500, 2], 'Biryani masala': [5, 1, 1500, 2]
+};
+
+// Foods that meaningfully boost iron or calcium — surfaced as a per-meal tag.
+const HIGH_IRON = new Set([
+  'Spinach', 'Spinach (palak)', 'Spinach (saag)', 'Kale',
+  'Red lentils', 'Red lentils (masoor)', 'Toor dal', 'Mixed dal', 'Green lentils',
+  'Lentils', 'Black urad dal', 'Chana dal', 'Moong dal', 'Yellow moong dal',
+  'Chickpeas', 'Chickpeas (chana)', 'Chickpeas (chole)', 'Boiled chickpeas',
+  'Brown chickpeas (kadala)', 'Black beans', 'Red kidney beans',
+  'Red kidney beans (rajma)', 'Rajma', 'Firm tofu', 'Tempeh', 'Tofu scramble',
+  'Lamb', 'Lamb (mutton)', 'Lean ground beef', 'Sirloin steak', 'Beef sirloin',
+  'Lean beef strips', 'Pumpkin', 'Mixed sprouts', 'Sesame seeds', 'Cashews', 'Dark chocolate'
+]);
+const HIGH_CALCIUM = new Set([
+  'Paneer', 'Greek yogurt 0%', 'Curd', 'Curd (raita)', 'Cottage cheese',
+  'Cheese', 'Feta cheese', 'Halloumi', 'Parmesan', 'Mozzarella',
+  'Firm tofu', 'Almonds', 'Almond milk', 'Sesame seeds', 'Tahini',
+  'Spinach', 'Spinach (palak)', 'Spinach (saag)', 'Kale', 'Bok choy',
+  'Soy milk', 'Edamame in pods', 'Edamame shelled'
+]);
+function getMicros(name, nut) {
+  const m = MICRO[name];
+  if (Array.isArray(m)) return { fib: m[0], sat: m[1], na: m[2], sug: m[3] };
+  return { fib: 0, sat: nut ? (nut.f || 0) * 0.3 : 0, na: 0, sug: 0 };
+}
 
 // Parse a qty string into grams (or ml treated as grams for liquids).
 // Returns null when we can't get a numeric weight, in which case the meal
@@ -1949,7 +2180,7 @@ function piecesToGrams(name, qty) {
 }
 
 function computeMealNutrition(ingredients) {
-  let cals = 0, p = 0, c = 0, f = 0;
+  let cals = 0, p = 0, c = 0, f = 0, fib = 0, sat = 0, na = 0, sug = 0;
   let unknown = 0;
   ingredients.forEach(([name, qty]) => {
     const nut = NUT[name];
@@ -1962,8 +2193,17 @@ function computeMealNutrition(ingredients) {
     p    += nut.p    * factor;
     c    += nut.c    * factor;
     f    += nut.f    * factor;
+    const mi = getMicros(name, nut);
+    fib += mi.fib * factor;
+    sat += mi.sat * factor;
+    na  += mi.na  * factor;
+    sug += mi.sug * factor;
   });
-  return { cals: Math.round(cals), p: Math.round(p), c: Math.round(c), f: Math.round(f), unknown };
+  return {
+    cals: Math.round(cals), p: Math.round(p), c: Math.round(c), f: Math.round(f),
+    fib: Math.round(fib), sat: Math.round(sat), na: Math.round(na), sug: Math.round(sug),
+    unknown
+  };
 }
 
 // Detect egg presence by ingredient name. `\beggs?\b` matches "egg" or "eggs" with
@@ -1996,12 +2236,20 @@ const mealHasEgg = (m) => m.ingredients.some(([name]) => HAS_EGG_RE.test(name));
       });
       // Allergen tags
       m.allergens = detectAllergens(m);
-      // Try ingredient-level macro computation; only override hand-typed if coverage
-      // is high (≥80%) AND the result is within a sane band of the original (it's
-      // probably right if both estimates are close).
+      // Micronutrient flags (iron / calcium dense)
+      m.highIron = m.ingredients.some(([n]) => HIGH_IRON.has(n));
+      m.highCalcium = m.ingredients.some(([n]) => HIGH_CALCIUM.has(n));
+      // Ingredient-level computation. Always store micros (best-effort). Only
+      // override hand-typed macros when coverage is high (≥80%) and the computed
+      // calorie total is within a sane band of the original.
       const total = m.ingredients.length;
       const computed = computeMealNutrition(m.ingredients);
+      m.fib = computed.fib;
+      m.sat = computed.sat;
+      m.na  = computed.na;
+      m.sug = computed.sug;
       const coverage = (total - computed.unknown) / total;
+      m.coverage = coverage;
       if (coverage >= 0.8 && computed.cals > 0) {
         const ratio = computed.cals / m.cals;
         if (ratio >= 0.55 && ratio <= 1.7) {
@@ -2041,6 +2289,51 @@ function getExcludedAllergens() {
 function allergenOk(m, excluded) {
   if (!excluded.length) return true;
   return !excluded.some(a => m.allergens.includes(a));
+}
+
+// ===== NUTRITION DETAIL PANEL (plan daily averages vs targets) =====
+function renderNutritionPanel(plan) {
+  const el = document.getElementById('nutriPanel');
+  if (!el || !plan || !plan.length) { if (el) el.innerHTML = ''; return; }
+  const days = plan.length;
+  let fib = 0, sat = 0, na = 0, sug = 0, ironMeals = 0, calMeals = 0;
+  plan.forEach(day => day.meals.forEach(m => {
+    fib += m.fib || 0; sat += m.sat || 0; na += m.na || 0; sug += m.sug || 0;
+    if (m.highIron) ironMeals++;
+    if (m.highCalcium) calMeals++;
+  }));
+  const avgFib = Math.round(fib / days);
+  const avgSat = Math.round(sat / days);
+  const avgNa  = Math.round(na / days);
+  const avgSug = Math.round(sug / days);
+
+  const cals = state.targetCals || 2000;
+  const fibTarget = Math.round(cals / 1000 * 14);          // ~14g per 1000 kcal
+  const satLimitG = Math.round(cals * 0.10 / 9);           // <10% of cals
+  const satPct = Math.round((avgSat * 9 / cals) * 100);
+  const naLimit = 2300;                                     // mg/day FDA limit
+
+  const row = (label, valueHtml, statusClass, note) => `
+    <div class="nutri-row">
+      <span class="nutri-label">${label}</span>
+      <span class="nutri-value">${valueHtml}</span>
+      <span class="nutri-note ${statusClass || ''}">${note || ''}</span>
+    </div>`;
+
+  const fibStatus = avgFib >= fibTarget ? 'good' : (avgFib >= fibTarget * 0.7 ? 'ok' : 'warn');
+  const satStatus = satPct <= 10 ? 'good' : (satPct <= 13 ? 'ok' : 'warn');
+  const naStatus  = avgNa <= naLimit ? 'good' : (avgNa <= naLimit * 1.25 ? 'ok' : 'warn');
+
+  el.innerHTML = `
+    <div class="nutri-head">Daily nutrition <span class="nutri-sub">— plan average across ${days} day${days===1?'':'s'}</span></div>
+    ${row('Fiber', `<strong>${avgFib}g</strong>`, fibStatus, avgFib >= fibTarget ? `✓ hits ~${fibTarget}g goal` : `goal ~${fibTarget}g`)}
+    ${row('Saturated fat', `<strong>${avgSat}g</strong>`, satStatus, `${satPct}% of cals${satPct > 10 ? ' · aim <10%' : ' ✓'}`)}
+    ${row('Sodium', `<strong>${avgNa.toLocaleString()}mg</strong>`, naStatus, avgNa <= naLimit ? `✓ under ${naLimit.toLocaleString()}mg` : `over ${naLimit.toLocaleString()}mg limit`)}
+    ${row('Sugar', `<strong>${avgSug}g</strong>`, 'neutral', 'incl. natural sugars')}
+    <div class="nutri-micros">
+      ${ironMeals ? `<span class="micro-pill iron">🩸 ${ironMeals} iron-rich meal${ironMeals===1?'':'s'}/wk</span>` : ''}
+      ${calMeals ? `<span class="micro-pill calcium">🦴 ${calMeals} calcium-rich meal${calMeals===1?'':'s'}/wk</span>` : ''}
+    </div>`;
 }
 
 // ===== DONUT CHART =====
@@ -2370,6 +2663,7 @@ function generateMealPlan() {
   state.currentPlan = plan;
   renderMealPlan(plan);
   renderGroceryList(groceryMap);
+  renderNutritionPanel(plan);
 
   const notice = document.getElementById('planNotice');
   if (fallbackUsed && cuisine !== 'any') {
@@ -2497,7 +2791,7 @@ function renderMealPlan(plan) {
           <div class="meal-row" draggable="true" data-day-idx="${idx}" data-slot="${m.slot}" data-name="${m.name.replace(/"/g, '&quot;')}">
             <div class="meal-slot"><span class="drag-handle" title="Drag to swap with same slot on another day">⋮⋮</span>${slotLabels[m.slot]}</div>
             <div>
-              <div class="meal-name">${m.name}${m.computed ? '<span class="computed-badge" title="Macros computed from ingredient nutrition">✓ computed</span>' : ''}</div>
+              <div class="meal-name">${m.name}${m.computed ? '<span class="computed-badge" title="Macros computed from ingredient nutrition">✓ computed</span>' : ''}${m.highIron ? '<span class="micro-tag iron" title="Iron-rich">🩸</span>' : ''}${m.highCalcium ? '<span class="micro-tag calcium" title="Calcium-rich">🦴</span>' : ''}</div>
               <div class="meal-macros-mini">
                 P ${m.p}g <span class="dot">·</span> C ${m.c}g <span class="dot">·</span> F ${m.f}g
               </div>
