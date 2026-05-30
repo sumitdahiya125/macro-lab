@@ -704,6 +704,31 @@ header {
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
 }
+.meal-micro-mini {
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-top: 1px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+.nutri-grade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+.grade-A { background: #2e7d32; }
+.grade-B { background: #7cb342; }
+.grade-C { background: #f9a825; }
+.grade-D { background: #ef6c00; color: #fff; }
+.grade-E { background: #d32f2f; }
 .meal-macros-mini .dot {
   color: var(--border-strong);
   margin: 0 4px;
@@ -1132,6 +1157,7 @@ footer {
           <option value="any" selected>Any — mix everything</option>
           <option value="international">Western / International</option>
           <option value="italian">Italian</option>
+          <option value="spanish">Spanish</option>
           <option value="mexican">Mexican / Latin</option>
           <option value="mediterranean">Greek &amp; Mediterranean</option>
           <option value="middle-eastern">Middle Eastern</option>
@@ -1531,6 +1557,10 @@ const MEALS = {
     { name: 'Thai omelette with rice', diet: D.egg, cuisine: 'thai', cals: 470, p: 22, c: 50, f: 20, ingredients: [['Eggs', '3 large'], ['Jasmine rice', '60g · ⅓ cup raw'], ['Spring onion', '20g · ¼ cup'], ['Fish sauce', '5ml · 1 tsp'], ['Oil', '8g · ½ tbsp']] },
     { name: 'Japanese breakfast set', diet: D.fish, cuisine: 'japanese', cals: 480, p: 32, c: 60, f: 12, ingredients: [['Salmon fillet', '90g · 3oz'], ['Sushi rice', '70g · ⅓ cup raw'], ['Miso paste', '15g · 1 tbsp'], ['Spinach', '50g · 1 cup'], ['Seaweed', '5g · 1 sheet']] },
     { name: 'Korean tofu vegetable porridge', diet: D.vegan, cuisine: 'korean', cals: 360, p: 16, c: 55, f: 9, ingredients: [['Jasmine rice', '55g · ¼ cup raw'], ['Firm tofu', '120g · ½ cup'], ['Mixed vegetables', '100g · ¾ cup'], ['Sesame oil', '6g · 1 tsp'], ['Soy sauce', '10ml · 2 tsp']] },
+    // Spanish (3)
+    { name: 'Pan con tomate', diet: D.vegan, cuisine: 'spanish', cals: 360, p: 9, c: 55, f: 13, ingredients: [['Ciabatta', '90g · 2 slices'], ['Tomato', '150g · 1½ medium'], ['Olive oil', '12g · 1 tbsp'], ['Garlic', '8g · 2 cloves']] },
+    { name: 'Spanish tortilla (potato omelette)', diet: D.egg, cuisine: 'spanish', cals: 440, p: 20, c: 35, f: 24, ingredients: [['Eggs', '3 large'], ['Potato', '180g · 1 medium'], ['Onion', '½ medium'], ['Olive oil', '14g · 1 tbsp']] },
+    { name: 'Tomato toast with serrano', diet: D.meat, cuisine: 'spanish', cals: 420, p: 24, c: 48, f: 14, ingredients: [['Ciabatta', '80g · 2 slices'], ['Serrano ham', '50g · 4 slices'], ['Tomato', '100g · 1 small'], ['Olive oil', '8g · ½ tbsp']] },
     // Vegan gap-fillers for Italian & Greek/Mediterranean breakfasts
     { name: 'Pane e pomodoro', diet: D.vegan, cuisine: 'italian', cals: 380, p: 10, c: 55, f: 14, ingredients: [['Ciabatta', '80g · 2 slices'], ['Tomato', '150g · 1½ medium'], ['Olive oil', '12g · 1 tbsp'], ['Basil', '5g · 2 tbsp']] },
     { name: 'Greek oats with tahini & figs', diet: D.vegan, cuisine: 'mediterranean', cals: 420, p: 12, c: 60, f: 16, ingredients: [['Rolled oats', '70g · ⅞ cup dry'], ['Soy milk', '250ml · 1 cup'], ['Tahini', '15g · 1 tbsp'], ['Fresh figs', '2 medium'], ['Maple syrup', '10g · ¾ tbsp']] }
@@ -1628,7 +1658,13 @@ const MEALS = {
     { name: 'Tofu spring roll bowl', diet: D.vegan, cuisine: 'vietnamese', cals: 540, p: 20, c: 80, f: 16, ingredients: [['Rice noodles', '70g · ⅓ cup raw'], ['Firm tofu', '150g · ½ cup'], ['Lettuce', '80g · 1½ cup'], ['Carrots', '60g · ½ cup'], ['Peanuts', '15g · 2 tbsp']] },
     { name: 'Lemongrass tofu rice', diet: D.vegan, cuisine: 'vietnamese', cals: 560, p: 24, c: 75, f: 16, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Lemongrass', '10g · 1 stalk'], ['Soy sauce', '15ml · 1 tbsp']] },
     // Vegan gap-filler for Greek/Mediterranean lunch
-    { name: 'Gigantes (Greek baked beans)', diet: D.vegan, cuisine: 'mediterranean', cals: 540, p: 20, c: 75, f: 18, ingredients: [['Cannellini beans', '200g · 1 cup cooked'], ['Tomato sauce', '120g · ½ cup'], ['Onion', '½ medium'], ['Olive oil', '14g · 1 tbsp'], ['Sourdough bread', '1 slice (~40g)']] }
+    { name: 'Gigantes (Greek baked beans)', diet: D.vegan, cuisine: 'mediterranean', cals: 540, p: 20, c: 75, f: 18, ingredients: [['Cannellini beans', '200g · 1 cup cooked'], ['Tomato sauce', '120g · ½ cup'], ['Onion', '½ medium'], ['Olive oil', '14g · 1 tbsp'], ['Sourdough bread', '1 slice (~40g)']] },
+    // Spanish (5)
+    { name: 'Paella valenciana', diet: D.meat, cuisine: 'spanish', cals: 640, p: 40, c: 75, f: 18, ingredients: [['Basmati rice', '80g · ⅓ cup raw'], ['Chicken', '150g · 5oz'], ['Green beans', '80g · ¾ cup'], ['Bell peppers', '80g · ¾ medium'], ['Saffron', '0.5g · pinch']] },
+    { name: 'Seafood paella', diet: D.fish, cuisine: 'spanish', cals: 600, p: 38, c: 75, f: 14, ingredients: [['Basmati rice', '80g · ⅓ cup raw'], ['Shrimp', '100g · ~8 medium'], ['Mussels', '80g · ~10'], ['Bell peppers', '80g · ¾ medium'], ['Saffron', '0.5g · pinch']] },
+    { name: 'Vegetable paella', diet: D.vegan, cuisine: 'spanish', cals: 560, p: 14, c: 90, f: 14, ingredients: [['Basmati rice', '80g · ⅓ cup raw'], ['Mixed vegetables', '200g · 1½ cup'], ['Bell peppers', '80g · ¾ medium'], ['Green peas (matar)', '60g · ½ cup'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Gazpacho with bread', diet: D.vegan, cuisine: 'spanish', cals: 420, p: 10, c: 60, f: 16, ingredients: [['Tomato', '250g · 2½ medium'], ['Cucumber', '100g · ½ medium'], ['Bell peppers', '80g · ¾ medium'], ['Olive oil', '14g · 1 tbsp'], ['Ciabatta', '70g · 2 slices']] },
+    { name: 'Lentejas (Spanish lentil stew)', diet: D.vegan, cuisine: 'spanish', cals: 540, p: 24, c: 80, f: 12, ingredients: [['Green lentils', '90g · ⅓ cup raw'], ['Carrots', '80g · ¾ cup'], ['Potato', '120g · 1 small'], ['Onion', '½ medium'], ['Olive oil', '10g · ¾ tbsp']] }
   ],
   dinner: [
     // International (7)
@@ -1721,7 +1757,12 @@ const MEALS = {
     { name: 'Tofu & vegetable fresh rolls', diet: D.vegan, cuisine: 'vietnamese', cals: 480, p: 18, c: 70, f: 14, ingredients: [['Rice paper', '60g · 4 sheets'], ['Firm tofu', '120g · ½ cup'], ['Rice noodles', '40g · 3 tbsp raw'], ['Lettuce', '60g · 1 cup'], ['Peanut sauce', '20g · 1 tbsp']] },
     // Vegan gap-fillers for Italian & Greek/Mediterranean dinners
     { name: 'Penne arrabbiata', diet: D.vegan, cuisine: 'italian', cals: 560, p: 14, c: 90, f: 16, ingredients: [['Penne pasta', '80g · 1 cup raw'], ['Tomato sauce', '150g · ⅔ cup'], ['Garlic', '10g · 3 cloves'], ['Chilli flakes', '2g · ½ tsp'], ['Olive oil', '12g · 1 tbsp']] },
-    { name: 'Briam (Greek roasted vegetables) with bread', diet: D.vegan, cuisine: 'mediterranean', cals: 520, p: 12, c: 75, f: 20, ingredients: [['Mixed vegetables', '250g · 1¾ cup'], ['Potato', '150g · 1 medium'], ['Tomato', '100g · 1 small'], ['Olive oil', '15g · 1 tbsp'], ['Sourdough bread', '2 slices (~80g)']] }
+    { name: 'Briam (Greek roasted vegetables) with bread', diet: D.vegan, cuisine: 'mediterranean', cals: 520, p: 12, c: 75, f: 20, ingredients: [['Mixed vegetables', '250g · 1¾ cup'], ['Potato', '150g · 1 medium'], ['Tomato', '100g · 1 small'], ['Olive oil', '15g · 1 tbsp'], ['Sourdough bread', '2 slices (~80g)']] },
+    // Spanish (4)
+    { name: 'Grilled fish with romesco', diet: D.fish, cuisine: 'spanish', cals: 540, p: 40, c: 45, f: 22, ingredients: [['White fish', '180g · 6oz'], ['Romesco', '50g · 3 tbsp'], ['New potatoes', '180g · 5 small'], ['Olive oil', '8g · ½ tbsp']] },
+    { name: 'Patatas bravas & chickpeas', diet: D.vegan, cuisine: 'spanish', cals: 560, p: 18, c: 85, f: 18, ingredients: [['Potato', '200g · 1 large'], ['Chickpeas', '150g · ¾ cup cooked'], ['Tomato sauce', '80g · ⅓ cup'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Chicken & chorizo rice', diet: D.meat, cuisine: 'spanish', cals: 680, p: 42, c: 65, f: 28, ingredients: [['Chicken', '150g · 5oz'], ['Chorizo', '40g · ⅓ cup sliced'], ['Basmati rice', '70g · ⅓ cup raw'], ['Bell peppers', '80g · ¾ medium']] },
+    { name: 'Spanish white bean & spinach stew', diet: D.vegan, cuisine: 'spanish', cals: 500, p: 20, c: 70, f: 16, ingredients: [['Cannellini beans', '180g · ¾ cup cooked'], ['Spinach', '120g · 2½ cup'], ['Tomato', '100g · 1 small'], ['Olive oil', '12g · 1 tbsp'], ['Sourdough bread', '1 slice (~40g)']] }
   ],
   snack: [
     // International (8)
@@ -1773,7 +1814,10 @@ const MEALS = {
     { name: 'Rice paper chips with chilli', diet: D.vegan, cuisine: 'vietnamese', cals: 220, p: 3, c: 40, f: 6, ingredients: [['Rice paper', '50g · 4 sheets'], ['Oil', '6g · 1 tsp'], ['Chilli flakes', '2g · ½ tsp']] },
     { name: 'Olives & feta', diet: D.veg, cuisine: 'mediterranean', cals: 240, p: 8, c: 6, f: 21, ingredients: [['Olives', '40g · ~13 pcs'], ['Feta cheese', '50g · ⅓ cup'], ['Olive oil', '5g · 1 tsp']] },
     { name: 'Edamame hummus & crackers', diet: D.vegan, cuisine: 'japanese', cals: 240, p: 12, c: 26, f: 10, ingredients: [['Edamame shelled', '80g · ½ cup'], ['Tahini', '10g · ⅔ tbsp'], ['Rice crackers', '25g · ~8 crackers']] },
-    { name: 'Marinated olives & pita', diet: D.vegan, cuisine: 'mediterranean', cals: 240, p: 6, c: 30, f: 12, ingredients: [['Olives', '40g · ~13 pcs'], ['Pita bread', '1 small (~50g)'], ['Olive oil', '5g · 1 tsp']] }
+    { name: 'Marinated olives & pita', diet: D.vegan, cuisine: 'mediterranean', cals: 240, p: 6, c: 30, f: 12, ingredients: [['Olives', '40g · ~13 pcs'], ['Pita bread', '1 small (~50g)'], ['Olive oil', '5g · 1 tsp']] },
+    // Spanish (2)
+    { name: 'Marcona almonds & olives', diet: D.vegan, cuisine: 'spanish', cals: 260, p: 7, c: 8, f: 23, ingredients: [['Almonds', '25g · ~18 pieces'], ['Olives', '40g · ~13 pcs']] },
+    { name: 'Manchego & olives', diet: D.veg, cuisine: 'spanish', cals: 250, p: 13, c: 4, f: 21, ingredients: [['Manchego', '45g · 3 slices'], ['Olives', '30g · ~10 pcs'], ['Olive oil', '3g · ½ tsp']] }
   ]
 };
 
@@ -2184,7 +2228,14 @@ const NUT = {
   'Dates':                  { cals: 282, p: 2.5, c: 75, f: 0.4 },
   'Tabbouleh':              { cals: 130, p: 3,   c: 16, f: 7 },
   'Rice paper':             { cals: 330, p: 1,   c: 80, f: 0.2 },
-  'Peanut sauce':           { cals: 250, p: 8,   c: 15, f: 20 }
+  'Peanut sauce':           { cals: 250, p: 8,   c: 15, f: 20 },
+  // Spanish
+  'Chorizo':                { cals: 455, p: 24,  c: 2,  f: 38 },
+  'Serrano ham':            { cals: 241, p: 31,  c: 0,  f: 13 },
+  'Manchego':               { cals: 390, p: 25,  c: 1,  f: 32 },
+  'Romesco':                { cals: 200, p: 4,   c: 10, f: 16 },
+  'Mussels':                { cals: 86,  p: 12,  c: 4,  f: 2 },
+  'Saffron':                { cals: 310, p: 11,  c: 65, f: 6 }
 };
 
 // ===== MICRONUTRIENTS per 100g (or 100ml) =====
@@ -2342,7 +2393,9 @@ const MICRO = {
   'Natto': [5, 2, 7, 5], 'Sweet potato noodles': [1, 0, 10, 0], 'Doenjang': [5, 1, 4000, 5],
   'Fava beans': [5, 0.1, 5, 1], 'Labneh': [0, 6, 90, 5], 'Freekeh': [13, 0.4, 5, 2],
   'Baba ganoush': [3, 2, 350, 4], 'Dates': [8, 0, 2, 63], 'Tabbouleh': [3, 1, 300, 2],
-  'Rice paper': [1.5, 0, 200, 0], 'Peanut sauce': [3, 3, 600, 12]
+  'Rice paper': [1.5, 0, 200, 0], 'Peanut sauce': [3, 3, 600, 12],
+  'Chorizo': [0, 14, 1240, 1], 'Serrano ham': [0, 4, 2340, 0], 'Manchego': [0, 20, 1200, 0],
+  'Romesco': [3, 2, 400, 4], 'Mussels': [0, 0.4, 286, 0], 'Saffron': [4, 0.6, 148, 0]
 };
 
 // Foods that meaningfully boost iron or calcium — surfaced as a per-meal tag.
@@ -2393,6 +2446,45 @@ function computeCompleteProtein(m) {
   const names = m.ingredients.map(([n]) => n);
   if (names.some(n => COMPLETE_PROTEIN.has(n))) return true;
   return names.some(n => GRAIN_FOODS.has(n)) && names.some(n => LEGUME_FOODS.has(n));
+}
+
+// ===== NUTRI-SCORE (A–E food grade, the EU standard) =====
+// Fruit/veg/nuts for the "FVL" positive component (legumes counted via LEGUME_FOODS).
+const FRUIT_VEG = new Set([
+  'Mixed vegetables','Roasted vegetables mix','Spinach','Spinach (palak)','Spinach (saag)',
+  'Broccoli','Cauliflower','Cauliflower (gobi)','Potato','Potato (aloo)','Sweet potato',
+  'Roasted sweet potato','Baby potatoes','New potatoes','Mashed potato','Bell peppers',
+  'Bell pepper sticks','Poblano pepper','Tomato','Cherry tomatoes','Mushrooms','Carrots',
+  'Carrot sticks','Onion','Spring onion','Cucumber','Lettuce','Romaine lettuce','Mixed greens',
+  'Asparagus','Green beans','Brussels sprouts','Cabbage slaw','Cabbage','Bok choy','Kale',
+  'Eggplant','Okra (bhindi)','Pumpkin','Green peas (matar)','Bean sprouts','Bamboo shoots',
+  'Mixed vegetable sabzi','Mixed sabzi','Potato masala','Cucumber-tomato salad','Avocado',
+  'Fenugreek leaves','Fenugreek leaves (methi)','Green papaya','Green chilli','Garlic','Ginger',
+  'Celery','Banana','Apple','Orange','Mango','Pineapple','Mixed berries','Frozen berries',
+  'Fresh figs','Lemon','Lime','Dates','Dried fruit','Olives','Kimchi','Guacamole','Salsa'
+]);
+const NUTS_SEEDS = new Set(['Almonds','Walnuts','Mixed nuts','Cashews','Peanuts','Pine nuts','Chia seeds','Sesame seeds','Peanut butter','Almond butter','Tahini']);
+
+// Per-PORTION health grade (A best … E worst). The official Nutri-Score is per-100g
+// and designed for packaged products; applied to mixed meals it scores almost
+// everything A because rice/veg dilute the rich components. This portion-level
+// version penalizes the actual saturated fat / sodium / sugar you eat in a serving
+// and rewards fiber, produce, and protein.
+function nutriScore(m) {
+  if (!m.grams || m.grams < 30) return null;
+  let pts = 0;
+  const sat = m.sat || 0, na = m.na || 0, sug = m.sug || 0, fib = m.fib || 0, fvl = m.fvlPct || 0, pro = m.p || 0;
+  // Negatives (per portion)
+  pts += sat > 15 ? 3 : sat > 10 ? 2 : sat > 6 ? 1 : 0;
+  pts += na > 1000 ? 3 : na > 700 ? 2 : na > 450 ? 1 : 0;
+  pts += sug > 25 ? 2 : sug > 15 ? 1 : 0;
+  if (m.fried) pts += 2;
+  if (m.indulgent) pts += 1;
+  // Positives
+  pts -= fib >= 8 ? 2 : fib >= 5 ? 1 : 0;
+  pts -= fvl >= 50 ? 2 : fvl >= 30 ? 1 : 0;
+  pts -= pro >= 30 ? 1 : 0;
+  return pts <= -3 ? 'A' : pts <= -1 ? 'B' : pts <= 1 ? 'C' : pts <= 3 ? 'D' : 'E';
 }
 function getMicros(name, nut) {
   const m = MICRO[name];
@@ -2539,6 +2631,17 @@ const CUISINE_REMAP = {
       // Complete-protein flag + whether the meal is fully plant-based (vegan)
       m.completeProtein = computeCompleteProtein(m);
       m.plantBased = m.diet.includes('vegan');
+      // Total weight + fruit/veg/legume/nut fraction (for Nutri-Score)
+      let totalG = 0, fvlG = 0;
+      m.ingredients.forEach(([n, q]) => {
+        let grams = qtyToGrams(q);
+        if (grams === null) grams = piecesToGrams(n, q);
+        if (grams === null) grams = 0;
+        totalG += grams;
+        if (FRUIT_VEG.has(n) || LEGUME_FOODS.has(n) || NUTS_SEEDS.has(n)) fvlG += grams;
+      });
+      m.grams = Math.round(totalG);
+      m.fvlPct = totalG ? Math.round(fvlG / totalG * 100) : 0;
       // Ingredient-level computation. Always store micros (best-effort). Only
       // override hand-typed macros when coverage is high (≥80%) and the computed
       // calorie total is within a sane band of the original.
@@ -2560,6 +2663,8 @@ const CUISINE_REMAP = {
           m.computed = true;
         }
       }
+      // Nutri-Score depends on finalized macros + micros, so compute it last
+      m.nutriScore = nutriScore(m);
     });
   });
 })();
@@ -3115,9 +3220,12 @@ function renderMealPlan(plan) {
           <div class="meal-row" draggable="true" data-day-idx="${idx}" data-slot="${m.slot}" data-name="${m.name.replace(/"/g, '&quot;')}">
             <div class="meal-slot"><span class="drag-handle" title="Drag to swap with same slot on another day">⋮⋮</span>${slotLabels[m.slot]}</div>
             <div>
-              <div class="meal-name">${m.name}${m.plantBased && m.completeProtein ? '<span class="protein-badge" title="Complete protein — supplies all 9 essential amino acids">⚡ complete protein</span>' : ''}${m.highIron ? '<span class="micro-tag iron" title="Iron-rich">🩸</span>' : ''}${m.highCalcium ? '<span class="micro-tag calcium" title="Calcium-rich">🦴</span>' : ''}${m.computed ? '<span class="computed-badge" title="Macros computed from ingredient nutrition">✓</span>' : ''}</div>
+              <div class="meal-name">${m.nutriScore ? `<span class="nutri-grade grade-${m.nutriScore}" title="Health grade ${m.nutriScore} (A best … E worst) — from saturated fat, sodium, sugar, fiber, produce &amp; protein per portion">${m.nutriScore}</span>` : ''}${m.name}${m.plantBased && m.completeProtein ? '<span class="protein-badge" title="Complete protein — supplies all 9 essential amino acids">⚡ complete protein</span>' : ''}${m.highIron ? '<span class="micro-tag iron" title="Iron-rich">🩸</span>' : ''}${m.highCalcium ? '<span class="micro-tag calcium" title="Calcium-rich">🦴</span>' : ''}${m.computed ? '<span class="computed-badge" title="Macros computed from ingredient nutrition">✓</span>' : ''}</div>
               <div class="meal-macros-mini">
                 P ${m.p}g <span class="dot">·</span> C ${m.c}g <span class="dot">·</span> F ${m.f}g
+              </div>
+              <div class="meal-micro-mini">
+                Fiber ${m.fib}g <span class="dot">·</span> Sat ${m.sat}g <span class="dot">·</span> Sodium ${(m.na||0).toLocaleString()}mg <span class="dot">·</span> Sugar ${m.sug}g
               </div>
               <ul class="meal-ingredients">
                 ${m.ingredients.map(([name, qty]) => `
