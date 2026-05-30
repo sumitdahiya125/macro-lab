@@ -901,6 +901,26 @@ header {
   vertical-align: 2px;
 }
 .micro-tag { font-size: 11px; margin-left: 4px; vertical-align: 1px; }
+.protein-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(46, 155, 91, 0.15);
+  color: #2e9b5b;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: 2px;
+}
+:root.dark .protein-badge { background: rgba(95, 207, 140, 0.18); color: #5fcf8c; }
+.plan-stats {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
 
 /* Nutrition detail panel */
 .nutri-panel {
@@ -1265,7 +1285,10 @@ footer {
       <!-- Meal plan card -->
       <div class="card" id="plan">
         <div class="section-head">
-          <h3>Your 7-day plan</h3>
+          <div>
+            <h3 id="planTitle">Your 7-day plan</h3>
+            <div class="plan-stats" id="planStats"></div>
+          </div>
           <button class="regen-btn" type="button" onclick="generateMealPlan()" aria-label="Regenerate meal plan">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
             Regenerate
@@ -2343,6 +2366,34 @@ const HIGH_CALCIUM = new Set([
 // Extend iron-rich set with new-cuisine ingredients
 ['Fava beans', 'Dates', 'Natto', 'Doenjang', 'Cannellini beans', 'Mixed beans', 'Freekeh', 'Pork']
   .forEach(n => HIGH_IRON.add(n));
+
+// ===== COMPLETE PROTEIN (amino-acid completeness) =====
+// A meal provides a complete protein if it contains either a single complete-protein
+// source (soy, quinoa, chia, dairy, egg, or any animal protein) OR complements a grain
+// (low in lysine) with a legume (low in methionine) — e.g. rice + dal, hummus + pita.
+const COMPLETE_PROTEIN = new Set([
+  // soy
+  'Firm tofu','Tempeh','Edamame in pods','Edamame shelled','Soy milk','Miso paste','Natto','Doenjang','Doubanjiang','Gochujang',
+  // complete pseudo-grains / seeds + fermented rice-and-lentil batters (rice + urad dal)
+  'Quinoa','Chia seeds','Dosa batter','Idli','Leftover idli',
+  // dairy
+  'Greek yogurt 0%','Cottage cheese','Curd','Curd (raita)','Paneer','Feta cheese','Halloumi','Parmesan','Mozzarella','Cheese','Cheese filling','Cream','Ricotta','Labneh','Whey protein','Béchamel','Tzatziki','Curd marinade',
+  // eggs
+  'Eggs','Whole eggs','Egg whites',
+  // animal proteins (all complete)
+  'Chicken breast','Chicken','Chicken thigh','Chicken thigh boneless','Chicken thigh marinated','Ground turkey','Ground turkey 93/7','Sirloin steak','Lean ground beef','Lean beef strips','Beef sirloin','Lamb','Lamb (mutton)','Lean lamb mince','Pulled pork (or chicken)','Pork','Pork wontons','Salmon fillet','Cod fillet','Sea bass fillet','Tuna in water','Shrimp','White fish fillet','White fish'
+]);
+const GRAIN_FOODS = new Set([
+  'Rolled oats','Oat flour','Basmati rice','Brown rice','Jasmine rice','Sushi rice','Arborio rice','Rice','Cooked rice','Whole wheat pasta','Whole wheat flour','Whole wheat flour (atta)','Semolina (sooji)','Flattened rice (poha)','Dosa batter','Sourdough bread','Whole grain bread','Whole wheat tortilla','Corn tortillas','Naan','Pita bread','Bhature','Parotta','Appam','Idli','Leftover idli','Whole wheat roti','Whole wheat paratha','Granola','Spaghetti','Penne pasta','Pizza base','Polenta','Gnocchi','Ciabatta','Baguette','Egg noodles','Rice noodles','Ramen noodles','Udon noodles','Steamed bun','Freekeh','Rice paper','Sweet potato noodles','Murukku','Whole wheat bun'
+]);
+const LEGUME_FOODS = new Set([
+  'Chickpeas','Boiled chickpeas','Chickpeas (chana)','Chickpeas (chole)','Brown chickpeas (kadala)','Black beans','Red kidney beans','Red kidney beans (rajma)','Rajma','Refried beans','Falafel','Black bean patty','Red lentils','Red lentils (masoor)','Toor dal','Mixed dal','Green lentils','Lentils','Black urad dal','Chana dal','Moong dal','Yellow moong dal','Urad dal vada','Mixed sprouts','Roasted chana','Besan (gram flour)','Cannellini beans','Mixed beans','Fava beans','Hummus','Peanuts','Peanut butter','Green peas (matar)','Sambar','Toor dal sambar','Baba ganoush'
+]);
+function computeCompleteProtein(m) {
+  const names = m.ingredients.map(([n]) => n);
+  if (names.some(n => COMPLETE_PROTEIN.has(n))) return true;
+  return names.some(n => GRAIN_FOODS.has(n)) && names.some(n => LEGUME_FOODS.has(n));
+}
 function getMicros(name, nut) {
   const m = MICRO[name];
   if (Array.isArray(m)) return { fib: m[0], sat: m[1], na: m[2], sug: m[3] };
@@ -2485,6 +2536,9 @@ const CUISINE_REMAP = {
       // Micronutrient flags (iron / calcium dense)
       m.highIron = m.ingredients.some(([n]) => HIGH_IRON.has(n));
       m.highCalcium = m.ingredients.some(([n]) => HIGH_CALCIUM.has(n));
+      // Complete-protein flag + whether the meal is fully plant-based (vegan)
+      m.completeProtein = computeCompleteProtein(m);
+      m.plantBased = m.diet.includes('vegan');
       // Ingredient-level computation. Always store micros (best-effort). Only
       // override hand-typed macros when coverage is high (≥80%) and the computed
       // calorie total is within a sane band of the original.
@@ -2543,10 +2597,12 @@ function renderNutritionPanel(plan) {
   if (!el || !plan || !plan.length) { if (el) el.innerHTML = ''; return; }
   const days = plan.length;
   let fib = 0, sat = 0, na = 0, sug = 0, ironMeals = 0, calMeals = 0;
+  let plantMeals = 0, plantComplete = 0;
   plan.forEach(day => day.meals.forEach(m => {
     fib += m.fib || 0; sat += m.sat || 0; na += m.na || 0; sug += m.sug || 0;
     if (m.highIron) ironMeals++;
     if (m.highCalcium) calMeals++;
+    if (m.plantBased) { plantMeals++; if (m.completeProtein) plantComplete++; }
   }));
   const avgFib = Math.round(fib / days);
   const avgSat = Math.round(sat / days);
@@ -2579,6 +2635,7 @@ function renderNutritionPanel(plan) {
     <div class="nutri-micros">
       ${ironMeals ? `<span class="micro-pill iron">🩸 ${ironMeals} iron-rich meal${ironMeals===1?'':'s'}/wk</span>` : ''}
       ${calMeals ? `<span class="micro-pill calcium">🦴 ${calMeals} calcium-rich meal${calMeals===1?'':'s'}/wk</span>` : ''}
+      ${plantMeals ? `<span class="micro-pill protein">⚡ ${plantComplete}/${plantMeals} plant meals are complete protein</span>` : ''}
     </div>`;
 }
 
@@ -2847,7 +2904,9 @@ function generateMealPlan() {
 
   const plan = [];
   const groceryMap = {};
-  const usedBySlot = { breakfast: new Set(), lunch: new Set(), dinner: new Set(), snack: new Set() };
+  // Track usage COUNT per meal per slot so we can spread evenly (variety scoring):
+  // a meal is only used a (k+1)th time once every other eligible meal has been used k times.
+  const usedCount = { breakfast: {}, lunch: {}, dinner: {}, snack: {} };
   let fallbackUsed = false;
 
   for (let d = 0; d < duration; d++) {
@@ -2884,13 +2943,19 @@ function generateMealPlan() {
       const ranked = [...eligible].sort((a, b) =>
         Math.abs(a.cals - targetCals) - Math.abs(b.cals - targetCals)
       );
-      const pool = ranked.slice(0, Math.min(5, ranked.length));
-      // Bias: favorites first (if any are in pool), then meals not yet used this week
-      const favsInPool = pool.filter(m => favs.has(m.name) && !usedBySlot[slot].has(m.name));
-      const fresh = pool.filter(m => !usedBySlot[slot].has(m.name));
-      const candidates = favsInPool.length ? favsInPool : (fresh.length ? fresh : pool);
+      // Wider acceptable pool for longer plans → more variety (top 6 for ≤7 days, top 9 for 14)
+      const poolSize = Math.min(ranked.length, duration <= 7 ? 6 : 9);
+      const pool = ranked.slice(0, poolSize);
+      // Even-distribution pick: among the pool, take the least-used meals, prefer favorites,
+      // then random. This caps repeats at ceil(days / poolSize) and never repeats a meal
+      // before every other pool meal has been used the same number of times.
+      const counts = usedCount[slot];
+      const minUse = Math.min(...pool.map(m => counts[m.name] || 0));
+      const leastUsed = pool.filter(m => (counts[m.name] || 0) === minUse);
+      const favLeast = leastUsed.filter(m => favs.has(m.name));
+      const candidates = favLeast.length ? favLeast : leastUsed;
       const pick = candidates[Math.floor(Math.random() * candidates.length)];
-      usedBySlot[slot].add(pick.name);
+      counts[pick.name] = (counts[pick.name] || 0) + 1;
 
       day.meals.push({ slot, ...pick });
       dayCals += pick.cals;
@@ -3020,6 +3085,19 @@ function renderMealPlan(plan) {
   const slotLabels = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snack' };
   const slotShort  = { breakfast: 'AM', lunch: 'Noon', dinner: 'PM', snack: 'Snack' };
 
+  // Variety stats: distinct meals + how often the most-repeated meal appears
+  const titleEl = document.getElementById('planTitle');
+  const statsEl = document.getElementById('planStats');
+  if (titleEl) titleEl.textContent = `Your ${plan.length}-day plan`;
+  if (statsEl) {
+    const freq = {};
+    let totalSlots = 0;
+    plan.forEach(d => d.meals.forEach(m => { freq[m.name] = (freq[m.name] || 0) + 1; totalSlots++; }));
+    const distinct = Object.keys(freq).length;
+    const maxRepeat = Math.max(...Object.values(freq));
+    statsEl.textContent = `${distinct} distinct meals · no meal more than ${maxRepeat}×`;
+  }
+
   container.innerHTML = plan.map((day, idx) => `
     <div class="day-card ${idx === 0 ? 'is-open' : ''}" id="day-${idx}" data-day-idx="${idx}">
       <button type="button" class="day-header" aria-expanded="${idx === 0}">
@@ -3037,7 +3115,7 @@ function renderMealPlan(plan) {
           <div class="meal-row" draggable="true" data-day-idx="${idx}" data-slot="${m.slot}" data-name="${m.name.replace(/"/g, '&quot;')}">
             <div class="meal-slot"><span class="drag-handle" title="Drag to swap with same slot on another day">⋮⋮</span>${slotLabels[m.slot]}</div>
             <div>
-              <div class="meal-name">${m.name}${m.computed ? '<span class="computed-badge" title="Macros computed from ingredient nutrition">✓ computed</span>' : ''}${m.highIron ? '<span class="micro-tag iron" title="Iron-rich">🩸</span>' : ''}${m.highCalcium ? '<span class="micro-tag calcium" title="Calcium-rich">🦴</span>' : ''}</div>
+              <div class="meal-name">${m.name}${m.plantBased && m.completeProtein ? '<span class="protein-badge" title="Complete protein — supplies all 9 essential amino acids">⚡ complete protein</span>' : ''}${m.highIron ? '<span class="micro-tag iron" title="Iron-rich">🩸</span>' : ''}${m.highCalcium ? '<span class="micro-tag calcium" title="Calcium-rich">🦴</span>' : ''}${m.computed ? '<span class="computed-badge" title="Macros computed from ingredient nutrition">✓</span>' : ''}</div>
               <div class="meal-macros-mini">
                 P ${m.p}g <span class="dot">·</span> C ${m.c}g <span class="dot">·</span> F ${m.f}g
               </div>
