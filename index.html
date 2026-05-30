@@ -1163,11 +1163,15 @@ footer {
 
     <div class="field-group">
       <label>Exclude allergens <span class="optional">(check to hide meals containing)</span></label>
-      <div id="allergenChecks" style="display:flex;flex-wrap:wrap;gap:10px 14px;font-size:13px;color:var(--ink-2);">
+      <div id="allergenChecks" style="display:flex;flex-wrap:wrap;gap:8px 14px;font-size:13px;color:var(--ink-2);">
         <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="gluten"> Gluten</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="dairy"> Dairy</label>
         <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="nuts"> Tree nuts &amp; peanuts</label>
         <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="soy"> Soy</label>
-        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="dairy"> Dairy</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="egg"> Egg</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="fish"> Fish</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="shellfish"> Shellfish</label>
+        <label style="display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;"><input type="checkbox" data-allergen="sesame"> Sesame</label>
       </div>
     </div>
 
@@ -1730,7 +1734,14 @@ const MEALS = {
     { name: 'Fresh spring rolls with peanut sauce', diet: D.vegan, cuisine: 'vietnamese', cals: 240, p: 8, c: 35, f: 9, ingredients: [['Rice paper', '40g · 3 sheets'], ['Mixed vegetables', '100g · ¾ cup'], ['Peanut sauce', '20g · 1 tbsp']] },
     { name: 'Vegetable spring rolls', diet: D.vegan, cuisine: 'chinese', cals: 230, p: 5, c: 30, f: 10, ingredients: [['Vegetable spring rolls', '80g · 3 rolls'], ['Sweet chilli sauce', '20g · 1 tbsp']] },
     { name: 'Seasoned seaweed & rice crackers', diet: D.vegan, cuisine: 'korean', cals: 200, p: 6, c: 30, f: 6, ingredients: [['Seaweed', '10g · 1 pack'], ['Rice crackers', '25g · ~8 crackers'], ['Sesame seeds', '5g · 1 tsp']] },
-    { name: 'Edamame & chilli', diet: D.vegan, cuisine: 'thai', cals: 220, p: 18, c: 18, f: 8, ingredients: [['Edamame in pods', '150g · 1 cup'], ['Chilli flakes', '2g · ½ tsp'], ['Sea salt', '2g · ½ tsp']] }
+    { name: 'Edamame & chilli', diet: D.vegan, cuisine: 'thai', cals: 220, p: 18, c: 18, f: 8, ingredients: [['Edamame in pods', '150g · 1 cup'], ['Chilli flakes', '2g · ½ tsp'], ['Sea salt', '2g · ½ tsp']] },
+    // Extra cuisine snacks to reduce snack-slot fallback
+    { name: 'Mango with chilli-lime', diet: D.vegan, cuisine: 'thai', cals: 180, p: 2, c: 42, f: 1, ingredients: [['Mango', '250g · 1¾ cup chunks'], ['Lime', '1 medium'], ['Chilli flakes', '1g · ¼ tsp'], ['Sea salt', '1g · ¼ tsp']] },
+    { name: 'Sesame rice balls', diet: D.vegan, cuisine: 'chinese', cals: 240, p: 4, c: 42, f: 7, ingredients: [['Rice', '50g · ¼ cup raw'], ['Sesame seeds', '10g · 2 tsp'], ['Honey', '10g · ¾ tbsp']] },
+    { name: 'Roasted sweet potato', diet: D.vegan, cuisine: 'korean', cals: 200, p: 3, c: 45, f: 1, ingredients: [['Sweet potato', '230g · 1 large'], ['Sea salt', '1g · ¼ tsp']] },
+    { name: 'Rice paper chips with chilli', diet: D.vegan, cuisine: 'vietnamese', cals: 220, p: 3, c: 40, f: 6, ingredients: [['Rice paper', '50g · 4 sheets'], ['Oil', '6g · 1 tsp'], ['Chilli flakes', '2g · ½ tsp']] },
+    { name: 'Olives & feta', diet: D.veg, cuisine: 'mediterranean', cals: 240, p: 8, c: 6, f: 21, ingredients: [['Olives', '40g · ~13 pcs'], ['Feta cheese', '50g · ⅓ cup'], ['Olive oil', '5g · 1 tsp']] },
+    { name: 'Edamame hummus & crackers', diet: D.vegan, cuisine: 'japanese', cals: 240, p: 12, c: 26, f: 10, ingredients: [['Edamame shelled', '80g · ½ cup'], ['Tahini', '10g · ⅔ tbsp'], ['Rice crackers', '25g · ~8 crackers']] }
   ]
 };
 
@@ -1744,13 +1755,19 @@ function getDays(n) {
 // Word-boundary regexes against meal name + ingredient names. Conservative —
 // "Whole wheat tortilla" matches gluten via "wheat" or "tortilla".
 const ALLERGEN_PATTERNS = {
-  gluten: /\b(wheat|atta|pasta|bread|tortilla|naan|paratha|bhature|parotta|appam|dosa|idli|biryani|noodle|ramen|granola|cracker|chips|sourdough|whole grain|semolina|sooji|barley|rye|seitan|wrap|bun|chapati|roti|pita|murukku|pakora|thepla|cheela|thali|upma|pongal|uttapam|vada|chips)\b/i,
-  nuts:   /\b(almond|walnut|peanut|cashew|pistachio|pecan|hazelnut|nut|tahini|sesame|nut butter|granola|trail mix|pesto)\b/i,
-  soy:    /\b(soy|tofu|tempeh|edamame|miso|teriyaki|soy sauce)\b/i,
-  dairy:  /\b(yogurt|curd|cheese|paneer|cream|butter|ghee|milk|cottage|halloumi|parmesan|mozzarella|feta|whey|lassi|raita|béchamel|tzatziki|coconut milk|almond milk|soy milk|oat milk)\b/i
+  gluten: /\b(wheat|atta|pasta|spaghetti|penne|gnocchi|tortilla|naan|paratha|bhature|parotta|appam|dosa|idli|biryani|noodle|ramen|udon|granola|cracker|chips|sourdough|ciabatta|baguette|whole grain|semolina|sooji|barley|rye|seitan|wrap|bun|chapati|roti|pita|murukku|pakora|thepla|cheela|thali|upma|pongal|uttapam|vada|panko|tempura|freekeh|polenta)\b/i,
+  nuts:   /\b(almond|walnut|peanut|cashew|pistachio|pecan|hazelnut|nut|nut butter|trail mix|pesto)\b/i,
+  soy:    /\b(soy|tofu|tempeh|edamame|miso|teriyaki|natto|doenjang|doubanjiang|gochujang)\b/i,
+  dairy:  /\b(yogurt|curd|cheese|paneer|cream|butter|ghee|milk|cottage|halloumi|parmesan|mozzarella|feta|whey|lassi|raita|béchamel|tzatziki|ricotta|labneh|coconut milk|almond milk|soy milk|oat milk)\b/i,
+  egg:    /\beggs?\b/i,
+  fish:   /\b(salmon|tuna|cod|sea bass|white fish|fish|sardine|mackerel|anchovy|katsu)\b/i,
+  shellfish: /\b(shrimp|prawn|crab|lobster|shellfish)\b/i,
+  sesame: /\b(sesame|tahini)\b/i
 };
 // Plant-milk exclusions — they shouldn't count as dairy
 const NOT_DAIRY = /\b(almond milk|soy milk|oat milk|coconut milk)\b/i;
+// 'katsu' = breaded cutlet (could be tofu/chicken), only counts as fish if 'fish'/'seafood' present
+const NOT_FISH = /\bkatsu\b/i;
 
 function detectAllergens(m) {
   const text = (m.name + ' ' + m.ingredients.map(([n]) => n).join(' ')).toLowerCase();
@@ -1758,6 +1775,12 @@ function detectAllergens(m) {
   if (ALLERGEN_PATTERNS.gluten.test(text)) out.push('gluten');
   if (ALLERGEN_PATTERNS.nuts.test(text)) out.push('nuts');
   if (ALLERGEN_PATTERNS.soy.test(text)) out.push('soy');
+  // \beggs?\b won't match "eggplant" (no boundary after egg)
+  if (ALLERGEN_PATTERNS.egg.test(text)) out.push('egg');
+  // Fish — strip the ambiguous 'katsu' token first
+  if (ALLERGEN_PATTERNS.fish.test(text.replace(NOT_FISH, ''))) out.push('fish');
+  if (ALLERGEN_PATTERNS.shellfish.test(text)) out.push('shellfish');
+  if (ALLERGEN_PATTERNS.sesame.test(text)) out.push('sesame');
   // For dairy, ensure the only milk match isn't plant milk
   if (ALLERGEN_PATTERNS.dairy.test(text)) {
     const withoutPlant = text.replace(NOT_DAIRY, '');
