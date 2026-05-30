@@ -1507,7 +1507,10 @@ const MEALS = {
     { name: 'Scallion egg pancake', diet: D.egg, cuisine: 'chinese', cals: 420, p: 18, c: 45, f: 18, ingredients: [['Whole wheat flour', '60g · ½ cup'], ['Eggs', '2 large'], ['Spring onion', '30g · ⅓ cup'], ['Sesame oil', '8g · ½ tbsp']] },
     { name: 'Thai omelette with rice', diet: D.egg, cuisine: 'thai', cals: 470, p: 22, c: 50, f: 20, ingredients: [['Eggs', '3 large'], ['Jasmine rice', '60g · ⅓ cup raw'], ['Spring onion', '20g · ¼ cup'], ['Fish sauce', '5ml · 1 tsp'], ['Oil', '8g · ½ tbsp']] },
     { name: 'Japanese breakfast set', diet: D.fish, cuisine: 'japanese', cals: 480, p: 32, c: 60, f: 12, ingredients: [['Salmon fillet', '90g · 3oz'], ['Sushi rice', '70g · ⅓ cup raw'], ['Miso paste', '15g · 1 tbsp'], ['Spinach', '50g · 1 cup'], ['Seaweed', '5g · 1 sheet']] },
-    { name: 'Korean tofu vegetable porridge', diet: D.vegan, cuisine: 'korean', cals: 360, p: 16, c: 55, f: 9, ingredients: [['Jasmine rice', '55g · ¼ cup raw'], ['Firm tofu', '120g · ½ cup'], ['Mixed vegetables', '100g · ¾ cup'], ['Sesame oil', '6g · 1 tsp'], ['Soy sauce', '10ml · 2 tsp']] }
+    { name: 'Korean tofu vegetable porridge', diet: D.vegan, cuisine: 'korean', cals: 360, p: 16, c: 55, f: 9, ingredients: [['Jasmine rice', '55g · ¼ cup raw'], ['Firm tofu', '120g · ½ cup'], ['Mixed vegetables', '100g · ¾ cup'], ['Sesame oil', '6g · 1 tsp'], ['Soy sauce', '10ml · 2 tsp']] },
+    // Vegan gap-fillers for Italian & Greek/Mediterranean breakfasts
+    { name: 'Pane e pomodoro', diet: D.vegan, cuisine: 'italian', cals: 380, p: 10, c: 55, f: 14, ingredients: [['Ciabatta', '80g · 2 slices'], ['Tomato', '150g · 1½ medium'], ['Olive oil', '12g · 1 tbsp'], ['Basil', '5g · 2 tbsp']] },
+    { name: 'Greek oats with tahini & figs', diet: D.vegan, cuisine: 'mediterranean', cals: 420, p: 12, c: 60, f: 16, ingredients: [['Rolled oats', '70g · ⅞ cup dry'], ['Soy milk', '250ml · 1 cup'], ['Tahini', '15g · 1 tbsp'], ['Fresh figs', '2 medium'], ['Maple syrup', '10g · ¾ tbsp']] }
   ],
   lunch: [
     // International (12)
@@ -1600,7 +1603,9 @@ const MEALS = {
     { name: 'Pho chay (vegetable pho)', diet: D.vegan, cuisine: 'vietnamese', cals: 480, p: 20, c: 75, f: 10, ingredients: [['Rice noodles', '80g · ⅓ cup raw'], ['Firm tofu', '120g · ½ cup'], ['Bean sprouts', '80g · 1 cup'], ['Mushrooms', '80g · 1 cup'], ['Stock', '400ml · 1¾ cup']] },
     { name: 'Bun cha (grilled pork & noodles)', diet: D.meat, cuisine: 'vietnamese', cals: 600, p: 36, c: 75, f: 18, ingredients: [['Rice noodles', '80g · ⅓ cup raw'], ['Pork', '140g · 5oz'], ['Cilantro', '10g · 2 tbsp'], ['Fish sauce', '15ml · 1 tbsp'], ['Carrots', '50g · ⅓ cup']] },
     { name: 'Tofu spring roll bowl', diet: D.vegan, cuisine: 'vietnamese', cals: 540, p: 20, c: 80, f: 16, ingredients: [['Rice noodles', '70g · ⅓ cup raw'], ['Firm tofu', '150g · ½ cup'], ['Lettuce', '80g · 1½ cup'], ['Carrots', '60g · ½ cup'], ['Peanuts', '15g · 2 tbsp']] },
-    { name: 'Lemongrass tofu rice', diet: D.vegan, cuisine: 'vietnamese', cals: 560, p: 24, c: 75, f: 16, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Lemongrass', '10g · 1 stalk'], ['Soy sauce', '15ml · 1 tbsp']] }
+    { name: 'Lemongrass tofu rice', diet: D.vegan, cuisine: 'vietnamese', cals: 560, p: 24, c: 75, f: 16, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Lemongrass', '10g · 1 stalk'], ['Soy sauce', '15ml · 1 tbsp']] },
+    // Vegan gap-filler for Greek/Mediterranean lunch
+    { name: 'Gigantes (Greek baked beans)', diet: D.vegan, cuisine: 'mediterranean', cals: 540, p: 20, c: 75, f: 18, ingredients: [['Cannellini beans', '200g · 1 cup cooked'], ['Tomato sauce', '120g · ½ cup'], ['Onion', '½ medium'], ['Olive oil', '14g · 1 tbsp'], ['Sourdough bread', '1 slice (~40g)']] }
   ],
   dinner: [
     // International (7)
@@ -1690,7 +1695,10 @@ const MEALS = {
     { name: 'Caramelized clay-pot fish', diet: D.fish, cuisine: 'vietnamese', cals: 560, p: 38, c: 65, f: 14, ingredients: [['White fish', '180g · 6oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Fish sauce', '15ml · 1 tbsp'], ['Spring onion', '20g · ¼ cup']] },
     { name: 'Lemongrass chicken with rice', diet: D.meat, cuisine: 'vietnamese', cals: 620, p: 44, c: 65, f: 18, ingredients: [['Chicken', '170g · 6oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Lemongrass', '10g · 1 stalk'], ['Fish sauce', '15ml · 1 tbsp']] },
     { name: 'Vietnamese tofu curry', diet: D.vegan, cuisine: 'vietnamese', cals: 580, p: 22, c: 75, f: 22, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Sweet potato', '150g · 1 cup'], ['Coconut milk', '80ml · ⅓ cup'], ['Rice', '60g · ⅓ cup raw']] },
-    { name: 'Tofu & vegetable fresh rolls', diet: D.vegan, cuisine: 'vietnamese', cals: 480, p: 18, c: 70, f: 14, ingredients: [['Rice paper', '60g · 4 sheets'], ['Firm tofu', '120g · ½ cup'], ['Rice noodles', '40g · 3 tbsp raw'], ['Lettuce', '60g · 1 cup'], ['Peanut sauce', '20g · 1 tbsp']] }
+    { name: 'Tofu & vegetable fresh rolls', diet: D.vegan, cuisine: 'vietnamese', cals: 480, p: 18, c: 70, f: 14, ingredients: [['Rice paper', '60g · 4 sheets'], ['Firm tofu', '120g · ½ cup'], ['Rice noodles', '40g · 3 tbsp raw'], ['Lettuce', '60g · 1 cup'], ['Peanut sauce', '20g · 1 tbsp']] },
+    // Vegan gap-fillers for Italian & Greek/Mediterranean dinners
+    { name: 'Penne arrabbiata', diet: D.vegan, cuisine: 'italian', cals: 560, p: 14, c: 90, f: 16, ingredients: [['Penne pasta', '80g · 1 cup raw'], ['Tomato sauce', '150g · ⅔ cup'], ['Garlic', '10g · 3 cloves'], ['Chilli flakes', '2g · ½ tsp'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Briam (Greek roasted vegetables) with bread', diet: D.vegan, cuisine: 'mediterranean', cals: 520, p: 12, c: 75, f: 20, ingredients: [['Mixed vegetables', '250g · 1¾ cup'], ['Potato', '150g · 1 medium'], ['Tomato', '100g · 1 small'], ['Olive oil', '15g · 1 tbsp'], ['Sourdough bread', '2 slices (~80g)']] }
   ],
   snack: [
     // International (8)
@@ -1741,7 +1749,8 @@ const MEALS = {
     { name: 'Roasted sweet potato', diet: D.vegan, cuisine: 'korean', cals: 200, p: 3, c: 45, f: 1, ingredients: [['Sweet potato', '230g · 1 large'], ['Sea salt', '1g · ¼ tsp']] },
     { name: 'Rice paper chips with chilli', diet: D.vegan, cuisine: 'vietnamese', cals: 220, p: 3, c: 40, f: 6, ingredients: [['Rice paper', '50g · 4 sheets'], ['Oil', '6g · 1 tsp'], ['Chilli flakes', '2g · ½ tsp']] },
     { name: 'Olives & feta', diet: D.veg, cuisine: 'mediterranean', cals: 240, p: 8, c: 6, f: 21, ingredients: [['Olives', '40g · ~13 pcs'], ['Feta cheese', '50g · ⅓ cup'], ['Olive oil', '5g · 1 tsp']] },
-    { name: 'Edamame hummus & crackers', diet: D.vegan, cuisine: 'japanese', cals: 240, p: 12, c: 26, f: 10, ingredients: [['Edamame shelled', '80g · ½ cup'], ['Tahini', '10g · ⅔ tbsp'], ['Rice crackers', '25g · ~8 crackers']] }
+    { name: 'Edamame hummus & crackers', diet: D.vegan, cuisine: 'japanese', cals: 240, p: 12, c: 26, f: 10, ingredients: [['Edamame shelled', '80g · ½ cup'], ['Tahini', '10g · ⅔ tbsp'], ['Rice crackers', '25g · ~8 crackers']] },
+    { name: 'Marinated olives & pita', diet: D.vegan, cuisine: 'mediterranean', cals: 240, p: 6, c: 30, f: 12, ingredients: [['Olives', '40g · ~13 pcs'], ['Pita bread', '1 small (~50g)'], ['Olive oil', '5g · 1 tsp']] }
   ]
 };
 
