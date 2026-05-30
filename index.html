@@ -1111,12 +1111,18 @@ footer {
         <select id="cuisine">
           <option value="any" selected>Any — mix everything</option>
           <option value="international">Western / International</option>
+          <option value="italian">Italian</option>
+          <option value="mexican">Mexican / Latin</option>
+          <option value="mediterranean">Greek &amp; Mediterranean</option>
+          <option value="middle-eastern">Middle Eastern</option>
           <option value="indian">Indian — Mix (North + South)</option>
           <option value="indian-north">Indian — North</option>
           <option value="indian-south">Indian — South</option>
-          <option value="mediterranean">Mediterranean / Middle Eastern</option>
-          <option value="mexican">Mexican / Latin</option>
-          <option value="asian">East Asian</option>
+          <option value="thai">Thai</option>
+          <option value="chinese">Chinese</option>
+          <option value="japanese">Japanese</option>
+          <option value="korean">Korean</option>
+          <option value="vietnamese">Vietnamese</option>
         </select>
       </div>
       <div class="field-group">
@@ -1470,7 +1476,34 @@ const MEALS = {
     // Mediterranean / Middle Eastern (3)
     { name: 'Greek yogurt with honey & walnuts', diet: D.veg, cuisine: 'mediterranean', cals: 380, p: 25, c: 40, f: 14, ingredients: [['Greek yogurt 0%', '250g · 1 cup'], ['Honey', '20g · 1 tbsp'], ['Walnuts', '20g · 10 halves'], ['Fresh figs', '2 medium']] },
     { name: 'Egg & feta scramble with toast', diet: D.veg, cuisine: 'mediterranean', cals: 460, p: 28, c: 38, f: 22, ingredients: [['Eggs', '2 large'], ['Feta cheese', '40g · ¼ cup crumbled'], ['Spinach', '50g · 1 cup fresh'], ['Whole grain bread', '2 slices (~80g)'], ['Olive oil', '8g · ½ tbsp']] },
-    { name: 'Shakshuka with pita', diet: D.veg, cuisine: 'mediterranean', cals: 480, p: 22, c: 45, f: 22, ingredients: [['Eggs', '2 large'], ['Tomato', '200g · 2 medium'], ['Bell peppers', '100g · 1 medium'], ['Pita bread', '1 (~60g)'], ['Olive oil', '10g · ¾ tbsp']] }
+    { name: 'Shakshuka with pita', diet: D.veg, cuisine: 'mediterranean', cals: 480, p: 22, c: 45, f: 22, ingredients: [['Eggs', '2 large'], ['Tomato', '200g · 2 medium'], ['Bell peppers', '100g · 1 medium'], ['Pita bread', '1 (~60g)'], ['Olive oil', '10g · ¾ tbsp']] },
+    // Italian (3)
+    { name: 'Ricotta toast with berries', diet: D.veg, cuisine: 'italian', cals: 420, p: 18, c: 50, f: 16, ingredients: [['Ricotta', '100g · ½ cup'], ['Whole grain bread', '2 slices (~80g)'], ['Honey', '15g · 1 tbsp'], ['Mixed berries', '80g · ⅔ cup']] },
+    { name: 'Vegetable frittata', diet: D.egg, cuisine: 'italian', cals: 430, p: 28, c: 14, f: 30, ingredients: [['Eggs', '3 large'], ['Bell peppers', '80g · ¾ medium'], ['Spinach', '50g · 1 cup fresh'], ['Parmesan', '15g · 2 tbsp grated'], ['Olive oil', '8g · ½ tbsp']] },
+    { name: 'Italian yogurt & granola bowl', diet: D.veg, cuisine: 'italian', cals: 410, p: 24, c: 55, f: 10, ingredients: [['Greek yogurt 0%', '200g · ¾ cup'], ['Granola', '40g · ⅓ cup'], ['Mixed berries', '80g · ⅔ cup'], ['Honey', '10g · ¾ tbsp']] },
+    // Thai (2)
+    { name: 'Thai rice soup with egg', diet: D.egg, cuisine: 'thai', cals: 380, p: 16, c: 60, f: 8, ingredients: [['Jasmine rice', '60g · ⅓ cup raw'], ['Eggs', '1 large'], ['Ginger', '10g · 1 tbsp'], ['Spring onion', '20g · ¼ cup'], ['Soy sauce', '10ml · 2 tsp']] },
+    { name: 'Mango sticky rice', diet: D.vegan, cuisine: 'thai', cals: 450, p: 6, c: 90, f: 9, ingredients: [['Rice', '70g · ⅓ cup raw'], ['Mango', '150g · 1 cup chunks'], ['Coconut milk', '60ml · ¼ cup']] },
+    // Chinese (1)
+    { name: 'Tofu & cabbage bao', diet: D.vegan, cuisine: 'chinese', cals: 420, p: 18, c: 60, f: 12, ingredients: [['Steamed bun', '2 (~70g each)'], ['Firm tofu', '100g · ⅓ cup cubed'], ['Cabbage', '80g · 1 cup shredded'], ['Soy sauce', '10ml · 2 tsp']] },
+    // Japanese (1)
+    { name: 'Salmon onigiri', diet: D.fish, cuisine: 'japanese', cals: 420, p: 22, c: 60, f: 9, ingredients: [['Sushi rice', '80g · ⅓ cup raw'], ['Salmon fillet', '80g · 3oz'], ['Seaweed', '5g · 1 sheet'], ['Sesame seeds', '3g · ½ tsp']] },
+    // Korean (2)
+    { name: 'Korean rice porridge (juk)', diet: D.veg, cuisine: 'korean', cals: 360, p: 12, c: 60, f: 8, ingredients: [['Jasmine rice', '60g · ⅓ cup raw'], ['Eggs', '1 large'], ['Mixed vegetables', '100g · ¾ cup'], ['Sesame oil', '5g · 1 tsp']] },
+    { name: 'Gyeran bap (egg rice)', diet: D.egg, cuisine: 'korean', cals: 440, p: 20, c: 55, f: 16, ingredients: [['Sushi rice', '70g · ⅓ cup raw'], ['Eggs', '2 large'], ['Soy sauce', '10ml · 2 tsp'], ['Sesame oil', '5g · 1 tsp'], ['Seaweed', '5g · 1 sheet']] },
+    // Middle Eastern (2)
+    { name: 'Ful medames with pita', diet: D.vegan, cuisine: 'middle-eastern', cals: 450, p: 18, c: 65, f: 14, ingredients: [['Fava beans', '150g · ¾ cup cooked'], ['Pita bread', '1 (~60g)'], ['Olive oil', '10g · ¾ tbsp'], ['Lemon', '½ small'], ['Cumin', '2g · ½ tsp']] },
+    { name: 'Labneh with za\'atar & pita', diet: D.veg, cuisine: 'middle-eastern', cals: 420, p: 14, c: 45, f: 22, ingredients: [['Labneh', '100g · ½ cup'], ['Pita bread', '1 (~60g)'], ["Za'atar spice", '5g · 1 tsp'], ['Olive oil', '10g · ¾ tbsp']] },
+    // Vietnamese (3)
+    { name: 'Vietnamese rice porridge (chao)', diet: D.egg, cuisine: 'vietnamese', cals: 370, p: 14, c: 60, f: 7, ingredients: [['Jasmine rice', '60g · ⅓ cup raw'], ['Eggs', '1 large'], ['Ginger', '10g · 1 tbsp'], ['Spring onion', '20g · ¼ cup'], ['Fish sauce', '5ml · 1 tsp']] },
+    { name: 'Tofu banh mi', diet: D.vegan, cuisine: 'vietnamese', cals: 480, p: 20, c: 65, f: 16, ingredients: [['Baguette', '80g · ½ loaf'], ['Firm tofu', '120g · ½ cup'], ['Carrots', '60g · ½ cup pickled'], ['Cucumber', '50g · ¼ cup'], ['Cilantro', '10g · 2 tbsp']] },
+    { name: 'Vietnamese yogurt with granola', diet: D.veg, cuisine: 'vietnamese', cals: 360, p: 18, c: 50, f: 10, ingredients: [['Greek yogurt 0%', '200g · ¾ cup'], ['Granola', '35g · ¼ cup'], ['Mango', '80g · ½ cup'], ['Honey', '10g · ¾ tbsp']] },
+    // Extra breakfasts for thin new cuisines (reduce cross-cuisine fallback)
+    { name: 'Soy milk & vegetable congee', diet: D.vegan, cuisine: 'chinese', cals: 360, p: 14, c: 60, f: 7, ingredients: [['Jasmine rice', '55g · ¼ cup raw'], ['Soy milk', '200ml · ⅞ cup'], ['Mixed vegetables', '100g · ¾ cup'], ['Spring onion', '20g · ¼ cup'], ['Sesame oil', '5g · 1 tsp']] },
+    { name: 'Scallion egg pancake', diet: D.egg, cuisine: 'chinese', cals: 420, p: 18, c: 45, f: 18, ingredients: [['Whole wheat flour', '60g · ½ cup'], ['Eggs', '2 large'], ['Spring onion', '30g · ⅓ cup'], ['Sesame oil', '8g · ½ tbsp']] },
+    { name: 'Thai omelette with rice', diet: D.egg, cuisine: 'thai', cals: 470, p: 22, c: 50, f: 20, ingredients: [['Eggs', '3 large'], ['Jasmine rice', '60g · ⅓ cup raw'], ['Spring onion', '20g · ¼ cup'], ['Fish sauce', '5ml · 1 tsp'], ['Oil', '8g · ½ tbsp']] },
+    { name: 'Japanese breakfast set', diet: D.fish, cuisine: 'japanese', cals: 480, p: 32, c: 60, f: 12, ingredients: [['Salmon fillet', '90g · 3oz'], ['Sushi rice', '70g · ⅓ cup raw'], ['Miso paste', '15g · 1 tbsp'], ['Spinach', '50g · 1 cup'], ['Seaweed', '5g · 1 sheet']] },
+    { name: 'Korean tofu vegetable porridge', diet: D.vegan, cuisine: 'korean', cals: 360, p: 16, c: 55, f: 9, ingredients: [['Jasmine rice', '55g · ¼ cup raw'], ['Firm tofu', '120g · ½ cup'], ['Mixed vegetables', '100g · ¾ cup'], ['Sesame oil', '6g · 1 tsp'], ['Soy sauce', '10ml · 2 tsp']] }
   ],
   lunch: [
     // International (12)
@@ -1525,7 +1558,45 @@ const MEALS = {
     { name: 'Mediterranean chickpea bowl', diet: D.vegan, cuisine: 'mediterranean', cals: 550, p: 22, c: 70, f: 20, ingredients: [['Chickpeas', '200g cooked · 1 cup'], ['Quinoa', '60g · ⅓ cup raw'], ['Cucumber', '80g · ½ cup sliced'], ['Tomato', '80g · 1 small'], ['Tahini', '15g · 1 tbsp']] },
     { name: 'Falafel & hummus wrap', diet: D.vegan, cuisine: 'mediterranean', cals: 600, p: 22, c: 70, f: 22, ingredients: [['Falafel', '120g · ~4 balls'], ['Whole wheat tortilla', '1 large (~60g)'], ['Hummus', '40g · 2½ tbsp'], ['Cucumber', '50g · ¼ cup sliced'], ['Tomato', '50g · ½ small'], ['Lettuce', '50g · 1 cup']] },
     { name: 'Halloumi salad with quinoa', diet: D.veg, cuisine: 'mediterranean', cals: 590, p: 32, c: 50, f: 28, ingredients: [['Halloumi', '120g · 4 slices'], ['Quinoa', '60g · ⅓ cup raw'], ['Mixed greens', '100g · 2 cups'], ['Cherry tomatoes', '80g · ⅔ cup'], ['Olive oil', '12g · 1 tbsp']] },
-    { name: 'Mediterranean grilled sea bass', diet: D.fish, cuisine: 'mediterranean', cals: 540, p: 42, c: 45, f: 18, ingredients: [['Sea bass fillet', '180g · 6oz / palm-sized'], ['New potatoes', '200g · 5–6 small'], ['Cherry tomatoes', '100g · ¾ cup'], ['Olive oil', '12g · 1 tbsp'], ['Lemon', '1 medium']] }
+    { name: 'Mediterranean grilled sea bass', diet: D.fish, cuisine: 'mediterranean', cals: 540, p: 42, c: 45, f: 18, ingredients: [['Sea bass fillet', '180g · 6oz / palm-sized'], ['New potatoes', '200g · 5–6 small'], ['Cherry tomatoes', '100g · ¾ cup'], ['Olive oil', '12g · 1 tbsp'], ['Lemon', '1 medium']] },
+    // Italian (5)
+    { name: 'Caprese salad with ciabatta', diet: D.veg, cuisine: 'italian', cals: 560, p: 26, c: 45, f: 30, ingredients: [['Mozzarella', '100g · ⅔ cup'], ['Tomato', '150g · 1½ medium'], ['Basil', '10g · ¼ cup'], ['Ciabatta', '80g · 2 slices'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Spaghetti aglio e olio', diet: D.vegan, cuisine: 'italian', cals: 560, p: 14, c: 80, f: 20, ingredients: [['Spaghetti', '80g · 1 cup raw'], ['Olive oil', '15g · 1 tbsp'], ['Garlic', '10g · 3 cloves'], ['Chilli flakes', '2g · ½ tsp'], ['Parsley', '10g · 2 tbsp']] },
+    { name: 'Minestrone soup with bread', diet: D.vegan, cuisine: 'italian', cals: 480, p: 18, c: 75, f: 12, ingredients: [['Mixed beans', '100g · ½ cup cooked'], ['Mixed vegetables', '200g · 1½ cup'], ['Spaghetti', '30g · ⅓ cup raw'], ['Tomato', '100g · 1 small'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Chicken pesto pasta', diet: D.meat, cuisine: 'italian', cals: 640, p: 48, c: 60, f: 22, ingredients: [['Chicken breast', '150g · 5oz'], ['Penne pasta', '70g · ¾ cup raw'], ['Pesto', '30g · 2 tbsp'], ['Cherry tomatoes', '80g · ⅔ cup']] },
+    { name: 'Tuna & white bean salad', diet: D.fish, cuisine: 'italian', cals: 500, p: 40, c: 40, f: 18, ingredients: [['Tuna in water', '120g · 1 small can'], ['Cannellini beans', '100g · ½ cup'], ['Onion', '¼ medium'], ['Olive oil', '12g · 1 tbsp'], ['Lemon', '1 medium']] },
+    // Thai (4)
+    { name: 'Thai basil chicken with rice', diet: D.meat, cuisine: 'thai', cals: 620, p: 42, c: 70, f: 18, ingredients: [['Chicken', '150g · 5oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Basil', '10g · ¼ cup'], ['Green chilli', '5g · 1'], ['Soy sauce', '15ml · 1 tbsp']] },
+    { name: 'Tofu pad see ew', diet: D.vegan, cuisine: 'thai', cals: 580, p: 22, c: 85, f: 16, ingredients: [['Rice noodles', '80g · ⅓ cup raw'], ['Firm tofu', '150g · ½ cup'], ['Broccoli', '100g · 1 cup'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '8g · ½ tbsp']] },
+    { name: 'Green papaya salad with shrimp', diet: D.fish, cuisine: 'thai', cals: 420, p: 28, c: 45, f: 14, ingredients: [['Green papaya', '150g · 1½ cup shredded'], ['Shrimp', '100g · ~8 medium'], ['Peanuts', '15g · 2 tbsp'], ['Lime', '1 medium'], ['Fish sauce', '10ml · 2 tsp']] },
+    { name: 'Massaman vegetable curry with rice', diet: D.vegan, cuisine: 'thai', cals: 600, p: 14, c: 85, f: 22, ingredients: [['Mixed vegetables', '200g · 1½ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Coconut milk', '80ml · ⅓ cup'], ['Massaman paste', '20g · 1 tbsp'], ['Peanuts', '10g · 1 tbsp']] },
+    // Chinese (5)
+    { name: 'Kung pao chicken with rice', diet: D.meat, cuisine: 'chinese', cals: 640, p: 42, c: 65, f: 22, ingredients: [['Chicken', '160g · 5½oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Peanuts', '15g · 2 tbsp'], ['Bell peppers', '80g · ¾ medium'], ['Soy sauce', '15ml · 1 tbsp']] },
+    { name: 'Mapo tofu with rice', diet: D.vegan, cuisine: 'chinese', cals: 560, p: 24, c: 70, f: 20, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Doubanjiang', '15g · 1 tbsp'], ['Spring onion', '20g · ¼ cup'], ['Soy sauce', '10ml · 2 tsp']] },
+    { name: 'Vegetable chow mein', diet: D.vegan, cuisine: 'chinese', cals: 560, p: 16, c: 90, f: 14, ingredients: [['Egg noodles', '80g · 1 block raw'], ['Mixed vegetables', '200g · 1½ cup'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '8g · ½ tbsp']] },
+    { name: 'Sweet & sour pork with rice', diet: D.meat, cuisine: 'chinese', cals: 660, p: 38, c: 80, f: 22, ingredients: [['Pork', '150g · 5oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Bell peppers', '80g · ¾ medium'], ['Pineapple', '50g · ⅓ cup'], ['Sweet & sour sauce', '40g · 2½ tbsp']] },
+    { name: 'Steamed fish with ginger & rice', diet: D.fish, cuisine: 'chinese', cals: 520, p: 40, c: 60, f: 12, ingredients: [['White fish fillet', '180g · 6oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Ginger', '10g · 1 tbsp'], ['Spring onion', '20g · ¼ cup'], ['Soy sauce', '10ml · 2 tsp']] },
+    // Japanese (3)
+    { name: 'Chicken katsu curry with rice', diet: D.meat, cuisine: 'japanese', cals: 700, p: 40, c: 85, f: 22, ingredients: [['Chicken breast', '150g · 5oz'], ['Jasmine rice', '80g · ⅓ cup raw'], ['Katsu curry sauce', '80g · ⅓ cup'], ['Panko', '20g · ¼ cup']] },
+    { name: 'Vegetable tempura udon', diet: D.veg, cuisine: 'japanese', cals: 560, p: 14, c: 90, f: 16, ingredients: [['Udon noodles', '180g · 1 portion'], ['Mixed vegetables', '120g · ¾ cup'], ['Tempura batter', '30g · 2 tbsp'], ['Dashi broth', '300ml · 1¼ cup']] },
+    { name: 'Salmon teriyaki donburi', diet: D.fish, cuisine: 'japanese', cals: 620, p: 38, c: 70, f: 20, ingredients: [['Salmon fillet', '160g · 5½oz'], ['Sushi rice', '80g · ⅓ cup raw'], ['Teriyaki sauce', '20ml · 1¼ tbsp'], ['Broccoli', '80g · ¾ cup']] },
+    // Korean (5)
+    { name: 'Bibimbap with beef', diet: D.meat, cuisine: 'korean', cals: 640, p: 38, c: 75, f: 20, ingredients: [['Jasmine rice', '80g · ⅓ cup raw'], ['Lean beef strips', '120g · 4oz'], ['Spinach', '80g · 1½ cup'], ['Carrots', '60g · ½ cup'], ['Gochujang', '15g · 1 tbsp'], ['Eggs', '1 large']] },
+    { name: 'Tofu kimchi stew (sundubu)', diet: D.vegan, cuisine: 'korean', cals: 480, p: 24, c: 55, f: 18, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Kimchi', '80g · ⅓ cup'], ['Mushrooms', '80g · 1 cup'], ['Jasmine rice', '60g · ⅓ cup raw'], ['Gochujang', '10g · 2 tsp']] },
+    { name: 'Japchae (glass noodle stir-fry)', diet: D.vegan, cuisine: 'korean', cals: 540, p: 12, c: 95, f: 12, ingredients: [['Sweet potato noodles', '80g · 1 portion raw'], ['Mixed vegetables', '200g · 1½ cup'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '8g · ½ tbsp']] },
+    { name: 'Bulgogi beef with rice', diet: D.meat, cuisine: 'korean', cals: 660, p: 42, c: 70, f: 24, ingredients: [['Beef sirloin', '160g · 5½oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Soy-garlic marinade', '20ml · 1¼ tbsp'], ['Spring onion', '20g · ¼ cup']] },
+    { name: 'Spicy chicken bowl (dak galbi)', diet: D.meat, cuisine: 'korean', cals: 620, p: 42, c: 65, f: 20, ingredients: [['Chicken', '160g · 5½oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Gochujang', '20g · 1 tbsp'], ['Cabbage', '100g · 1¼ cup']] },
+    // Middle Eastern (4)
+    { name: 'Chicken shawarma plate', diet: D.meat, cuisine: 'middle-eastern', cals: 640, p: 44, c: 60, f: 24, ingredients: [['Chicken thigh marinated', '170g · 6oz'], ['Rice', '70g · ⅓ cup raw'], ['Hummus', '40g · 2½ tbsp'], ['Cucumber-tomato salad', '100g · ⅔ cup']] },
+    { name: 'Mujadara (lentils & rice)', diet: D.vegan, cuisine: 'middle-eastern', cals: 580, p: 20, c: 95, f: 14, ingredients: [['Green lentils', '80g · ⅓ cup raw'], ['Rice', '60g · ⅓ cup raw'], ['Onion', '1 medium'], ['Olive oil', '12g · 1 tbsp']] },
+    { name: 'Falafel bowl with tahini', diet: D.vegan, cuisine: 'middle-eastern', cals: 620, p: 22, c: 70, f: 26, ingredients: [['Falafel', '120g · ~4 balls'], ['Quinoa', '60g · ⅓ cup raw'], ['Cucumber-tomato salad', '100g · ⅔ cup'], ['Tahini', '15g · 1 tbsp']] },
+    { name: 'Grilled halloumi & freekeh salad', diet: D.veg, cuisine: 'middle-eastern', cals: 580, p: 28, c: 55, f: 28, ingredients: [['Halloumi', '100g · 3 slices'], ['Freekeh', '60g · ⅓ cup raw'], ['Mixed greens', '100g · 2 cups'], ['Olive oil', '12g · 1 tbsp']] },
+    // Vietnamese (5)
+    { name: 'Pho ga (chicken noodle soup)', diet: D.meat, cuisine: 'vietnamese', cals: 520, p: 36, c: 70, f: 10, ingredients: [['Rice noodles', '80g · ⅓ cup raw'], ['Chicken', '130g · 4½oz'], ['Bean sprouts', '80g · 1 cup'], ['Cilantro', '10g · 2 tbsp'], ['Stock', '400ml · 1¾ cup']] },
+    { name: 'Pho chay (vegetable pho)', diet: D.vegan, cuisine: 'vietnamese', cals: 480, p: 20, c: 75, f: 10, ingredients: [['Rice noodles', '80g · ⅓ cup raw'], ['Firm tofu', '120g · ½ cup'], ['Bean sprouts', '80g · 1 cup'], ['Mushrooms', '80g · 1 cup'], ['Stock', '400ml · 1¾ cup']] },
+    { name: 'Bun cha (grilled pork & noodles)', diet: D.meat, cuisine: 'vietnamese', cals: 600, p: 36, c: 75, f: 18, ingredients: [['Rice noodles', '80g · ⅓ cup raw'], ['Pork', '140g · 5oz'], ['Cilantro', '10g · 2 tbsp'], ['Fish sauce', '15ml · 1 tbsp'], ['Carrots', '50g · ⅓ cup']] },
+    { name: 'Tofu spring roll bowl', diet: D.vegan, cuisine: 'vietnamese', cals: 540, p: 20, c: 80, f: 16, ingredients: [['Rice noodles', '70g · ⅓ cup raw'], ['Firm tofu', '150g · ½ cup'], ['Lettuce', '80g · 1½ cup'], ['Carrots', '60g · ½ cup'], ['Peanuts', '15g · 2 tbsp']] },
+    { name: 'Lemongrass tofu rice', diet: D.vegan, cuisine: 'vietnamese', cals: 560, p: 24, c: 75, f: 16, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Lemongrass', '10g · 1 stalk'], ['Soy sauce', '15ml · 1 tbsp']] }
   ],
   dinner: [
     // International (7)
@@ -1580,7 +1651,42 @@ const MEALS = {
     { name: 'Lamb moussaka', diet: D.meat, cuisine: 'mediterranean', cals: 660, p: 36, c: 50, f: 36, ingredients: [['Lean lamb mince', '170g · 6oz'], ['Eggplant', '200g · 1 medium'], ['Tomato sauce', '100g · ½ cup'], ['Béchamel', '60g · ¼ cup'], ['Parmesan', '15g · 2 tbsp grated']] },
     { name: 'Stuffed grape leaves with rice & lentils', diet: D.vegan, cuisine: 'mediterranean', cals: 480, p: 16, c: 75, f: 14, ingredients: [['Grape leaves', '10 leaves'], ['Rice', '70g · ⅓ cup raw'], ['Lentils', '40g · 3 tbsp raw'], ['Pine nuts', '15g · 1½ tbsp'], ['Olive oil', '12g · 1 tbsp']] },
     { name: 'Eggplant moussaka', diet: D.veg, cuisine: 'mediterranean', cals: 580, p: 22, c: 55, f: 28, ingredients: [['Eggplant', '300g · 1 large'], ['Lentils', '80g cooked · ⅓ cup'], ['Tomato sauce', '120g · ½ cup'], ['Béchamel', '60g · ¼ cup'], ['Olive oil', '12g · 1 tbsp']] },
-    { name: 'Shawarma bowl', diet: D.meat, cuisine: 'mediterranean', cals: 620, p: 40, c: 65, f: 22, ingredients: [['Chicken thigh marinated', '180g · 6oz / palm-sized'], ['Rice', '70g · ⅓ cup raw'], ['Hummus', '40g · 2½ tbsp'], ['Cucumber-tomato salad', '120g · ¾ cup'], ['Tahini', '15g · 1 tbsp']] }
+    { name: 'Shawarma bowl', diet: D.meat, cuisine: 'mediterranean', cals: 620, p: 40, c: 65, f: 22, ingredients: [['Chicken thigh marinated', '180g · 6oz / palm-sized'], ['Rice', '70g · ⅓ cup raw'], ['Hummus', '40g · 2½ tbsp'], ['Cucumber-tomato salad', '120g · ¾ cup'], ['Tahini', '15g · 1 tbsp']] },
+    // Italian (5)
+    { name: 'Margherita pizza', diet: D.veg, cuisine: 'italian', cals: 640, p: 26, c: 80, f: 22, ingredients: [['Pizza base', '120g · 1 medium'], ['Tomato sauce', '80g · ⅓ cup'], ['Mozzarella', '80g · ½ cup'], ['Basil', '10g · ¼ cup']] },
+    { name: 'Spaghetti bolognese', diet: D.meat, cuisine: 'italian', cals: 680, p: 42, c: 75, f: 24, ingredients: [['Spaghetti', '80g · 1 cup raw'], ['Lean ground beef', '150g · 5oz'], ['Tomato sauce', '120g · ½ cup'], ['Parmesan', '15g · 2 tbsp grated']] },
+    { name: 'Eggplant parmigiana', diet: D.veg, cuisine: 'italian', cals: 600, p: 26, c: 50, f: 32, ingredients: [['Eggplant', '250g · 1 medium'], ['Tomato sauce', '120g · ½ cup'], ['Mozzarella', '60g · ⅓ cup'], ['Parmesan', '20g · 3 tbsp'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Grilled salmon with polenta', diet: D.fish, cuisine: 'italian', cals: 620, p: 40, c: 55, f: 26, ingredients: [['Salmon fillet', '170g · 6oz'], ['Polenta', '80g · ½ cup raw'], ['Asparagus', '100g · 1 small bunch'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Gnocchi with tomato & basil', diet: D.vegan, cuisine: 'italian', cals: 540, p: 12, c: 90, f: 14, ingredients: [['Gnocchi', '200g · 1 portion'], ['Tomato sauce', '120g · ½ cup'], ['Basil', '10g · ¼ cup'], ['Olive oil', '10g · ¾ tbsp']] },
+    // Thai (4)
+    { name: 'Thai red curry with chicken', diet: D.meat, cuisine: 'thai', cals: 640, p: 40, c: 65, f: 24, ingredients: [['Chicken', '170g · 6oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Coconut milk', '80ml · ⅓ cup'], ['Curry paste', '20g · 1 tbsp']] },
+    { name: 'Tom yum soup with shrimp', diet: D.fish, cuisine: 'thai', cals: 420, p: 32, c: 50, f: 10, ingredients: [['Shrimp', '150g · ~12 medium'], ['Mushrooms', '80g · 1 cup'], ['Lemongrass', '10g · 1 stalk'], ['Lime', '1 medium'], ['Rice', '50g · ¼ cup raw']] },
+    { name: 'Tofu cashew stir-fry', diet: D.vegan, cuisine: 'thai', cals: 600, p: 26, c: 65, f: 28, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Cashews', '20g · 2 tbsp'], ['Bell peppers', '100g · 1 medium'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Soy sauce', '15ml · 1 tbsp']] },
+    { name: 'Pad kra pao tofu', diet: D.vegan, cuisine: 'thai', cals: 560, p: 24, c: 75, f: 18, ingredients: [['Firm tofu', '180g · ⅔ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Basil', '10g · ¼ cup'], ['Green chilli', '5g · 1'], ['Soy sauce', '15ml · 1 tbsp']] },
+    // Chinese (5)
+    { name: 'Beef & broccoli with rice', diet: D.meat, cuisine: 'chinese', cals: 620, p: 42, c: 65, f: 20, ingredients: [['Lean beef strips', '160g · 5½oz'], ['Broccoli', '150g · 1½ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '5g · 1 tsp']] },
+    { name: 'Egg fried rice with vegetables', diet: D.egg, cuisine: 'chinese', cals: 580, p: 20, c: 80, f: 18, ingredients: [['Jasmine rice', '80g · ⅓ cup raw'], ['Eggs', '2 large'], ['Mixed vegetables', '150g · 1 cup'], ['Soy sauce', '15ml · 1 tbsp'], ['Sesame oil', '8g · ½ tbsp']] },
+    { name: 'Vegetable & tofu hot pot', diet: D.vegan, cuisine: 'chinese', cals: 520, p: 26, c: 65, f: 16, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Mixed vegetables', '250g · 1¾ cup'], ['Mushrooms', '80g · 1 cup'], ['Rice noodles', '50g · ¼ cup raw'], ['Soy sauce', '15ml · 1 tbsp']] },
+    { name: "General tso's tofu with rice", diet: D.vegan, cuisine: 'chinese', cals: 620, p: 22, c: 85, f: 20, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Broccoli', '100g · 1 cup'], ['Sweet chilli sauce', '20g · 1 tbsp']] },
+    { name: 'Wonton noodle soup', diet: D.meat, cuisine: 'chinese', cals: 540, p: 30, c: 70, f: 14, ingredients: [['Pork wontons', '150g · ~6 wontons'], ['Egg noodles', '70g · ¾ block raw'], ['Bok choy', '80g · 1 cup'], ['Stock', '400ml · 1¾ cup']] },
+    // Japanese (3)
+    { name: 'Tofu katsu with rice', diet: D.vegan, cuisine: 'japanese', cals: 640, p: 22, c: 85, f: 22, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Jasmine rice', '80g · ⅓ cup raw'], ['Panko', '20g · ¼ cup'], ['Katsu sauce', '60g · ¼ cup']] },
+    { name: 'Natto & rice bowl', diet: D.vegan, cuisine: 'japanese', cals: 440, p: 22, c: 65, f: 12, ingredients: [['Natto', '80g · ⅓ cup'], ['Sushi rice', '70g · ⅓ cup raw'], ['Spring onion', '20g · ¼ cup'], ['Soy sauce', '10ml · 2 tsp']] },
+    { name: 'Miso glazed eggplant with rice', diet: D.vegan, cuisine: 'japanese', cals: 480, p: 12, c: 75, f: 14, ingredients: [['Eggplant', '250g · 1 medium'], ['Sushi rice', '70g · ⅓ cup raw'], ['Miso paste', '20g · 1 tbsp'], ['Sesame seeds', '5g · 1 tsp']] },
+    // Korean (3)
+    { name: 'Kimchi fried rice with egg', diet: D.egg, cuisine: 'korean', cals: 560, p: 18, c: 80, f: 18, ingredients: [['Jasmine rice', '80g · ⅓ cup raw'], ['Kimchi', '100g · ½ cup'], ['Eggs', '1 large'], ['Sesame oil', '8g · ½ tbsp'], ['Spring onion', '20g · ¼ cup']] },
+    { name: 'Korean BBQ tofu lettuce wraps', diet: D.vegan, cuisine: 'korean', cals: 480, p: 22, c: 60, f: 16, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Lettuce', '80g · 1½ cup'], ['Gochujang', '15g · 1 tbsp'], ['Rice', '50g · ¼ cup raw']] },
+    { name: 'Doenjang vegetable stew with rice', diet: D.vegan, cuisine: 'korean', cals: 500, p: 20, c: 70, f: 14, ingredients: [['Mixed vegetables', '200g · 1½ cup'], ['Doenjang', '20g · 1 tbsp'], ['Firm tofu', '100g · ⅓ cup'], ['Rice', '60g · ⅓ cup raw']] },
+    // Middle Eastern (4)
+    { name: 'Lamb kofta with rice', diet: D.meat, cuisine: 'middle-eastern', cals: 680, p: 38, c: 60, f: 34, ingredients: [['Lamb', '160g · 5½oz'], ['Rice', '70g · ⅓ cup raw'], ['Tomato', '80g · 1 small'], ['Onion', '½ medium'], ['Olive oil', '10g · ¾ tbsp']] },
+    { name: 'Baked falafel with tabbouleh', diet: D.vegan, cuisine: 'middle-eastern', cals: 560, p: 20, c: 70, f: 22, ingredients: [['Falafel', '120g · ~4 balls'], ['Tabbouleh', '150g · ¾ cup'], ['Hummus', '40g · 2½ tbsp']] },
+    { name: 'Fish sayadieh (spiced fish & rice)', diet: D.fish, cuisine: 'middle-eastern', cals: 600, p: 38, c: 70, f: 18, ingredients: [['White fish', '180g · 6oz'], ['Rice', '70g · ⅓ cup raw'], ['Onion', '1 medium'], ['Olive oil', '12g · 1 tbsp'], ['Cumin', '3g · ½ tsp']] },
+    { name: 'Stuffed peppers with rice (dolma)', diet: D.vegan, cuisine: 'middle-eastern', cals: 520, p: 14, c: 80, f: 16, ingredients: [['Bell peppers', '2 medium'], ['Rice', '70g · ⅓ cup raw'], ['Pine nuts', '15g · 1½ tbsp'], ['Tomato', '80g · 1 small'], ['Olive oil', '10g · ¾ tbsp']] },
+    // Vietnamese (4)
+    { name: 'Caramelized clay-pot fish', diet: D.fish, cuisine: 'vietnamese', cals: 560, p: 38, c: 65, f: 14, ingredients: [['White fish', '180g · 6oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Fish sauce', '15ml · 1 tbsp'], ['Spring onion', '20g · ¼ cup']] },
+    { name: 'Lemongrass chicken with rice', diet: D.meat, cuisine: 'vietnamese', cals: 620, p: 44, c: 65, f: 18, ingredients: [['Chicken', '170g · 6oz'], ['Jasmine rice', '70g · ⅓ cup raw'], ['Lemongrass', '10g · 1 stalk'], ['Fish sauce', '15ml · 1 tbsp']] },
+    { name: 'Vietnamese tofu curry', diet: D.vegan, cuisine: 'vietnamese', cals: 580, p: 22, c: 75, f: 22, ingredients: [['Firm tofu', '200g · ¾ cup'], ['Sweet potato', '150g · 1 cup'], ['Coconut milk', '80ml · ⅓ cup'], ['Rice', '60g · ⅓ cup raw']] },
+    { name: 'Tofu & vegetable fresh rolls', diet: D.vegan, cuisine: 'vietnamese', cals: 480, p: 18, c: 70, f: 14, ingredients: [['Rice paper', '60g · 4 sheets'], ['Firm tofu', '120g · ½ cup'], ['Rice noodles', '40g · 3 tbsp raw'], ['Lettuce', '60g · 1 cup'], ['Peanut sauce', '20g · 1 tbsp']] }
   ],
   snack: [
     // International (8)
@@ -1613,7 +1719,18 @@ const MEALS = {
     // Mediterranean / Middle Eastern (3)
     { name: 'Olives, hummus & pita', diet: D.vegan, cuisine: 'mediterranean', cals: 260, p: 8, c: 30, f: 12, ingredients: [['Olives', '30g · ~10 pcs'], ['Hummus', '50g · 3 tbsp'], ['Pita bread', '1 small (~50g)']] },
     { name: 'Greek yogurt with figs & almonds', diet: D.veg, cuisine: 'mediterranean', cals: 270, p: 18, c: 28, f: 10, ingredients: [['Greek yogurt 0%', '200g · ¾ cup'], ['Fresh figs', '2 medium'], ['Almonds', '12g · 9 pieces']] },
-    { name: 'Hummus & cucumber', diet: D.vegan, cuisine: 'mediterranean', cals: 230, p: 8, c: 25, f: 12, ingredients: [['Hummus', '60g · ¼ cup'], ['Cucumber', '150g · ¾ medium'], ['Pita chips', '20g · ~10 chips']] }
+    { name: 'Hummus & cucumber', diet: D.vegan, cuisine: 'mediterranean', cals: 230, p: 8, c: 25, f: 12, ingredients: [['Hummus', '60g · ¼ cup'], ['Cucumber', '150g · ¾ medium'], ['Pita chips', '20g · ~10 chips']] },
+    // Italian (2)
+    { name: 'Bruschetta', diet: D.vegan, cuisine: 'italian', cals: 220, p: 6, c: 32, f: 8, ingredients: [['Ciabatta', '60g · 2 slices'], ['Tomato', '100g · 1 small'], ['Olive oil', '8g · ½ tbsp'], ['Basil', '5g · 2 tbsp']] },
+    { name: 'Caprese skewers', diet: D.veg, cuisine: 'italian', cals: 240, p: 14, c: 8, f: 18, ingredients: [['Mozzarella', '60g · ⅓ cup'], ['Cherry tomatoes', '80g · ⅔ cup'], ['Basil', '5g · 2 tbsp'], ['Olive oil', '5g · 1 tsp']] },
+    // Middle Eastern (2)
+    { name: 'Baba ganoush with pita', diet: D.vegan, cuisine: 'middle-eastern', cals: 250, p: 6, c: 28, f: 14, ingredients: [['Baba ganoush', '60g · ¼ cup'], ['Pita bread', '1 small (~50g)']] },
+    { name: 'Dates & almonds', diet: D.vegan, cuisine: 'middle-eastern', cals: 240, p: 6, c: 38, f: 10, ingredients: [['Dates', '30g · 3 dates'], ['Almonds', '15g · 11 pieces']] },
+    // Thai / Vietnamese / Chinese / Korean (4)
+    { name: 'Fresh spring rolls with peanut sauce', diet: D.vegan, cuisine: 'vietnamese', cals: 240, p: 8, c: 35, f: 9, ingredients: [['Rice paper', '40g · 3 sheets'], ['Mixed vegetables', '100g · ¾ cup'], ['Peanut sauce', '20g · 1 tbsp']] },
+    { name: 'Vegetable spring rolls', diet: D.vegan, cuisine: 'chinese', cals: 230, p: 5, c: 30, f: 10, ingredients: [['Vegetable spring rolls', '80g · 3 rolls'], ['Sweet chilli sauce', '20g · 1 tbsp']] },
+    { name: 'Seasoned seaweed & rice crackers', diet: D.vegan, cuisine: 'korean', cals: 200, p: 6, c: 30, f: 6, ingredients: [['Seaweed', '10g · 1 pack'], ['Rice crackers', '25g · ~8 crackers'], ['Sesame seeds', '5g · 1 tsp']] },
+    { name: 'Edamame & chilli', diet: D.vegan, cuisine: 'thai', cals: 220, p: 18, c: 18, f: 8, ingredients: [['Edamame in pods', '150g · 1 cup'], ['Chilli flakes', '2g · ½ tsp'], ['Sea salt', '2g · ½ tsp']] }
   ]
 };
 
@@ -1966,7 +2083,53 @@ const NUT = {
   'Rajma':                  { cals: 127, p: 9,   c: 23, f: 0.5 },
   'Spinach (palak)':        { cals: 23,  p: 2.9, c: 3.6, f: 0.4 },
   'Spinach (saag)':         { cals: 23,  p: 2.9, c: 3.6, f: 0.4 },
-  'Tamarind':               { cals: 239, p: 2.8, c: 63, f: 0.6 }
+  'Tamarind':               { cals: 239, p: 2.8, c: 63, f: 0.6 },
+  // ===== New-cuisine ingredients (Italian, Thai, Chinese, Japanese, Korean, Middle Eastern, Vietnamese) =====
+  'Ricotta':                { cals: 174, p: 11,  c: 3,  f: 13 },
+  'Ciabatta':               { cals: 271, p: 9,   c: 52, f: 3 },
+  'Baguette':               { cals: 270, p: 9,   c: 51, f: 3 },
+  'Basil':                  { cals: 23,  p: 3,   c: 2.6, f: 0.6 },
+  'Spaghetti':              { cals: 371, p: 13,  c: 75, f: 1.5 },
+  'Penne pasta':            { cals: 371, p: 13,  c: 75, f: 1.5 },
+  'Pesto':                  { cals: 450, p: 5,   c: 6,  f: 45 },
+  'Cannellini beans':       { cals: 130, p: 9,   c: 24, f: 0.5 },
+  'Mixed beans':            { cals: 120, p: 8,   c: 21, f: 0.5 },
+  'Pizza base':             { cals: 270, p: 9,   c: 52, f: 3 },
+  'Polenta':                { cals: 362, p: 8,   c: 79, f: 1.2 },
+  'Gnocchi':                { cals: 130, p: 3,   c: 27, f: 0.5 },
+  'Garlic':                 { cals: 149, p: 6,   c: 33, f: 0.5 },
+  'Chilli flakes':          { cals: 280, p: 12,  c: 50, f: 8 },
+  'Parsley':                { cals: 36,  p: 3,   c: 6,  f: 0.8 },
+  'Green papaya':           { cals: 43,  p: 0.5, c: 11, f: 0.2 },
+  'Fish sauce':             { cals: 35,  p: 5,   c: 4,  f: 0 },
+  'Massaman paste':         { cals: 200, p: 4,   c: 20, f: 12 },
+  'Lemongrass':             { cals: 99,  p: 1.8, c: 25, f: 0.5 },
+  'Steamed bun':            { cals: 220, p: 6,   c: 44, f: 4 },
+  'Cabbage':                { cals: 25,  p: 1.3, c: 6,  f: 0.1 },
+  'Egg noodles':            { cals: 384, p: 14,  c: 71, f: 4 },
+  'Doubanjiang':            { cals: 120, p: 6,   c: 12, f: 5 },
+  'Pork':                   { cals: 242, p: 27,  c: 0,  f: 14 },
+  'Pork wontons':           { cals: 220, p: 12,  c: 25, f: 8 },
+  'Sweet & sour sauce':     { cals: 180, p: 0.3, c: 45, f: 0.1 },
+  'Sweet chilli sauce':     { cals: 230, p: 0.5, c: 55, f: 0.2 },
+  'Vegetable spring rolls': { cals: 200, p: 4,   c: 28, f: 8 },
+  'Katsu curry sauce':      { cals: 90,  p: 1.5, c: 12, f: 4 },
+  'Katsu sauce':            { cals: 120, p: 0.5, c: 28, f: 0.2 },
+  'Panko':                  { cals: 380, p: 13,  c: 72, f: 5 },
+  'Udon noodles':           { cals: 130, p: 4,   c: 27, f: 0.5 },
+  'Tempura batter':         { cals: 320, p: 8,   c: 60, f: 5 },
+  'Dashi broth':            { cals: 5,   p: 0.5, c: 0.5, f: 0 },
+  'Natto':                  { cals: 211, p: 19,  c: 13, f: 11 },
+  'Sweet potato noodles':   { cals: 350, p: 0.1, c: 87, f: 0.1 },
+  'Doenjang':               { cals: 198, p: 12,  c: 21, f: 6 },
+  'Fava beans':             { cals: 110, p: 8,   c: 18, f: 0.6 },
+  'Labneh':                 { cals: 150, p: 9,   c: 6,  f: 11 },
+  'Freekeh':                { cals: 352, p: 12,  c: 72, f: 2.5 },
+  'Baba ganoush':           { cals: 150, p: 2.5, c: 9,  f: 13 },
+  'Dates':                  { cals: 282, p: 2.5, c: 75, f: 0.4 },
+  'Tabbouleh':              { cals: 130, p: 3,   c: 16, f: 7 },
+  'Rice paper':             { cals: 330, p: 1,   c: 80, f: 0.2 },
+  'Peanut sauce':           { cals: 250, p: 8,   c: 15, f: 20 }
 };
 
 // ===== MICRONUTRIENTS per 100g (or 100ml) =====
@@ -2107,7 +2270,24 @@ const MICRO = {
   'Salt & pepper': [0, 0, 38000, 0], 'Sea salt': [0, 0, 38000, 0],
   'Papad': [10, 1, 1500, 1], 'Fox nuts (makhana)': [14, 0.1, 30, 1.5],
   'Masala chai': [0, 1, 25, 8], 'Lassi base (curd)': [0, 2, 46, 5],
-  'Hyderabadi biryani masala': [5, 1, 1500, 2], 'Biryani masala': [5, 1, 1500, 2]
+  'Hyderabadi biryani masala': [5, 1, 1500, 2], 'Biryani masala': [5, 1, 1500, 2],
+  // New-cuisine ingredients
+  'Ricotta': [0, 8, 84, 0.3], 'Ciabatta': [2.3, 0.4, 540, 1], 'Baguette': [2.3, 0.4, 540, 1],
+  'Basil': [1.6, 0, 4, 0.3], 'Spaghetti': [3, 0.3, 6, 2.7], 'Penne pasta': [3, 0.3, 6, 2.7],
+  'Pesto': [2, 7, 600, 1], 'Cannellini beans': [7, 0.1, 6, 0.3], 'Mixed beans': [7, 0.1, 240, 0.5],
+  'Pizza base': [2.3, 0.5, 500, 3], 'Polenta': [4, 0.2, 5, 0.6], 'Gnocchi': [1.5, 0.2, 300, 0.5],
+  'Garlic': [2.1, 0.1, 17, 1], 'Chilli flakes': [28, 1, 30, 8], 'Parsley': [3.3, 0.1, 56, 0.9],
+  'Green papaya': [1.7, 0.1, 8, 8], 'Fish sauce': [0, 0, 7800, 4], 'Massaman paste': [3, 4, 1200, 5],
+  'Lemongrass': [0, 0, 6, 0], 'Steamed bun': [1.5, 0.3, 300, 5], 'Cabbage': [2.5, 0, 18, 3.2],
+  'Egg noodles': [3, 1, 8, 2], 'Doubanjiang': [3, 0.5, 4000, 4], 'Pork': [0, 5, 60, 0],
+  'Pork wontons': [1.5, 3, 500, 2], 'Sweet & sour sauce': [0.3, 0, 400, 38],
+  'Sweet chilli sauce': [0.5, 0, 600, 48], 'Vegetable spring rolls': [2, 1.5, 400, 3],
+  'Katsu curry sauce': [1, 0.5, 500, 4], 'Katsu sauce': [1, 0, 1200, 20], 'Panko': [4, 0.5, 600, 5],
+  'Udon noodles': [1.5, 0.1, 350, 0.5], 'Tempura batter': [2, 1, 400, 1], 'Dashi broth': [0, 0, 400, 0],
+  'Natto': [5, 2, 7, 5], 'Sweet potato noodles': [1, 0, 10, 0], 'Doenjang': [5, 1, 4000, 5],
+  'Fava beans': [5, 0.1, 5, 1], 'Labneh': [0, 6, 90, 5], 'Freekeh': [13, 0.4, 5, 2],
+  'Baba ganoush': [3, 2, 350, 4], 'Dates': [8, 0, 2, 63], 'Tabbouleh': [3, 1, 300, 2],
+  'Rice paper': [1.5, 0, 200, 0], 'Peanut sauce': [3, 3, 600, 12]
 };
 
 // Foods that meaningfully boost iron or calcium — surfaced as a per-meal tag.
@@ -2126,8 +2306,11 @@ const HIGH_CALCIUM = new Set([
   'Cheese', 'Feta cheese', 'Halloumi', 'Parmesan', 'Mozzarella',
   'Firm tofu', 'Almonds', 'Almond milk', 'Sesame seeds', 'Tahini',
   'Spinach', 'Spinach (palak)', 'Spinach (saag)', 'Kale', 'Bok choy',
-  'Soy milk', 'Edamame in pods', 'Edamame shelled'
+  'Soy milk', 'Edamame in pods', 'Edamame shelled', 'Ricotta', 'Labneh', 'Natto', 'Doenjang'
 ]);
+// Extend iron-rich set with new-cuisine ingredients
+['Fava beans', 'Dates', 'Natto', 'Doenjang', 'Cannellini beans', 'Mixed beans', 'Freekeh', 'Pork']
+  .forEach(n => HIGH_IRON.add(n));
 function getMicros(name, nut) {
   const m = MICRO[name];
   if (Array.isArray(m)) return { fib: m[0], sat: m[1], na: m[2], sug: m[3] };
@@ -2211,12 +2394,43 @@ function computeMealNutrition(ingredients) {
 const HAS_EGG_RE = /\beggs?\b/i;
 const mealHasEgg = (m) => m.ingredients.some(([name]) => HAS_EGG_RE.test(name));
 
+// Re-tag the over-broad 'asian' and 'mediterranean' buckets into specific cuisines
+// at init, so we don't have to hand-edit every existing meal entry.
+const CUISINE_REMAP = {
+  // East Asian → specific
+  'Congee with vegetables': 'chinese',
+  'Miso soup with tofu & rice': 'japanese',
+  'Beef stir-fry with rice': 'chinese',
+  'Chicken teriyaki bowl': 'japanese',
+  'Salmon sushi bowl': 'japanese',
+  'Vegan ramen with tofu': 'japanese',
+  'Bibimbap with tofu': 'korean',
+  'Tofu & vegetable stir-fry': 'chinese',
+  'Pad thai with shrimp': 'thai',
+  'Vegetable curry with jasmine rice': 'thai',
+  'Korean BBQ beef with rice': 'korean',
+  'Thai green curry with chicken': 'thai',
+  'Vegan dumplings with veggies': 'chinese',
+  'Chickpea coconut curry': 'thai',
+  'Edamame with sea salt': 'japanese',
+  'Seaweed & rice crackers': 'japanese',
+  // Mediterranean → split Middle Eastern out; the rest stay 'mediterranean' (Greek-leaning)
+  'Shakshuka with pita': 'middle-eastern',
+  'Falafel & hummus wrap': 'middle-eastern',
+  'Stuffed grape leaves with rice & lentils': 'middle-eastern',
+  'Shawarma bowl': 'middle-eastern',
+  'Olives, hummus & pita': 'middle-eastern',
+  'Hummus & cucumber': 'middle-eastern'
+};
+
 // Init pass: tag meals + auto-append cooked equivalents + demote egg meals out of
 // strict vegetarian + detect allergens + override hand-typed macros where the
 // ingredient nutrition table has high coverage.
 (function enrichMealsAtInit() {
   ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
     MEALS[slot].forEach(m => {
+      // Re-tag broad cuisines into specific ones
+      if (CUISINE_REMAP[m.name]) m.cuisine = CUISINE_REMAP[m.name];
       // Egg-demotion (Indian vegetarian excludes eggs)
       if (mealHasEgg(m) && m.diet.includes('vegetarian')) {
         m.diet = m.diet.filter(d => d !== 'vegetarian');
